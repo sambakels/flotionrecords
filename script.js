@@ -1,6 +1,5 @@
 /* ========================================
    FLOTION RECORDS — Main Script
-   Professional, clean animations
    ======================================== */
 
 // ---- Navbar ----
@@ -42,15 +41,6 @@ const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('visible');
-
-            // Trigger highlight underline animation
-            const highlights = entry.target.querySelectorAll('.highlight');
-            highlights.forEach(h => h.classList.add('animated'));
-
-            // If the element itself is a highlight parent
-            if (entry.target.querySelector('.highlight')) {
-                entry.target.querySelectorAll('.highlight').forEach(h => h.classList.add('animated'));
-            }
         }
     });
 }, {
@@ -60,7 +50,7 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-// Also observe headings with highlights directly
+// Highlight underline animation
 document.querySelectorAll('.heading').forEach(el => {
     const obs = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -107,47 +97,117 @@ const statObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.stat-number').forEach(el => statObserver.observe(el));
 
-// ---- Audio Player ----
+// ---- Track List Audio Player ----
+let currentTrack = null;
 let currentAudio = null;
-let currentCard = null;
+let isDragging = false;
 
-document.querySelectorAll('.audio-play').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const card = btn.closest('.audio-card');
-        const audio = card.querySelector('.audio-player');
+function formatTime(seconds) {
+    if (isNaN(seconds) || !isFinite(seconds)) return '0:00';
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return m + ':' + (s < 10 ? '0' : '') + s;
+}
 
-        // If clicking the same card that's playing, pause it
+document.querySelectorAll('.track').forEach(track => {
+    const playBtn = track.querySelector('.track-play');
+    const audio = track.querySelector('audio');
+    const progressBar = track.querySelector('.progress-bar');
+    const progressFill = track.querySelector('.progress-fill');
+    const timeCurrent = track.querySelector('.time-current');
+    const timeTotal = track.querySelector('.time-total');
+
+    // Play / Pause
+    playBtn.addEventListener('click', () => {
         if (currentAudio === audio && !audio.paused) {
             audio.pause();
-            card.classList.remove('playing');
+            track.classList.remove('playing');
+            currentTrack = null;
             currentAudio = null;
-            currentCard = null;
             return;
         }
 
-        // Stop any currently playing audio
+        // Stop other track
         if (currentAudio && currentAudio !== audio) {
             currentAudio.pause();
             currentAudio.currentTime = 0;
-            if (currentCard) currentCard.classList.remove('playing');
+            if (currentTrack) currentTrack.classList.remove('playing');
         }
 
-        // Play new audio
         audio.play().then(() => {
-            card.classList.add('playing');
+            track.classList.add('playing');
+            currentTrack = track;
             currentAudio = audio;
-            currentCard = card;
-        }).catch(() => {
-            // Audio file not found or not loaded
-            card.classList.remove('playing');
-        });
+        }).catch(() => {});
+    });
 
-        // Handle audio end
-        audio.onended = () => {
-            card.classList.remove('playing');
-            currentAudio = null;
-            currentCard = null;
+    // Time update
+    audio.addEventListener('timeupdate', () => {
+        if (isDragging) return;
+        const pct = (audio.currentTime / audio.duration) * 100;
+        progressFill.style.width = pct + '%';
+        timeCurrent.textContent = formatTime(audio.currentTime);
+    });
+
+    // Loaded metadata — show duration
+    audio.addEventListener('loadedmetadata', () => {
+        timeTotal.textContent = formatTime(audio.duration);
+    });
+
+    // Also try durationchange for browsers that fire it later
+    audio.addEventListener('durationchange', () => {
+        if (audio.duration && isFinite(audio.duration)) {
+            timeTotal.textContent = formatTime(audio.duration);
+        }
+    });
+
+    // Track ended
+    audio.addEventListener('ended', () => {
+        track.classList.remove('playing');
+        progressFill.style.width = '0%';
+        timeCurrent.textContent = '0:00';
+        currentTrack = null;
+        currentAudio = null;
+    });
+
+    // Click on progress bar to seek
+    function seek(e) {
+        const rect = progressBar.getBoundingClientRect();
+        const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+        const pct = x / rect.width;
+        if (audio.duration && isFinite(audio.duration)) {
+            audio.currentTime = pct * audio.duration;
+            progressFill.style.width = (pct * 100) + '%';
+        }
+    }
+
+    progressBar.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        seek(e);
+
+        const onMove = (e) => seek(e);
+        const onUp = () => {
+            isDragging = false;
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
         };
+
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+    });
+
+    // Touch support
+    progressBar.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        seek(e.touches[0]);
+    }, { passive: true });
+
+    progressBar.addEventListener('touchmove', (e) => {
+        if (isDragging) seek(e.touches[0]);
+    }, { passive: true });
+
+    progressBar.addEventListener('touchend', () => {
+        isDragging = false;
     });
 });
 
@@ -170,7 +230,7 @@ if (contactForm) {
     });
 }
 
-// ---- Active Nav Link on Scroll ----
+// ---- Active Nav Link ----
 const sections = document.querySelectorAll('section[id]');
 
 window.addEventListener('scroll', () => {
