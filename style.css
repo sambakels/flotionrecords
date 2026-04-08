@@ -76,9 +76,9 @@ body {
     animation: blobFloat 20s ease-in-out infinite alternate;
 }
 
-.blob-1 { width: 600px; height: 600px; background: #c8b8e8; top: -10%; right: -5%; animation-delay: 0s; }
-.blob-2 { width: 500px; height: 500px; background: #e8c0c8; bottom: 10%; left: -8%; animation-delay: -7s; }
-.blob-3 { width: 400px; height: 400px; background: #b8d8d0; top: 40%; right: 20%; animation-delay: -14s; }
+.blob-1 { width: 600px; height: 600px; background: #8b5cf6; top: -10%; right: -5%; animation-delay: 0s; }
+.blob-2 { width: 500px; height: 500px; background: var(--pink); bottom: 10%; left: -8%; animation-delay: -7s; }
+.blob-3 { width: 400px; height: 400px; background: #a855f7; top: 40%; right: 20%; animation-delay: -14s; }
 
 @keyframes blobFloat {
     0% { transform: translate(0, 0) scale(1); }
