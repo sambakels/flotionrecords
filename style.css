@@ -5,18 +5,18 @@
    ======================================== */
 
 :root {
-    --black: #0b0b0f;
-    --dark: #111118;
-    --dark-card: #16161e;
-    --dark-border: #222230;
-    --white: #ffffff;
-    --gray-100: #f0f0f5;
-    --gray-300: #a0a0b8;
-    --gray-400: #707088;
-    --accent: #8b5cf6;
-    --accent-soft: rgba(139, 92, 246, 0.12);
-    --accent-glow: rgba(139, 92, 246, 0.25);
-    --gradient: linear-gradient(135deg, #8b5cf6, #a78bfa, #c4b5fd);
+    --black: #0a0e13;
+    --dark: #0f1419;
+    --dark-card: #141b22;
+    --dark-border: #1e2a36;
+    --white: #e8ecf0;
+    --gray-100: #c8d0d8;
+    --gray-300: #8a9baa;
+    --gray-400: #5c7080;
+    --accent: #5d8aab;
+    --accent-soft: rgba(93, 138, 171, 0.12);
+    --accent-glow: rgba(93, 138, 171, 0.25);
+    --gradient: linear-gradient(135deg, #4a7a9b, #5d8aab, #7ba8c4);
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-heading: 'Space Grotesk', 'Inter', sans-serif;
     --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -140,16 +140,20 @@ body {
 }
 
 .nav-logo {
-    font-family: var(--font-heading);
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 2px;
     text-decoration: none;
-    color: var(--white);
+    display: flex;
+    align-items: center;
 }
 
-.nav-logo span {
-    color: var(--accent);
+.nav-logo-img {
+    height: 36px;
+    width: auto;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+}
+
+.nav-logo:hover .nav-logo-img {
+    opacity: 1;
 }
 
 .nav-links {
@@ -180,7 +184,7 @@ body {
 }
 
 .nav-cta:hover {
-    background: #7c3aed;
+    background: #4a7a9b;
     transform: translateY(-1px);
 }
 
@@ -318,7 +322,7 @@ body {
 }
 
 .btn-primary:hover {
-    background: #7c3aed;
+    background: #4a7a9b;
     transform: translateY(-1px);
 }
 
@@ -846,16 +850,20 @@ body {
 }
 
 .footer-logo {
-    font-family: var(--font-heading);
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: 2px;
     text-decoration: none;
-    color: var(--white);
+    display: flex;
+    align-items: center;
 }
 
-.footer-logo span {
-    color: var(--accent);
+.footer-logo-img {
+    height: 30px;
+    width: auto;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+}
+
+.footer-logo:hover .footer-logo-img {
+    opacity: 1;
 }
 
 .footer-links {
