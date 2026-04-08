@@ -16,7 +16,7 @@
     --green: #30d158;
     --pink: #ff375f;
     --orange: #ff9f0a;
-    --gradient: linear-gradient(135deg, #2997ff, #30d158, #ff9f0a, #ff375f, #af52de);
+    --gradient: linear-gradient(135deg, #2997ff, #5ac8fa, #34c759);
     --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -140,7 +140,7 @@ body {
 
 .card:active { transform: scale(0.985); transition: transform 0.12s; }
 
-.card-lg { padding: 3rem; border-radius: 28px; }
+.card-lg { padding: 2.2rem; border-radius: 24px; }
 
 /* ---- BUTTONS ---- */
 .btn {
@@ -289,11 +289,11 @@ body.dark .theme-toggle .icon-moon { display: block; }
 }
 
 .hero-title {
-    font-size: clamp(3.5rem, 9vw, 7rem);
+    font-size: clamp(3rem, 8vw, 5.5rem);
     font-weight: 900;
     letter-spacing: -0.04em;
     line-height: 1;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem;
 }
 
 .hero-sub {
@@ -355,11 +355,11 @@ body.dark .theme-toggle .icon-moon { display: block; }
 }
 
 /* ---- SECTIONS ---- */
-.section { padding: 6rem 0; position: relative; z-index: 1; }
+.section { padding: 4.5rem 0; position: relative; z-index: 1; }
 .container { max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
 
-.section-head { text-align: center; margin-bottom: 3rem; }
-.section-head h2 { font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; }
+.section-head { text-align: center; margin-bottom: 2.2rem; }
+.section-head h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; }
 
 .tag {
     display: inline-block;
@@ -377,10 +377,10 @@ body.dark .theme-toggle .icon-moon { display: block; }
 
 .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
 
-.stat { text-align: center; padding: 1.8rem 1rem; }
+.stat { text-align: center; padding: 1.4rem 0.8rem; }
 .stat-val { display: flex; align-items: baseline; justify-content: center; }
-.stat-num { font-size: 3rem; font-weight: 900; line-height: 1; }
-.stat-suf { font-size: 1.5rem; font-weight: 800; }
+.stat-num { font-size: 2.5rem; font-weight: 900; line-height: 1; }
+.stat-suf { font-size: 1.2rem; font-weight: 800; }
 .stat-lbl { font-size: 0.8rem; font-weight: 500; color: var(--text-30); margin-top: 0.4rem; }
 
 /* ---- PLAYLISTS ---- */
@@ -744,24 +744,26 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .nav-links a { font-size: 1.4rem; font-weight: 700; color: var(--text); }
     .nav-toggle { display: flex; }
 
-    .section { padding: 4rem 0; }
-    .container { padding: 0 1.2rem; }
-    .hero { padding: 7rem 1.2rem 4rem; }
+    .section { padding: 3rem 0; }
+    .container { padding: 0 1rem; }
+    .hero { padding: 6rem 1rem 3rem; }
+    .hero-inner { max-width: 100%; }
+    .section-head { margin-bottom: 1.5rem; }
 
     .stats-row { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
-    .stat { padding: 1.2rem 0.8rem; }
-    .stat-num { font-size: 2.2rem; }
+    .stat { padding: 1rem 0.6rem; }
+    .stat-num { font-size: 1.8rem; }
 
     .grid-4 { grid-template-columns: 1fr; }
     .contact-row { grid-template-columns: 1fr; gap: 1rem; }
     .steps { grid-template-columns: 1fr; }
     .demo-form-grid { grid-template-columns: 1fr; }
-    .card-lg { padding: 2rem; }
+    .card-lg { padding: 1.5rem; }
     .footer-row { flex-direction: column; gap: 1rem; text-align: center; }
 }
 
 @media (max-width: 480px) {
-    .hero-title { font-size: 3rem; }
+    .hero-title { font-size: 2.5rem; }
     .hero-actions { flex-direction: column; }
     .hero-actions .btn { width: 100%; }
     .track { grid-template-columns: 22px 28px 1fr auto; padding: 0.6rem 0.6rem; }
