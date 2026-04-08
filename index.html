@@ -269,13 +269,63 @@
                 <h2 class="reveal">Submit your <span class="gradient-text">demo</span></h2>
             </div>
             <div class="card card-lg demo-card reveal">
-                <p class="lead">Got a track that deserves to be heard? We review every submission for potential playlist placement or a full release on Flotion Records.</p>
-                <div class="steps">
-                    <div class="step"><div class="step-n">1</div><strong>Send</strong><p>Email your demo with a short bio</p></div>
-                    <div class="step"><div class="step-n">2</div><strong>Review</strong><p>We listen within 7 days</p></div>
-                    <div class="step"><div class="step-n">3</div><strong>Release</strong><p>Get featured on playlists or the label</p></div>
-                </div>
-                <a href="mailto:demo@flotionrecords.com?subject=Demo%20Submission" class="btn btn-color">Submit Your Demo</a>
+                <p class="lead">Got a track that deserves to be heard? Upload your demo below and we'll review it for playlist placement or a full release on Flotion Records. We listen to every submission within 7 days.</p>
+                <form id="demoForm" name="demo-submission" method="POST" data-netlify="true" netlify-honeypot="bot-field" enctype="multipart/form-data" class="demo-form">
+                    <input type="hidden" name="form-name" value="demo-submission">
+                    <p style="display:none;"><input name="bot-field"></p>
+                    <div class="demo-form-grid">
+                        <div class="form-field">
+                            <label for="demo-name">Artist / Producer name</label>
+                            <input type="text" id="demo-name" name="artist-name" placeholder="Your artist name" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="demo-email">Email</label>
+                            <input type="email" id="demo-email" name="email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="demo-track">Track title</label>
+                            <input type="text" id="demo-track" name="track-title" placeholder="Name of your track" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="demo-genre">Genre</label>
+                            <select id="demo-genre" name="genre" required>
+                                <option value="" disabled selected>Select genre</option>
+                                <option>House</option>
+                                <option>Deep House</option>
+                                <option>UK Garage</option>
+                                <option>Hardstyle</option>
+                                <option>Techno</option>
+                                <option>Hip-Hop / Rap</option>
+                                <option>R&B / Soul</option>
+                                <option>Pop</option>
+                                <option>Electronic</option>
+                                <option>Afro</option>
+                                <option>Piano / Classical</option>
+                                <option>Chill / Lo-fi</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label for="demo-highlight">Where is the best part of the track? (timestamp or description)</label>
+                        <input type="text" id="demo-highlight" name="best-part" placeholder="e.g. Drop at 1:24 or the chorus at 0:45">
+                    </div>
+                    <div class="form-field">
+                        <label for="demo-info">Tell us about yourself and this track</label>
+                        <textarea id="demo-info" name="artist-info" rows="3" placeholder="Short bio, what inspired this track, your Spotify/SoundCloud link, etc."></textarea>
+                    </div>
+                    <div class="form-field">
+                        <label for="demo-file">Upload your demo (MP3 or WAV, max 10MB)</label>
+                        <div class="file-upload" id="fileUpload">
+                            <input type="file" id="demo-file" name="demo-file" accept=".mp3,.wav,audio/mpeg,audio/wav" required>
+                            <div class="file-upload-label">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                <span id="fileName">Drag and drop or click to upload</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-color">Submit Demo</button>
+                </form>
             </div>
         </div>
     </section>

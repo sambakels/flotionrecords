@@ -86,7 +86,59 @@ document.querySelectorAll('.track').forEach(tr => {
     bar.addEventListener('touchend', () => { drag=false; });
 });
 
-// Form (Netlify)
+// Demo form
+const demoFile = document.getElementById('demo-file');
+const fileUpload = document.getElementById('fileUpload');
+const fileName = document.getElementById('fileName');
+
+if (demoFile) {
+    demoFile.addEventListener('change', () => {
+        if (demoFile.files.length > 0) {
+            const f = demoFile.files[0];
+            const sizeMB = (f.size / 1024 / 1024).toFixed(1);
+            fileName.textContent = f.name + ' (' + sizeMB + ' MB)';
+            fileUpload.classList.add('has-file');
+        } else {
+            fileName.textContent = 'Drag and drop or click to upload';
+            fileUpload.classList.remove('has-file');
+        }
+    });
+
+    fileUpload.addEventListener('dragover', e => { e.preventDefault(); fileUpload.classList.add('dragover'); });
+    fileUpload.addEventListener('dragleave', () => { fileUpload.classList.remove('dragover'); });
+    fileUpload.addEventListener('drop', () => { fileUpload.classList.remove('dragover'); });
+}
+
+const demoForm = document.getElementById('demoForm');
+if (demoForm) demoForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const b = demoForm.querySelector('.btn'), o = b.textContent;
+    b.textContent = 'Uploading...';
+    b.disabled = true;
+
+    fetch('/', {
+        method: 'POST',
+        body: new FormData(demoForm)
+    }).then(res => {
+        if (res.ok) {
+            b.textContent = 'Demo submitted!';
+            demoForm.reset();
+            fileName.textContent = 'Drag and drop or click to upload';
+            fileUpload.classList.remove('has-file');
+            setTimeout(() => { b.textContent = o; b.disabled = false; }, 4000);
+        } else {
+            b.textContent = 'Error, try again';
+            b.disabled = false;
+            setTimeout(() => { b.textContent = o; }, 3000);
+        }
+    }).catch(() => {
+        b.textContent = 'Error, try again';
+        b.disabled = false;
+        setTimeout(() => { b.textContent = o; }, 3000);
+    });
+});
+
+// Contact form (Netlify)
 const form = document.getElementById('contactForm');
 if (form) form.addEventListener('submit', e => {
     e.preventDefault();
