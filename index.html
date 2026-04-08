@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flotion Records</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Animated background particles -->
+    <canvas id="particles"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo">FLOTION<span class="accent">RECORDS</span></div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">Over Ons</a>
+            <a href="#releases">Releases</a>
+            <a href="#artists">Artiesten</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#home">Home</a>
+        <a href="#about">Over Ons</a>
+        <a href="#releases">Releases</a>
+        <a href="#artists">Artiesten</a>
+        <a href="#contact">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-badge animate-in">WELKOM BIJ</div>
+            <h1 class="hero-title animate-in">
+                <span class="gradient-text">FLOTION</span>
+                <br>
+                <span class="outline-text">RECORDS</span>
+            </h1>
+            <p class="hero-subtitle animate-in">De toekomst van muziek begint hier</p>
+            <div class="hero-buttons animate-in">
+                <a href="#releases" class="btn btn-primary">Ontdek Muziek</a>
+                <a href="#contact" class="btn btn-outline">Neem Contact Op</a>
+            </div>
+        </div>
+        <div class="hero-visualizer">
+            <div class="vinyl-record">
+                <div class="vinyl-grooves"></div>
+                <div class="vinyl-label">
+                    <span>FLOTION</span>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>Scroll naar beneden</span>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="container">
+            <div class="section-header animate-in">
+                <span class="section-tag">OVER ONS</span>
+                <h2 class="section-title">Wij zijn <span class="gradient-text">Flotion Records</span></h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-text animate-in">
+                    <p class="lead">Flotion Records is een onafhankelijk muzieklabel dat grenzen verlegt en nieuwe geluiden omarmt.</p>
+                    <p>Wij geloven in de kracht van muziek om mensen samen te brengen. Ons label biedt een platform voor getalenteerde artiesten die iets unieks te bieden hebben aan de wereld.</p>
+                    <div class="stats-row">
+                        <div class="stat">
+                            <span class="stat-number" data-target="50">0</span>
+                            <span class="stat-label">Releases</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" data-target="15">0</span>
+                            <span class="stat-label">Artiesten</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number" data-target="1000">0</span>
+                            <span class="stat-label">Streams (K)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual animate-in">
+                    <div class="floating-cards">
+                        <div class="float-card card-1">
+                            <div class="card-icon">&#127925;</div>
+                            <span>Origineel Geluid</span>
+                        </div>
+                        <div class="float-card card-2">
+                            <div class="card-icon">&#127911;</div>
+                            <span>Top Kwaliteit</span>
+                        </div>
+                        <div class="float-card card-3">
+                            <div class="card-icon">&#127775;</div>
+                            <span>Creatieve Vrijheid</span>
+                        </div>
+                        <div class="float-card card-4">
+                            <div class="card-icon">&#128640;</div>
+                            <span>Innovatie</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Releases Section -->
+    <section class="section releases" id="releases">
+        <div class="container">
+            <div class="section-header animate-in">
+                <span class="section-tag">MUZIEK</span>
+                <h2 class="section-title">Laatste <span class="gradient-text">Releases</span></h2>
+            </div>
+            <div class="releases-grid">
+                <div class="release-card animate-in">
+                    <div class="release-cover" style="--accent: #ff6b6b;">
+                        <div class="release-play">&#9654;</div>
+                        <div class="release-overlay"></div>
+                    </div>
+                    <div class="release-info">
+                        <h3>Coming Soon</h3>
+                        <p>Artiest Naam</p>
+                        <span class="release-date">2026</span>
+                    </div>
+                </div>
+                <div class="release-card animate-in">
+                    <div class="release-cover" style="--accent: #4ecdc4;">
+                        <div class="release-play">&#9654;</div>
+                        <div class="release-overlay"></div>
+                    </div>
+                    <div class="release-info">
+                        <h3>Coming Soon</h3>
+                        <p>Artiest Naam</p>
+                        <span class="release-date">2026</span>
+                    </div>
+                </div>
+                <div class="release-card animate-in">
+                    <div class="release-cover" style="--accent: #a855f7;">
+                        <div class="release-play">&#9654;</div>
+                        <div class="release-overlay"></div>
+                    </div>
+                    <div class="release-info">
+                        <h3>Coming Soon</h3>
+                        <p>Artiest Naam</p>
+                        <span class="release-date">2026</span>
+                    </div>
+                </div>
+                <div class="release-card animate-in">
+                    <div class="release-cover" style="--accent: #f59e0b;">
+                        <div class="release-play">&#9654;</div>
+                        <div class="release-overlay"></div>
+                    </div>
+                    <div class="release-info">
+                        <h3>Coming Soon</h3>
+                        <p>Artiest Naam</p>
+                        <span class="release-date">2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artists Section -->
+    <section class="section artists" id="artists">
+        <div class="container">
+            <div class="section-header animate-in">
+                <span class="section-tag">TEAM</span>
+                <h2 class="section-title">Onze <span class="gradient-text">Artiesten</span></h2>
+            </div>
+            <div class="artists-grid">
+                <div class="artist-card animate-in">
+                    <div class="artist-image" style="--hue: 0;">
+                        <div class="artist-initial">?</div>
+                    </div>
+                    <h3>Binnenkort</h3>
+                    <p>Genre</p>
+                </div>
+                <div class="artist-card animate-in">
+                    <div class="artist-image" style="--hue: 60;">
+                        <div class="artist-initial">?</div>
+                    </div>
+                    <h3>Binnenkort</h3>
+                    <p>Genre</p>
+                </div>
+                <div class="artist-card animate-in">
+                    <div class="artist-image" style="--hue: 120;">
+                        <div class="artist-initial">?</div>
+                    </div>
+                    <h3>Binnenkort</h3>
+                    <p>Genre</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Banner -->
+    <div class="marquee-section">
+        <div class="marquee">
+            <div class="marquee-content">
+                <span>FLOTION RECORDS</span>
+                <span class="marquee-dot"></span>
+                <span>NIEUWE MUZIEK</span>
+                <span class="marquee-dot"></span>
+                <span>CREATIEVE VRIJHEID</span>
+                <span class="marquee-dot"></span>
+                <span>ONAFHANKELIJK LABEL</span>
+                <span class="marquee-dot"></span>
+                <span>FLOTION RECORDS</span>
+                <span class="marquee-dot"></span>
+                <span>NIEUWE MUZIEK</span>
+                <span class="marquee-dot"></span>
+                <span>CREATIEVE VRIJHEID</span>
+                <span class="marquee-dot"></span>
+                <span>ONAFHANKELIJK LABEL</span>
+                <span class="marquee-dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section class="section contact" id="contact">
+        <div class="container">
+            <div class="section-header animate-in">
+                <span class="section-tag">CONTACT</span>
+                <h2 class="section-title">Neem <span class="gradient-text">Contact</span> Op</h2>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info animate-in">
+                    <p class="lead">Heb je een demo? Wil je samenwerken? Of gewoon hallo zeggen? We horen graag van je!</p>
+                    <div class="contact-links">
+                        <a href="mailto:info@flotionrecords.com" class="contact-link">
+                            <div class="contact-icon">&#9993;</div>
+                            <div>
+                                <strong>Email</strong>
+                                <span>info@flotionrecords.com</span>
+                            </div>
+                        </a>
+                        <a href="#" class="contact-link">
+                            <div class="contact-icon">&#127926;</div>
+                            <div>
+                                <strong>Spotify</strong>
+                                <span>Flotion Records</span>
+                            </div>
+                        </a>
+                        <a href="#" class="contact-link">
+                            <div class="contact-icon">&#128247;</div>
+                            <div>
+                                <strong>Instagram</strong>
+                                <span>@flotionrecords</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <form class="contact-form animate-in" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Je naam" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Je email" required>
+                    </div>
+                    <div class="form-group">
+                        <select>
+                            <option value="" disabled selected>Onderwerp</option>
+                            <option>Demo insturen</option>
+                            <option>Samenwerking</option>
+                            <option>Boekingen</option>
+                            <option>Overig</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Je bericht" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Verstuur Bericht</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">FLOTION<span class="accent">RECORDS</span></div>
+                <div class="footer-socials">
+                    <a href="#" class="social-link" aria-label="Instagram">IG</a>
+                    <a href="#" class="social-link" aria-label="Spotify">SP</a>
+                    <a href="#" class="social-link" aria-label="YouTube">YT</a>
+                    <a href="#" class="social-link" aria-label="SoundCloud">SC</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Flotion Records. Alle rechten voorbehouden.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
