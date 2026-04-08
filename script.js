@@ -1,192 +1,86 @@
-/* ========================================
-   FLOTION RECORDS — Liquid Glass Script
-   ======================================== */
+/* FLOTION RECORDS — Liquid Glass */
 
-// ---- Water Ripple Click Effect ----
-document.addEventListener('click', (e) => {
-    const container = document.getElementById('rippleContainer');
-    for (let i = 0; i < 3; i++) {
-        const ripple = document.createElement('div');
-        ripple.className = 'ripple';
-        ripple.style.left = e.clientX + 'px';
-        ripple.style.top = e.clientY + 'px';
-        ripple.style.animationDelay = (i * 0.12) + 's';
-        container.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 1200);
+// Ripple
+document.addEventListener('click', e => {
+    const c = document.getElementById('rippleContainer');
+    for (let i = 0; i < 2; i++) {
+        const r = document.createElement('div');
+        r.className = 'ripple';
+        r.style.left = e.clientX + 'px';
+        r.style.top = e.clientY + 'px';
+        r.style.animationDelay = (i * 0.1) + 's';
+        c.appendChild(r);
+        setTimeout(() => r.remove(), 900);
     }
 });
 
-// ---- Navbar ----
+// Nav
 const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-});
-
-// ---- Mobile Menu ----
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
 
-navToggle.addEventListener('click', () => {
-    navToggle.classList.toggle('active');
-    navLinks.classList.toggle('active');
+navToggle.addEventListener('click', () => { navToggle.classList.toggle('active'); navLinks.classList.toggle('active'); });
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { navToggle.classList.remove('active'); navLinks.classList.remove('active'); }));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector(a.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth' }); });
 });
 
-navLinks.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-        navToggle.classList.remove('active');
-        navLinks.classList.remove('active');
-    });
-});
+// Reveal
+const ro = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(e => ro.observe(e));
 
-// ---- Smooth Scroll ----
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', (e) => {
-        e.preventDefault();
-        const target = document.querySelector(anchor.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-});
-
-// ---- Scroll Reveal ----
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-    });
-}, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
-
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-// ---- Counter Animation ----
-function animateCounter(el) {
-    const target = parseInt(el.getAttribute('data-target'));
-    const duration = 2000;
-    const start = performance.now();
-
-    function update(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.floor(eased * target);
-        if (progress < 1) requestAnimationFrame(update);
-        else el.textContent = target;
-    }
-    requestAnimationFrame(update);
+// Counters
+function animCount(el) {
+    const t = +el.dataset.target, dur = 2000, s = performance.now();
+    (function u(n) {
+        const p = Math.min((n - s) / dur, 1);
+        el.textContent = Math.floor((1 - Math.pow(1 - p, 3)) * t);
+        if (p < 1) requestAnimationFrame(u); else el.textContent = t;
+    })(s);
 }
 
-const statObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            animateCounter(entry.target);
-            statObserver.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.5 });
+const so = new IntersectionObserver(es => { es.forEach(e => { if (e.isIntersecting) { animCount(e.target); so.unobserve(e.target); } }); }, { threshold: 0.5 });
+document.querySelectorAll('.stat-num').forEach(e => so.observe(e));
 
-document.querySelectorAll('.stat-number').forEach(el => statObserver.observe(el));
+// Audio
+let cTrack = null, cAudio = null, drag = false;
+const fmt = s => isNaN(s) || !isFinite(s) ? '0:00' : Math.floor(s/60) + ':' + (Math.floor(s%60)<10?'0':'') + Math.floor(s%60);
 
-// ---- Audio Player ----
-let currentTrack = null;
-let currentAudio = null;
-let isDragging = false;
+document.querySelectorAll('.track').forEach(tr => {
+    const btn = tr.querySelector('.tplay'), au = tr.querySelector('audio');
+    const bar = tr.querySelector('.pbar'), fill = tr.querySelector('.pfill');
+    const tc = tr.querySelector('.tc'), tt = tr.querySelector('.tt');
 
-function formatTime(s) {
-    if (isNaN(s) || !isFinite(s)) return '0:00';
-    return Math.floor(s / 60) + ':' + (Math.floor(s % 60) < 10 ? '0' : '') + Math.floor(s % 60);
-}
-
-document.querySelectorAll('.track').forEach(track => {
-    const playBtn = track.querySelector('.track-play');
-    const audio = track.querySelector('audio');
-    const progressBar = track.querySelector('.progress-bar');
-    const progressFill = track.querySelector('.progress-fill');
-    const timeCurrent = track.querySelector('.time-current');
-    const timeTotal = track.querySelector('.time-total');
-
-    playBtn.addEventListener('click', (e) => {
+    btn.addEventListener('click', e => {
         e.stopPropagation();
-        if (currentAudio === audio && !audio.paused) {
-            audio.pause();
-            track.classList.remove('playing');
-            currentTrack = null;
-            currentAudio = null;
-            return;
-        }
-
-        if (currentAudio && currentAudio !== audio) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-            if (currentTrack) currentTrack.classList.remove('playing');
-        }
-
-        audio.play().then(() => {
-            track.classList.add('playing');
-            currentTrack = track;
-            currentAudio = audio;
-        }).catch(() => {});
+        if (cAudio === au && !au.paused) { au.pause(); tr.classList.remove('playing'); cTrack = cAudio = null; return; }
+        if (cAudio && cAudio !== au) { cAudio.pause(); cAudio.currentTime = 0; if (cTrack) cTrack.classList.remove('playing'); }
+        au.play().then(() => { tr.classList.add('playing'); cTrack = tr; cAudio = au; }).catch(() => {});
     });
 
-    audio.addEventListener('timeupdate', () => {
-        if (isDragging) return;
-        progressFill.style.width = (audio.currentTime / audio.duration * 100) + '%';
-        timeCurrent.textContent = formatTime(audio.currentTime);
-    });
-
-    audio.addEventListener('loadedmetadata', () => { timeTotal.textContent = formatTime(audio.duration); });
-    audio.addEventListener('durationchange', () => {
-        if (audio.duration && isFinite(audio.duration)) timeTotal.textContent = formatTime(audio.duration);
-    });
-
-    audio.addEventListener('ended', () => {
-        track.classList.remove('playing');
-        progressFill.style.width = '0%';
-        timeCurrent.textContent = '0:00';
-        currentTrack = null;
-        currentAudio = null;
-    });
+    au.addEventListener('timeupdate', () => { if (!drag) { fill.style.width = (au.currentTime/au.duration*100)+'%'; tc.textContent = fmt(au.currentTime); } });
+    au.addEventListener('loadedmetadata', () => { tt.textContent = fmt(au.duration); });
+    au.addEventListener('durationchange', () => { if (au.duration && isFinite(au.duration)) tt.textContent = fmt(au.duration); });
+    au.addEventListener('ended', () => { tr.classList.remove('playing'); fill.style.width='0%'; tc.textContent='0:00'; cTrack=cAudio=null; });
 
     function seek(e) {
-        const rect = progressBar.getBoundingClientRect();
-        const pct = Math.max(0, Math.min((e.clientX - rect.left) / rect.width, 1));
-        if (audio.duration && isFinite(audio.duration)) {
-            audio.currentTime = pct * audio.duration;
-            progressFill.style.width = (pct * 100) + '%';
-        }
+        const r = bar.getBoundingClientRect(), p = Math.max(0, Math.min((e.clientX-r.left)/r.width, 1));
+        if (au.duration && isFinite(au.duration)) { au.currentTime = p*au.duration; fill.style.width=(p*100)+'%'; }
     }
 
-    progressBar.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        seek(e);
-        const onMove = (e) => seek(e);
-        const onUp = () => { isDragging = false; document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); };
-        document.addEventListener('mousemove', onMove);
-        document.addEventListener('mouseup', onUp);
-    });
-
-    progressBar.addEventListener('touchstart', (e) => { isDragging = true; seek(e.touches[0]); }, { passive: true });
-    progressBar.addEventListener('touchmove', (e) => { if (isDragging) seek(e.touches[0]); }, { passive: true });
-    progressBar.addEventListener('touchend', () => { isDragging = false; });
+    bar.addEventListener('mousedown', e => { drag=true; seek(e); const m=e=>seek(e), u=()=>{drag=false;document.removeEventListener('mousemove',m);document.removeEventListener('mouseup',u);}; document.addEventListener('mousemove',m); document.addEventListener('mouseup',u); });
+    bar.addEventListener('touchstart', e => { drag=true; seek(e.touches[0]); }, {passive:true});
+    bar.addEventListener('touchmove', e => { if(drag) seek(e.touches[0]); }, {passive:true});
+    bar.addEventListener('touchend', () => { drag=false; });
 });
 
-// ---- Contact Form ----
+// Form
 const form = document.getElementById('contactForm');
-if (form) {
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const btn = form.querySelector('.btn');
-        const original = btn.textContent;
-        btn.textContent = 'Sent!';
-        btn.style.background = 'linear-gradient(135deg, rgba(62,184,160,0.4), rgba(94,196,212,0.3))';
-        setTimeout(() => { btn.textContent = original; btn.style.background = ''; form.reset(); }, 3000);
-    });
-}
-
-// ---- Active Nav ----
-const sections = document.querySelectorAll('section[id]');
-window.addEventListener('scroll', () => {
-    const y = window.scrollY + 120;
-    sections.forEach(s => {
-        const link = document.querySelector(`.nav-links a[href="#${s.id}"]`);
-        if (link && !link.classList.contains('nav-cta')) {
-            link.style.color = (y >= s.offsetTop && y < s.offsetTop + s.offsetHeight) ? 'var(--white)' : '';
-        }
-    });
+if (form) form.addEventListener('submit', e => {
+    e.preventDefault();
+    const b = form.querySelector('.btn'), o = b.textContent;
+    b.textContent = 'Sent!';
+    setTimeout(() => { b.textContent = o; form.reset(); }, 3000);
 });
