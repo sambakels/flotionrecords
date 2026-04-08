@@ -86,11 +86,31 @@ document.querySelectorAll('.track').forEach(tr => {
     bar.addEventListener('touchend', () => { drag=false; });
 });
 
-// Form
+// Form (Netlify)
 const form = document.getElementById('contactForm');
 if (form) form.addEventListener('submit', e => {
     e.preventDefault();
     const b = form.querySelector('.btn'), o = b.textContent;
-    b.textContent = 'Sent!';
-    setTimeout(() => { b.textContent = o; form.reset(); }, 3000);
+    b.textContent = 'Sending...';
+    b.disabled = true;
+
+    fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+    }).then(res => {
+        if (res.ok) {
+            b.textContent = 'Sent!';
+            form.reset();
+            setTimeout(() => { b.textContent = o; b.disabled = false; }, 3000);
+        } else {
+            b.textContent = 'Error, try again';
+            b.disabled = false;
+            setTimeout(() => { b.textContent = o; }, 3000);
+        }
+    }).catch(() => {
+        b.textContent = 'Error, try again';
+        b.disabled = false;
+        setTimeout(() => { b.textContent = o; }, 3000);
+    });
 });
