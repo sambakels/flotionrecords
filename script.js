@@ -14,6 +14,16 @@ document.addEventListener('click', e => {
     }
 });
 
+// Dark mode
+const themeToggle = document.getElementById('themeToggle');
+if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
+
+themeToggle.addEventListener('click', e => {
+    e.stopPropagation();
+    document.body.classList.toggle('dark');
+    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+});
+
 // Nav
 const nav = document.getElementById('nav');
 const navToggle = document.getElementById('navToggle');
