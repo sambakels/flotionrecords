@@ -355,7 +355,7 @@
             const id = link.getAttribute('href').replace('#', '');
             const el = document.getElementById(id);
             if (el) {
-                const offset = 120;
+                const offset = 80;
                 const top = el.getBoundingClientRect().top + window.scrollY - offset;
                 window.scrollTo({ top: top, behavior: 'smooth' });
             }
@@ -364,7 +364,7 @@
 
     // Tab active state on scroll
     window.addEventListener('scroll', () => {
-        const y = window.scrollY + 140;
+        const y = window.scrollY + 100;
         let active = tabSections[0];
         tabSections.forEach(id => {
             const el = document.getElementById(id);
