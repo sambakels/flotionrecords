@@ -731,6 +731,14 @@ body.dark .theme-toggle .icon-moon { display: block; }
 
 .back-link:hover { color: var(--text); }
 
+.order-subtitle {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-30);
+    margin: -0.5rem auto 2rem;
+    max-width: 440px;
+}
+
 .order-card { max-width: 700px; margin: 0 auto; padding: 0; overflow: hidden; }
 
 .order-step { padding: 2rem 2.2rem; border-bottom: 1px solid var(--glass-border); }
@@ -740,6 +748,44 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .order-step-header strong { font-size: 1rem; }
 
 .order-hint { font-size: 0.85rem; color: var(--text-30); margin-bottom: 1rem; }
+
+/* Order page inputs */
+.order-card input,
+.order-card select,
+.order-card textarea {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: var(--input-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 0.88rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.order-card input:focus,
+.order-card select:focus,
+.order-card textarea:focus {
+    border-color: #8b5cf6;
+    background: var(--input-focus);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.order-card select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 12 12'%3E%3Cpath fill='%231a1a2e' opacity='0.3' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+}
+
+.order-card select option { background: var(--form-option-bg); }
+.order-card textarea { resize: vertical; min-height: 60px; }
+.order-card ::placeholder { color: var(--text-30); }
 
 /* Package selector */
 .package-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
@@ -871,6 +917,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .package-options { grid-template-columns: 1fr; }
     .order-step { padding: 1.5rem 1.2rem; }
     .track-type-toggle { flex-direction: column; }
+    .order-subtitle { font-size: 0.85rem; }
 }
 
 /* ---- SERVICES PAGE ---- */
