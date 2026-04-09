@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paid Growth - Meta Ads | Flotion Records</title>
+    <meta name="description" content="Run Meta ad campaigns that target real Spotify listeners. No bots, no guesswork. Flotion Records handles everything.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ripple-container" id="rippleContainer"></div>
+    <div class="ambient">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Flotion Records&trade;</a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="services.html">Services</a>
+                <a href="ads.html" class="nav-active">Ads</a>
+                <a href="index.html#contact" class="nav-cta">Contact</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            </button>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero services-hero">
+        <div class="hero-inner">
+            <p class="hero-tag">Paid Growth</p>
+            <h1 class="hero-title">Run ads that target <span class="gradient-text">real listeners</span></h1>
+            <p class="hero-sub">No bots. No guesswork. We create, manage and optimize Meta ad campaigns that drive real Spotify streams, followers and saves.</p>
+            <div class="hero-actions">
+                <a href="#campaign" class="btn btn-color">Create Campaign</a>
+                <a href="#how-it-works" class="btn btn-glass">How it Works</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- USPs -->
+    <section class="section" id="how-it-works">
+        <div class="container">
+            <div class="grid-3">
+                <div class="card reveal" style="text-align:center;">
+                    <div class="ads-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    </div>
+                    <h3>Real listeners, not bots</h3>
+                    <p>Our ads target authenticated Spotify users. We block low-quality placements and optimize for genuine engagement.</p>
+                </div>
+                <div class="card reveal" style="text-align:center;">
+                    <div class="ads-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    </div>
+                    <h3>Winning creatives, fast</h3>
+                    <p>We test multiple ad variations and shift spend to what actually drives streams. Professional creatives included.</p>
+                </div>
+                <div class="card reveal" style="text-align:center;">
+                    <div class="ads-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <h3>Track real ROI</h3>
+                    <p>See cost per listener, cost per stream and follower growth. Real metrics, not vanity numbers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campaign Builder -->
+    <section class="section" id="campaign">
+        <div class="container">
+            <div class="section-head">
+                <span class="tag reveal">New Campaign</span>
+                <h2 class="reveal">Set up your <span class="gradient-text">campaign</span></h2>
+            </div>
+
+            <div class="card card-lg order-card reveal">
+                <!-- Progress -->
+                <div class="campaign-progress">
+                    <div class="cprog-step active" data-step="1"><span>1</span> Music</div>
+                    <div class="cprog-step" data-step="2"><span>2</span> Genre</div>
+                    <div class="cprog-step" data-step="3"><span>3</span> Strategy</div>
+                    <div class="cprog-step" data-step="4"><span>4</span> Budget</div>
+                    <div class="cprog-step" data-step="5"><span>5</span> Submit</div>
+                </div>
+
+                <!-- Step 1: Music -->
+                <div class="camp-step" id="campStep1">
+                    <div class="order-step">
+                        <div class="order-step-header">
+                            <div class="step-n">1</div>
+                            <strong>Find your sound</strong>
+                        </div>
+                        <p class="order-hint">Paste a Spotify link to your track, album, or playlist.</p>
+                        <div class="form-field">
+                            <label for="spotify-url">Spotify URL</label>
+                            <input type="url" id="spotify-url" placeholder="https://open.spotify.com/track/...">
+                        </div>
+                        <div class="spotify-preview" id="spotifyPreview" style="display:none;">
+                            <img id="spotifyImg" src="" alt="">
+                            <div class="spotify-info">
+                                <strong id="spotifyTitle"></strong>
+                                <span id="spotifyArtist"></span>
+                            </div>
+                        </div>
+                        <div class="camp-nav">
+                            <div></div>
+                            <button class="btn btn-color" id="toStep2">Continue</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Genre -->
+                <div class="camp-step" id="campStep2" style="display:none;">
+                    <div class="order-step">
+                        <div class="order-step-header">
+                            <div class="step-n">2</div>
+                            <strong>What's your vibe?</strong>
+                        </div>
+                        <p class="order-hint">Choose the genre that best fits your music.</p>
+                        <div class="genre-grid">
+                            <label class="genre-option"><input type="radio" name="genre" value="Pop"><div class="genre-card">Pop</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Hip-Hop/R&B"><div class="genre-card">Hip-Hop / R&B</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Electronic/Dance"><div class="genre-card">Electronic / Dance</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Rock"><div class="genre-card">Rock</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Latin/Reggaeton"><div class="genre-card">Latin / Reggaeton</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Alternative/Indie"><div class="genre-card">Alternative / Indie</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Classical"><div class="genre-card">Classical</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Chill/Background"><div class="genre-card">Chill / Lo-fi</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Ambient/Sleep"><div class="genre-card">Ambient / Sleep</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Country"><div class="genre-card">Country</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Afro"><div class="genre-card">Afro</div></label>
+                            <label class="genre-option"><input type="radio" name="genre" value="Other"><div class="genre-card">Other</div></label>
+                        </div>
+                        <div class="camp-nav">
+                            <button class="btn btn-glass" id="back1">Back</button>
+                            <button class="btn btn-color" id="toStep3">Continue</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Strategy -->
+                <div class="camp-step" id="campStep3" style="display:none;">
+                    <div class="order-step">
+                        <div class="order-step-header">
+                            <div class="step-n">3</div>
+                            <strong>Select strategy</strong>
+                        </div>
+                        <p class="order-hint">Choose a strategy that matches what you want to achieve.</p>
+                        <div class="strategy-grid">
+                            <label class="strategy-option">
+                                <input type="radio" name="strategy" value="growth" checked>
+                                <div class="strategy-card">
+                                    <div class="strat-rec">Recommended</div>
+                                    <h4>Maximum Growth</h4>
+                                    <p class="strat-quote">"I want maximum fans for my budget"</p>
+                                    <div class="strat-tag">Lowest cost per listener</div>
+                                    <div class="strat-details">
+                                        <p>Focus on emerging markets where competition is lowest. Acquire the most streams and followers at the lowest cost to trigger Spotify's algorithm.</p>
+                                        <div class="strat-tiers">
+                                            <div class="strat-tier"><strong>Spanish Tier</strong><span>Argentina, Spain, Mexico, Colombia +11</span><small>CPL &euro;0.55 &middot; CPF &euro;0.33</small></div>
+                                            <div class="strat-tier"><strong>Emerging Tier</strong><span>Philippines, Turkey, Egypt, India +10</span><small>CPL &euro;0.40 &middot; CPF &euro;0.21</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="strategy-option">
+                                <input type="radio" name="strategy" value="discover">
+                                <div class="strategy-card">
+                                    <h4>Discover Markets</h4>
+                                    <p class="strat-quote">"I want to see which countries perform best"</p>
+                                    <div class="strat-tag">Global testing</div>
+                                    <div class="strat-details">
+                                        <p>Spread across established, growth, and emerging markets to test performance globally.</p>
+                                        <div class="strat-tiers">
+                                            <div class="strat-tier"><strong>High Tier</strong><span>US, UK, Germany, Netherlands +18</span><small>CPL &euro;1.50 &middot; CPF &euro;0.78</small></div>
+                                            <div class="strat-tier"><strong>Mid Tier</strong><span>Poland, Czech Republic, Greece +18</span><small>CPL &euro;0.73 &middot; CPF &euro;0.40</small></div>
+                                            <div class="strat-tier"><strong>Low Tier</strong><span>Philippines, Turkey, Egypt +11</span><small>CPL &euro;0.65 &middot; CPF &euro;0.38</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="strategy-option">
+                                <input type="radio" name="strategy" value="revenue">
+                                <div class="strategy-card">
+                                    <h4>Revenue Maximization</h4>
+                                    <p class="strat-quote">"I want the highest revenue per stream"</p>
+                                    <div class="strat-tag">Premium markets</div>
+                                    <div class="strat-details">
+                                        <p>Focus on established markets with highest per-stream payouts. Premium subscribers and high subscription rates.</p>
+                                        <div class="strat-tiers">
+                                            <div class="strat-tier"><strong>Premium Tier</strong><span>US, UK, Canada, Australia, Germany, Netherlands, Sweden, Norway +14</span><small>CPL &euro;1.50 &middot; CPF &euro;0.78</small></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="camp-nav">
+                            <button class="btn btn-glass" id="back2">Back</button>
+                            <button class="btn btn-color" id="toStep4">Continue</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Budget -->
+                <div class="camp-step" id="campStep4" style="display:none;">
+                    <div class="order-step">
+                        <div class="order-step-header">
+                            <div class="step-n">4</div>
+                            <strong>Set your budget</strong>
+                        </div>
+                        <p class="order-hint">We handle everything. You only pay 20% on top of your daily ad budget as management fee.</p>
+                        <div class="budget-options">
+                            <label class="package-option">
+                                <input type="radio" name="budget" value="7-10" data-days="7" data-daily="10" checked>
+                                <div class="package-card">
+                                    <div class="package-name">Starter</div>
+                                    <div class="package-price">&euro;84</div>
+                                    <div class="package-desc">7 days &middot; &euro;10/day<br><small>(&euro;70 ads + &euro;14 management)</small></div>
+                                </div>
+                            </label>
+                            <label class="package-option">
+                                <input type="radio" name="budget" value="14-20" data-days="14" data-daily="20">
+                                <div class="package-card">
+                                    <div class="package-tag">Recommended</div>
+                                    <div class="package-name">Growth</div>
+                                    <div class="package-price">&euro;336</div>
+                                    <div class="package-desc">14 days &middot; &euro;20/day<br><small>(&euro;280 ads + &euro;56 management)</small></div>
+                                </div>
+                            </label>
+                            <label class="package-option">
+                                <input type="radio" name="budget" value="custom" data-days="0" data-daily="0">
+                                <div class="package-card">
+                                    <div class="package-name">Custom</div>
+                                    <div class="package-price">Custom</div>
+                                    <div class="package-desc">Custom duration and budget<br><small>Let's discuss your goals</small></div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="camp-nav">
+                            <button class="btn btn-glass" id="back3">Back</button>
+                            <button class="btn btn-color" id="toStep5">Continue</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Submit -->
+                <div class="camp-step" id="campStep5" style="display:none;">
+                    <div class="order-step">
+                        <div class="order-step-header">
+                            <div class="step-n">5</div>
+                            <strong>Your details</strong>
+                        </div>
+                        <div class="demo-form-grid">
+                            <div class="form-field">
+                                <label for="ads-name">Artist / Producer name</label>
+                                <input type="text" id="ads-name" placeholder="Your artist name" required>
+                            </div>
+                            <div class="form-field">
+                                <label for="ads-email">Email</label>
+                                <input type="email" id="ads-email" placeholder="your@email.com" required>
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label for="ads-notes">Anything else we should know? (optional)</label>
+                            <textarea id="ads-notes" rows="2" placeholder="Target audience, specific countries, goals..."></textarea>
+                        </div>
+
+                        <div class="order-summary">
+                            <div class="order-summary-row"><span>Music</span><span id="sumMusic">-</span></div>
+                            <div class="order-summary-row"><span>Genre</span><span id="sumGenre">-</span></div>
+                            <div class="order-summary-row"><span>Strategy</span><span id="sumStrategy">-</span></div>
+                            <div class="order-summary-row"><span>Budget</span><span id="sumBudget">-</span></div>
+                            <div class="order-summary-row order-total"><span>Total</span><span id="sumTotal">-</span></div>
+                        </div>
+                        <p class="order-guarantee">We handle all creatives, targeting, and optimization. You do nothing.</p>
+                        <div class="camp-nav" style="justify-content:stretch;">
+                            <button class="btn btn-glass" id="back4" style="flex:0;">Back</button>
+                            <button class="btn btn-color pricing-btn" id="submitCampaign" style="flex:1;">Submit Campaign</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-row">
+                <a href="index.html" class="footer-logo">Flotion Records&trade;</a>
+                <div class="footer-links">
+                    <a href="https://open.spotify.com/user/31di2lkju4cqfsoyq2twyxfjzlne" target="_blank">Spotify</a>
+                    <a href="https://www.instagram.com/flotionrecords/" target="_blank">Instagram</a>
+                    <a href="https://www.tiktok.com/@flotion.records" target="_blank">TikTok</a>
+                </div>
+            </div>
+            <p class="footer-copy">&copy; 2026 Flotion Records. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    // Steps navigation
+    const steps = [1,2,3,4,5];
+    let current = 1;
+
+    function showStep(n) {
+        steps.forEach(s => {
+            document.getElementById('campStep'+s).style.display = s===n ? '' : 'none';
+            const prog = document.querySelector('.cprog-step[data-step="'+s+'"]');
+            prog.classList.toggle('active', s<=n);
+            prog.classList.toggle('current', s===n);
+        });
+        current = n;
+        document.querySelector('.order-card').scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    document.getElementById('toStep2').onclick = () => showStep(2);
+    document.getElementById('toStep3').onclick = () => showStep(3);
+    document.getElementById('toStep4').onclick = () => showStep(4);
+    document.getElementById('toStep5').onclick = () => { updateSummary(); showStep(5); };
+    document.getElementById('back1').onclick = () => showStep(1);
+    document.getElementById('back2').onclick = () => showStep(2);
+    document.getElementById('back3').onclick = () => showStep(3);
+    document.getElementById('back4').onclick = () => showStep(4);
+
+    // Spotify preview
+    const spotifyInput = document.getElementById('spotify-url');
+    const preview = document.getElementById('spotifyPreview');
+    let debounce;
+
+    spotifyInput.addEventListener('input', () => {
+        clearTimeout(debounce);
+        debounce = setTimeout(fetchSpotify, 600);
+    });
+
+    function fetchSpotify() {
+        const url = spotifyInput.value.trim();
+        if (!url.includes('spotify.com')) { preview.style.display='none'; return; }
+        fetch('https://open.spotify.com/oembed?url=' + encodeURIComponent(url))
+            .then(r => r.json())
+            .then(d => {
+                document.getElementById('spotifyImg').src = d.thumbnail_url;
+                document.getElementById('spotifyTitle').textContent = d.title;
+                document.getElementById('spotifyArtist').textContent = d.provider_name;
+                preview.style.display = 'flex';
+            })
+            .catch(() => { preview.style.display='none'; });
+    }
+
+    // Summary
+    function updateSummary() {
+        const url = spotifyInput.value || 'Not provided';
+        const title = document.getElementById('spotifyTitle').textContent || url;
+        const genre = document.querySelector('input[name="genre"]:checked');
+        const strat = document.querySelector('input[name="strategy"]:checked');
+        const budg = document.querySelector('input[name="budget"]:checked');
+
+        document.getElementById('sumMusic').textContent = title || '-';
+        document.getElementById('sumGenre').textContent = genre ? genre.value : '-';
+
+        const stratNames = {growth:'Maximum Growth', discover:'Discover Markets', revenue:'Revenue Maximization'};
+        document.getElementById('sumStrategy').textContent = strat ? stratNames[strat.value] : '-';
+
+        if (budg && budg.value !== 'custom') {
+            const days = budg.dataset.days;
+            const daily = budg.dataset.daily;
+            const total = days * daily * 1.2;
+            document.getElementById('sumBudget').textContent = days + ' days, €' + daily + '/day';
+            document.getElementById('sumTotal').textContent = '€' + total.toFixed(0);
+        } else {
+            document.getElementById('sumBudget').textContent = 'Custom';
+            document.getElementById('sumTotal').textContent = 'On request';
+        }
+    }
+
+    // Submit
+    document.getElementById('submitCampaign').onclick = () => {
+        const name = document.getElementById('ads-name').value;
+        const email = document.getElementById('ads-email').value;
+        if (!name || !email) { alert('Please fill in your name and email.'); return; }
+
+        const url = spotifyInput.value;
+        const genre = document.querySelector('input[name="genre"]:checked');
+        const strat = document.querySelector('input[name="strategy"]:checked');
+        const budg = document.querySelector('input[name="budget"]:checked');
+        const notes = document.getElementById('ads-notes').value;
+
+        const stratNames = {growth:'Maximum Growth', discover:'Discover Markets', revenue:'Revenue Maximization'};
+
+        const subject = 'New Meta Ads Campaign Request';
+        const body = 'Artist: ' + name +
+            '\nEmail: ' + email +
+            '\nSpotify URL: ' + (url || 'Not provided') +
+            '\nGenre: ' + (genre ? genre.value : 'Not selected') +
+            '\nStrategy: ' + (strat ? stratNames[strat.value] : 'Not selected') +
+            '\nBudget: ' + (budg ? budg.value : 'Not selected') +
+            '\nNotes: ' + (notes || 'None');
+
+        window.location.href = 'mailto:contact@flotionrecords.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    };
+    </script>
+</body>
+</html>
