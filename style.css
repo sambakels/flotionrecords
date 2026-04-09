@@ -2,7 +2,7 @@
    FLOTION RECORDS — Liquid Glass Light
    ======================================== */
 :root {
-    --bg: #e2e4ea;
+    --bg: #e8e9f0;
     --surface: rgba(255,255,255,0.55);
     --glass: rgba(255,255,255,0.25);
     --glass-border: rgba(255,255,255,0.45);
@@ -12,11 +12,11 @@
     --text: #1a1a2e;
     --text-60: rgba(26,26,46,0.6);
     --text-30: rgba(26,26,46,0.3);
-    --blue: #2997ff;
+    --blue: #3b82f6;
     --green: #30d158;
-    --pink: #ff375f;
-    --orange: #ff9f0a;
-    --gradient: linear-gradient(135deg, #2997ff, #5ac8fa, #34c759);
+    --pink: #e846a8;
+    --orange: #f59e0b;
+    --gradient: linear-gradient(135deg, #3b82f6, #8b5cf6, #d946ef);
     --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -32,15 +32,16 @@
 
 /* Dark mode */
 body.dark {
-    --bg: #0e1117;
+    --bg: #0c0f16;
     --glass: rgba(255,255,255,0.06);
     --glass-border: rgba(255,255,255,0.1);
     --glass-shadow: rgba(0,0,0,0.2);
     --glass-inner: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(255,255,255,0.02);
-    --text: #e8eaed;
-    --text-60: rgba(232,234,237,0.6);
-    --text-30: rgba(232,234,237,0.25);
-    --blob-opacity: 0.2;
+    --text: #eef0f4;
+    --text-60: rgba(238,240,244,0.6);
+    --text-30: rgba(238,240,244,0.25);
+    --gradient: linear-gradient(135deg, #60a5fa, #a78bfa, #e879f9);
+    --blob-opacity: 0.15;
     --nav-bg: rgba(14,17,23,0.6);
     --track-hover: rgba(255,255,255,0.03);
     --track-active: rgba(41,151,255,0.1);
@@ -76,9 +77,9 @@ body {
     animation: blobFloat 20s ease-in-out infinite alternate;
 }
 
-.blob-1 { width: 600px; height: 600px; background: #8b5cf6; top: -10%; right: -5%; animation-delay: 0s; }
-.blob-2 { width: 500px; height: 500px; background: var(--pink); bottom: 10%; left: -8%; animation-delay: -7s; }
-.blob-3 { width: 400px; height: 400px; background: #a855f7; top: 40%; right: 20%; animation-delay: -14s; }
+.blob-1 { width: 600px; height: 600px; background: #6366f1; top: -10%; right: -5%; animation-delay: 0s; }
+.blob-2 { width: 500px; height: 500px; background: #d946ef; bottom: 10%; left: -8%; animation-delay: -7s; }
+.blob-3 { width: 400px; height: 400px; background: #3b82f6; top: 40%; right: 20%; animation-delay: -14s; }
 
 @keyframes blobFloat {
     0% { transform: translate(0, 0) scale(1); }
