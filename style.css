@@ -1505,9 +1505,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
     body.dark .service-tabs { background: rgba(14,17,23,0.9); }
     .clink { background: rgba(255,255,255,0.5); }
     body.dark .clink { background: rgba(255,255,255,0.06); }
-    .blob { display: none; }
+    .blob { filter: blur(60px); animation: none; opacity: 0.3; }
     .ripple-container { display: none; }
-    .ambient { display: none; }
 
     /* Marquee */
     .marquee-track span { font-size: 0.65rem; letter-spacing: 2px; }
