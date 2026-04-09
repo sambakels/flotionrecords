@@ -1421,10 +1421,12 @@ body.dark .theme-toggle .icon-moon { display: block; }
 
     .nav-links {
         position: fixed; inset: 0;
-        background: var(--mobile-menu-bg); backdrop-filter: blur(40px);
+        background: #e8e9f0;
         flex-direction: column; justify-content: center; align-items: center; gap: 1.5rem;
         opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 100; border-radius: 0;
     }
+
+    body.dark .nav-links { background: #0c0f16; }
 
     .nav-links.active { opacity: 1; pointer-events: all; }
     .nav-links a { font-size: 1.3rem; font-weight: 700; color: var(--text); }
@@ -1499,20 +1501,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .service-tabs { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255,255,255,0.5); }
     body.dark .service-tabs { background: rgba(14,17,23,0.85); }
     .nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-    .nav-links {
-        background: #e8e9f0 !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-        opacity: 0;
-        pointer-events: none;
-    }
-    .nav-links.active {
-        opacity: 1 !important;
-        pointer-events: all !important;
-    }
-    body.dark .nav-links {
-        background: #0c0f16 !important;
-    }
+    /* nav-links handled above */
     .clink { backdrop-filter: none; -webkit-backdrop-filter: none; }
     .blob { filter: blur(80px); animation: none; }
     .ripple-container { display: none; }
