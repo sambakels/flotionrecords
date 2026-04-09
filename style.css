@@ -1495,16 +1495,19 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .cprog-step { font-size: 0; gap: 0; }
     .cprog-step span { font-size: 0.6rem; width: 20px; height: 20px; }
 
-    /* Performance: reduce blur on mobile */
-    .card { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255,255,255,0.4); }
-    body.dark .card { background: rgba(255,255,255,0.08); }
-    .service-tabs { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255,255,255,0.5); }
-    body.dark .service-tabs { background: rgba(14,17,23,0.85); }
-    .nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-    /* nav-links handled above */
-    .clink { backdrop-filter: none; -webkit-backdrop-filter: none; }
-    .blob { filter: blur(80px); animation: none; }
+    /* Performance: kill all blur on mobile */
+    *, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+    .card { background: rgba(255,255,255,0.5); border-color: rgba(0,0,0,0.06); }
+    body.dark .card { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
+    .nav { background: rgba(255,255,255,0.85); }
+    body.dark .nav { background: rgba(14,17,23,0.9); }
+    .service-tabs { background: rgba(255,255,255,0.85); }
+    body.dark .service-tabs { background: rgba(14,17,23,0.9); }
+    .clink { background: rgba(255,255,255,0.5); }
+    body.dark .clink { background: rgba(255,255,255,0.06); }
+    .blob { display: none; }
     .ripple-container { display: none; }
+    .ambient { display: none; }
 
     /* Marquee */
     .marquee-track span { font-size: 0.65rem; letter-spacing: 2px; }
