@@ -1499,6 +1499,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .service-tabs { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255,255,255,0.5); }
     body.dark .service-tabs { background: rgba(14,17,23,0.85); }
     .nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    .nav-links { background: var(--bg) !important; backdrop-filter: none !important; }
     .clink { backdrop-filter: none; -webkit-backdrop-filter: none; }
     .blob { filter: blur(80px); animation: none; }
     .ripple-container { display: none; }
