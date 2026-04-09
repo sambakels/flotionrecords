@@ -13,6 +13,14 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+    @media(max-width:768px){
+        .nav-links{position:fixed!important;inset:0!important;background:#e8e9f0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;gap:1.5rem!important;opacity:0!important;pointer-events:none!important;transition:opacity .3s!important;z-index:100!important;border-radius:0!important}
+        .nav-links.active{opacity:1!important;pointer-events:all!important}
+        .nav-links a{font-size:1.3rem!important;font-weight:700!important}
+    }
+    body.dark .nav-links{background:#0c0f16!important}
+    </style>
 </head>
 <body>
     <div class="ripple-container" id="rippleContainer"></div>
