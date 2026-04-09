@@ -697,6 +697,199 @@ body.dark .theme-toggle .icon-moon { display: block; }
 #contactForm textarea { resize: vertical; min-height: 100px; }
 ::placeholder { color: var(--text-30); }
 
+/* ---- SERVICES PAGE ---- */
+.services-hero { min-height: 60vh; }
+
+.section-intro {
+    text-align: center;
+    font-size: 1.05rem;
+    color: var(--text-60);
+    line-height: 1.7;
+    max-width: 600px;
+    margin: -1rem auto 2.5rem;
+}
+
+.nav-active { color: var(--text) !important; font-weight: 700 !important; }
+
+/* Pricing */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.pricing-card { text-align: center; padding: 2.5rem 2rem; position: relative; }
+
+.pricing-featured {
+    border-color: rgba(139, 92, 246, 0.3);
+    box-shadow: 0 8px 40px rgba(139, 92, 246, 0.08), var(--glass-inner);
+}
+
+.pricing-popular {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gradient);
+    background-size: 200% auto;
+    animation: gradShift 6s ease infinite;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0.3rem 1rem;
+    border-radius: 100px;
+    white-space: nowrap;
+}
+
+.pricing-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-30);
+    margin-bottom: 1rem;
+}
+
+.pricing-price {
+    font-size: 3rem;
+    font-weight: 900;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
+    animation: gradShift 6s ease infinite;
+    line-height: 1;
+}
+
+.pricing-period { font-size: 0.8rem; color: var(--text-30); margin-bottom: 1.5rem; }
+
+.pricing-features {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.pricing-features li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--text-60);
+}
+
+.pricing-features svg { color: var(--green); flex-shrink: 0; }
+
+.pricing-btn { width: 100%; }
+
+/* Sync */
+.sync-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.sync-info h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 1rem; }
+
+.sync-perks {
+    list-style: none;
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.sync-perks li {
+    font-size: 0.88rem;
+    color: var(--text-60);
+    padding-left: 1.2rem;
+    position: relative;
+}
+
+.sync-perks li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gradient);
+}
+
+.sync-pricing { display: flex; flex-direction: column; gap: 0.8rem; }
+
+.sync-tier { text-align: center; padding: 1.5rem; }
+.sync-tier strong { font-size: 0.9rem; }
+
+.sync-price {
+    font-size: 1.8rem;
+    font-weight: 900;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
+    animation: gradShift 6s ease infinite;
+    margin: 0.3rem 0;
+}
+
+.sync-tier p { font-size: 0.78rem; color: var(--text-30); }
+
+/* Custom Music */
+.custom-content h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 1rem; }
+.custom-content > .btn { margin-top: 1.5rem; }
+
+.custom-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.custom-item { text-align: center; padding: 1.8rem 1.2rem; }
+.custom-item strong { font-size: 0.95rem; display: block; margin-bottom: 0.3rem; }
+
+.custom-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b5cf6;
+    margin: 0 auto 1rem;
+}
+
+.custom-price {
+    font-size: 1.6rem;
+    font-weight: 900;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
+    animation: gradShift 6s ease infinite;
+    margin-bottom: 0.5rem;
+}
+
+.custom-item p { font-size: 0.78rem; color: var(--text-30); line-height: 1.5; }
+
+@media (max-width: 768px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+    .sync-grid { grid-template-columns: 1fr; }
+    .custom-grid { grid-template-columns: 1fr; }
+}
+
 /* ---- FOOTER ---- */
 .footer { padding: 2.5rem 0; position: relative; z-index: 1; }
 .footer-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
