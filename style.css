@@ -697,6 +697,25 @@ body.dark .theme-toggle .icon-moon { display: block; }
 #contactForm textarea { resize: vertical; min-height: 100px; }
 ::placeholder { color: var(--text-30); }
 
+/* ---- SERVICES BANNER (homepage) ---- */
+.services-banner {
+    text-align: center;
+    background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(139,92,246,0.08), rgba(217,70,239,0.08));
+    border-color: rgba(139,92,246,0.2);
+}
+
+.services-banner h2 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 800;
+    margin: 0.8rem 0;
+    letter-spacing: -0.02em;
+}
+
+.services-banner .lead {
+    max-width: 520px;
+    margin: 0 auto 1.5rem;
+}
+
 /* ---- SERVICES PAGE ---- */
 .services-hero { min-height: 60vh; }
 
