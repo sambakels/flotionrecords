@@ -52,15 +52,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
     @media(max-width:768px){
-        .nav-links{position:fixed!important;inset:0!important;background:#e8e9f0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;gap:0.8rem!important;opacity:0!important;pointer-events:none!important;transition:opacity .3s!important;z-index:100!important;border-radius:0!important}
+        .nav-links{position:fixed!important;inset:0!important;background:#e8e9f0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;flex-direction:column!important;justify-content:center!important;align-items:center!important;gap:0.7rem!important;opacity:0!important;pointer-events:none!important;transition:opacity .3s!important;z-index:1000!important;border-radius:0!important;padding-top:env(safe-area-inset-top,20px)!important}
         .nav-links.active{opacity:1!important;pointer-events:all!important}
-        .nav-links a{font-size:1rem!important;font-weight:600!important;padding:0.9rem 2.5rem!important;border-radius:16px!important;background:rgba(255,255,255,0.35)!important;border:1px solid rgba(255,255,255,0.5)!important;color:#1a1a2e!important;text-decoration:none!important;min-width:200px!important;text-align:center!important;transition:transform 0.2s!important}
+        .nav-links a{font-size:0.9rem!important;font-weight:700!important;padding:0.85rem 0!important;border-radius:0!important;background:none!important;border:none!important;color:#1a1a2e!important;text-decoration:none!important;width:220px!important;text-align:center!important;background:linear-gradient(135deg,#3b82f6,#8b5cf6,#d946ef)!important;-webkit-background-clip:text!important;background-clip:text!important;-webkit-text-fill-color:transparent!important;background-size:200% auto!important;border-bottom:1px solid rgba(0,0,0,0.06)!important;transition:transform 0.15s!important}
+        .nav-links a:last-child{border-bottom:none!important}
         .nav-links a:active{transform:scale(0.95)!important}
-        .nav-links .nav-cta{background:linear-gradient(135deg,#3b82f6,#8b5cf6,#d946ef)!important;color:#fff!important;border:none!important;background-size:200% auto!important;-webkit-text-fill-color:#fff!important;-webkit-background-clip:unset!important;background-clip:unset!important}
+        .nav-toggle{z-index:1001!important}
     }
-    body.dark .nav-links{background:#0c0f16!important}
-    body.dark .nav-links a{background:rgba(255,255,255,0.08)!important;border-color:rgba(255,255,255,0.12)!important;color:#eef0f4!important}
-    body.dark .nav-links .nav-cta{background:linear-gradient(135deg,#3b82f6,#8b5cf6,#d946ef)!important;color:#fff!important;border:none!important;-webkit-text-fill-color:#fff!important;-webkit-background-clip:unset!important;background-clip:unset!important}
+    @media(max-width:768px){
+        body.dark .nav-links{background:#0c0f16!important}
+        body.dark .nav-links a{border-bottom-color:rgba(255,255,255,0.06)!important}
+    }
     </style>
 </head>
 <body>
