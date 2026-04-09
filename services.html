@@ -53,6 +53,30 @@
         </div>
     </header>
 
+    <!-- Service Tabs -->
+    <div class="service-tabs">
+        <div class="container">
+            <div class="tabs-row">
+                <a href="#playlist-placement" class="tab-link active">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    Playlist Placement
+                </a>
+                <a href="#meta-ads" class="tab-link">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Meta Ads
+                </a>
+                <a href="#sync-licensing" class="tab-link">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    Sync Licensing
+                </a>
+                <a href="#custom-music" class="tab-link">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                    Music on Demand
+                </a>
+            </div>
+        </div>
+    </div>
+
     <!-- Playlist Placement -->
     <section class="section" id="playlist-placement">
         <div class="container">
@@ -320,5 +344,22 @@
         </div>
     </footer>
     <script src="script.js"></script>
+    <script>
+    // Tab active state on scroll
+    const tabLinks = document.querySelectorAll('.tab-link');
+    const tabSections = ['playlist-placement', 'meta-ads', 'sync-licensing', 'custom-music'];
+
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY + 150;
+        let active = tabSections[0];
+        tabSections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && y >= el.offsetTop) active = id;
+        });
+        tabLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + active);
+        });
+    });
+    </script>
 </body>
 </html>
