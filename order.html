@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Playlist Placement | Flotion Records</title>
+    <meta name="description" content="Order playlist placement for your track on Flotion Records curated Spotify playlists.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ripple-container" id="rippleContainer"></div>
+    <div class="ambient">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Flotion Records&trade;</a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="services.html">Services</a>
+                <a href="index.html#contact" class="nav-cta">Contact</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            </button>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- Order Page -->
+    <section class="section order-section">
+        <div class="container">
+            <div class="section-head">
+                <a href="services.html" class="back-link">&larr; Back to Services</a>
+                <h2 class="reveal">Playlist <span class="gradient-text">Placement</span></h2>
+                <p class="section-intro reveal">Fill in your details below and we'll get your track placed within 48 hours.</p>
+            </div>
+
+            <div class="card card-lg order-card reveal">
+                <!-- Step 1: Package -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">1</div>
+                        <strong>Choose your package</strong>
+                    </div>
+                    <div class="package-options">
+                        <label class="package-option">
+                            <input type="radio" name="package" value="starter" data-price="15" checked>
+                            <div class="package-card">
+                                <div class="package-name">Starter</div>
+                                <div class="package-price">&euro;15</div>
+                                <div class="package-desc">500 - 2,000 guaranteed streams</div>
+                            </div>
+                        </label>
+                        <label class="package-option">
+                            <input type="radio" name="package" value="pro" data-price="35">
+                            <div class="package-card">
+                                <div class="package-tag">Best Value</div>
+                                <div class="package-name">Pro</div>
+                                <div class="package-price">&euro;35</div>
+                                <div class="package-desc">2,000 - 5,000 guaranteed streams</div>
+                            </div>
+                        </label>
+                        <label class="package-option">
+                            <input type="radio" name="package" value="premium" data-price="75">
+                            <div class="package-card">
+                                <div class="package-name">Premium</div>
+                                <div class="package-price">&euro;75</div>
+                                <div class="package-desc">5,000 - 10,000 guaranteed streams + social media</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 2: Details -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">2</div>
+                        <strong>Your details</strong>
+                    </div>
+                    <div class="demo-form-grid">
+                        <div class="form-field">
+                            <label for="order-name">Artist / Producer name</label>
+                            <input type="text" id="order-name" placeholder="Your artist name" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="order-email">Email</label>
+                            <input type="email" id="order-email" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Track -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">3</div>
+                        <strong>Your music</strong>
+                    </div>
+                    <p class="order-hint">Submit a Spotify/Apple Music link, or upload your file if it's unreleased.</p>
+
+                    <div class="track-type-toggle">
+                        <button class="track-type-btn active" data-type="link" type="button">Track / Album / Playlist link</button>
+                        <button class="track-type-btn" data-type="upload" type="button">Upload unreleased track</button>
+                    </div>
+
+                    <div class="track-input-area" id="linkArea">
+                        <div class="form-field">
+                            <label for="order-link">Spotify, Apple Music, or other streaming link</label>
+                            <input type="url" id="order-link" placeholder="https://open.spotify.com/track/...">
+                        </div>
+                    </div>
+
+                    <div class="track-input-area" id="uploadArea" style="display: none;">
+                        <div class="form-field">
+                            <label for="order-file">Upload WAV or MP3 (max 10MB)</label>
+                            <div class="file-upload" id="orderFileUpload">
+                                <input type="file" id="order-file" accept=".mp3,.wav,audio/mpeg,audio/wav">
+                                <div class="file-upload-label">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    <span id="orderFileName">Drag and drop or click to upload</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-field" style="margin-top: 0.8rem;">
+                        <label for="order-genre">Genre</label>
+                        <select id="order-genre">
+                            <option value="" disabled selected>Select genre</option>
+                            <option>House</option>
+                            <option>Deep House</option>
+                            <option>UK Garage</option>
+                            <option>Hardstyle</option>
+                            <option>Techno</option>
+                            <option>Hip-Hop / Rap</option>
+                            <option>R&B / Soul</option>
+                            <option>Pop</option>
+                            <option>Electronic</option>
+                            <option>Afro</option>
+                            <option>Piano / Classical</option>
+                            <option>Chill / Lo-fi</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="order-notes">Additional notes (optional)</label>
+                        <textarea id="order-notes" rows="2" placeholder="Anything we should know about the track"></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 4: Pay -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">4</div>
+                        <strong>Payment</strong>
+                    </div>
+                    <div class="order-summary">
+                        <div class="order-summary-row">
+                            <span>Package</span>
+                            <span id="summaryPackage">Starter</span>
+                        </div>
+                        <div class="order-summary-row order-total">
+                            <span>Total</span>
+                            <span id="summaryPrice">&euro;15</span>
+                        </div>
+                    </div>
+                    <p class="order-guarantee">100% refund if we don't accept your track. No risk.</p>
+                    <button class="btn btn-color pricing-btn" id="payBtn" type="button">Pay &euro;15 and Submit</button>
+                    <div class="order-payment-methods">
+                        <span>Secure payment via</span>
+                        <strong>Stripe</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-row">
+                <a href="index.html" class="footer-logo">Flotion Records&trade;</a>
+                <div class="footer-links">
+                    <a href="https://open.spotify.com/user/31di2lkju4cqfsoyq2twyxfjzlne" target="_blank">Spotify</a>
+                    <a href="https://www.instagram.com/flotionrecords/" target="_blank">Instagram</a>
+                    <a href="https://www.tiktok.com/@flotion.records" target="_blank">TikTok</a>
+                </div>
+            </div>
+            <p class="footer-copy">&copy; 2026 Flotion Records. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    // Package selection
+    const radios = document.querySelectorAll('input[name="package"]');
+    const summaryPackage = document.getElementById('summaryPackage');
+    const summaryPrice = document.getElementById('summaryPrice');
+    const payBtn = document.getElementById('payBtn');
+
+    const packageNames = { starter: 'Starter', pro: 'Pro', premium: 'Premium' };
+
+    radios.forEach(r => {
+        r.addEventListener('change', () => {
+            const price = r.dataset.price;
+            const name = packageNames[r.value];
+            summaryPackage.textContent = name;
+            summaryPrice.innerHTML = '&euro;' + price;
+            payBtn.innerHTML = 'Pay &euro;' + price + ' and Submit';
+        });
+    });
+
+    // Track type toggle
+    const typeBtns = document.querySelectorAll('.track-type-btn');
+    const linkArea = document.getElementById('linkArea');
+    const uploadArea = document.getElementById('uploadArea');
+
+    typeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            typeBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (btn.dataset.type === 'link') {
+                linkArea.style.display = '';
+                uploadArea.style.display = 'none';
+            } else {
+                linkArea.style.display = 'none';
+                uploadArea.style.display = '';
+            }
+        });
+    });
+
+    // File upload feedback
+    const orderFile = document.getElementById('order-file');
+    const orderFileUpload = document.getElementById('orderFileUpload');
+    const orderFileName = document.getElementById('orderFileName');
+
+    if (orderFile) {
+        orderFile.addEventListener('change', () => {
+            if (orderFile.files.length > 0) {
+                const f = orderFile.files[0];
+                orderFileName.textContent = f.name + ' (' + (f.size / 1024 / 1024).toFixed(1) + ' MB)';
+                orderFileUpload.classList.add('has-file');
+            } else {
+                orderFileName.textContent = 'Drag and drop or click to upload';
+                orderFileUpload.classList.remove('has-file');
+            }
+        });
+
+        orderFileUpload.addEventListener('dragover', e => { e.preventDefault(); orderFileUpload.classList.add('dragover'); });
+        orderFileUpload.addEventListener('dragleave', () => { orderFileUpload.classList.remove('dragover'); });
+        orderFileUpload.addEventListener('drop', () => { orderFileUpload.classList.remove('dragover'); });
+    }
+
+    // Pre-select package from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const preselect = urlParams.get('package');
+    if (preselect && packageNames[preselect]) {
+        const radio = document.querySelector('input[name="package"][value="' + preselect + '"]');
+        if (radio) {
+            radio.checked = true;
+            radio.dispatchEvent(new Event('change'));
+        }
+    }
+
+    // Stripe Payment Links - replace these with your actual Stripe links
+    const stripeLinks = {
+        starter: 'STRIPE_LINK_STARTER',
+        pro: 'STRIPE_LINK_PRO',
+        premium: 'STRIPE_LINK_PREMIUM'
+    };
+
+    payBtn.addEventListener('click', () => {
+        const name = document.getElementById('order-name').value;
+        const email = document.getElementById('order-email').value;
+        const pkg = document.querySelector('input[name="package"]:checked');
+        const link = document.getElementById('order-link').value;
+        const genre = document.getElementById('order-genre').value;
+        const notes = document.getElementById('order-notes').value;
+
+        if (!name || !email) {
+            alert('Please fill in your name and email.');
+            return;
+        }
+
+        const pkgName = packageNames[pkg.value];
+        const price = pkg.dataset.price;
+
+        // Check if Stripe links are set up
+        const stripeLink = stripeLinks[pkg.value];
+        if (stripeLink && !stripeLink.startsWith('STRIPE_')) {
+            // Redirect to Stripe with prefilled email
+            window.location.href = stripeLink + '?prefilled_email=' + encodeURIComponent(email);
+        } else {
+            // Fallback: send order via email
+            const subject = 'Playlist Placement Order - ' + pkgName;
+            const body = 'Artist: ' + name + '\nEmail: ' + email + '\nPackage: ' + pkgName + ' (€' + price + ')' + '\nLink: ' + (link || 'File upload') + '\nGenre: ' + (genre || 'Not specified') + '\nNotes: ' + (notes || 'None');
+            window.location.href = 'mailto:contact@flotionrecords.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        }
+    });
+    </script>
+</body>
+</html>

@@ -716,6 +716,163 @@ body.dark .theme-toggle .icon-moon { display: block; }
     margin: 0 auto 1.5rem;
 }
 
+/* ---- ORDER PAGE ---- */
+.order-section { padding-top: 7rem; }
+
+.back-link {
+    display: inline-block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-30);
+    text-decoration: none;
+    margin-bottom: 1rem;
+    transition: color 0.2s;
+}
+
+.back-link:hover { color: var(--text); }
+
+.order-card { max-width: 700px; margin: 0 auto; padding: 0; overflow: hidden; }
+
+.order-step { padding: 2rem 2.2rem; border-bottom: 1px solid var(--glass-border); }
+.order-step:last-child { border-bottom: none; }
+
+.order-step-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; }
+.order-step-header strong { font-size: 1rem; }
+
+.order-hint { font-size: 0.85rem; color: var(--text-30); margin-bottom: 1rem; }
+
+/* Package selector */
+.package-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+
+.package-option { cursor: pointer; }
+.package-option input { display: none; }
+
+.package-card {
+    padding: 1.2rem 1rem;
+    border-radius: 16px;
+    border: 2px solid var(--glass-border);
+    background: var(--glass);
+    text-align: center;
+    transition: all 0.25s var(--ease);
+    position: relative;
+}
+
+.package-option input:checked + .package-card {
+    border-color: #8b5cf6;
+    background: rgba(139, 92, 246, 0.06);
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2);
+}
+
+.package-name { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-30); }
+
+.package-price {
+    font-size: 1.8rem;
+    font-weight: 900;
+    background: var(--gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
+    animation: gradShift 6s ease infinite;
+    margin: 0.3rem 0;
+}
+
+.package-desc { font-size: 0.72rem; color: var(--text-30); line-height: 1.4; }
+
+.package-tag {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gradient);
+    background-size: 200% auto;
+    animation: gradShift 6s ease infinite;
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    white-space: nowrap;
+}
+
+/* Track type toggle */
+.track-type-toggle { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+
+.track-type-btn {
+    flex: 1;
+    padding: 0.7rem 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--glass-border);
+    background: var(--glass);
+    color: var(--text-30);
+    font-family: var(--font);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+
+.track-type-btn.active {
+    border-color: #8b5cf6;
+    background: rgba(139, 92, 246, 0.06);
+    color: var(--text);
+}
+
+.track-type-btn:hover { border-color: var(--text-30); }
+
+/* Order summary */
+.order-summary {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.order-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    color: var(--text-60);
+    padding: 0.3rem 0;
+}
+
+.order-total {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--text);
+    border-top: 1px solid var(--glass-border);
+    margin-top: 0.5rem;
+    padding-top: 0.8rem;
+}
+
+.order-guarantee {
+    font-size: 0.78rem;
+    color: var(--green);
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.order-payment-methods {
+    text-align: center;
+    margin-top: 0.8rem;
+    font-size: 0.72rem;
+    color: var(--text-30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+@media (max-width: 768px) {
+    .package-options { grid-template-columns: 1fr; }
+    .order-step { padding: 1.5rem 1.2rem; }
+    .track-type-toggle { flex-direction: column; }
+}
+
 /* ---- SERVICES PAGE ---- */
 .services-hero { min-height: 60vh; }
 
