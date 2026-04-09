@@ -345,12 +345,26 @@
     </footer>
     <script src="script.js"></script>
     <script>
-    // Tab active state on scroll
+    // Tab click with offset for sticky header
     const tabLinks = document.querySelectorAll('.tab-link');
     const tabSections = ['playlist-placement', 'meta-ads', 'sync-licensing', 'custom-music'];
 
+    tabLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const id = link.getAttribute('href').replace('#', '');
+            const el = document.getElementById(id);
+            if (el) {
+                const offset = 120;
+                const top = el.getBoundingClientRect().top + window.scrollY - offset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Tab active state on scroll
     window.addEventListener('scroll', () => {
-        const y = window.scrollY + 150;
+        const y = window.scrollY + 140;
         let active = tabSections[0];
         tabSections.forEach(id => {
             const el = document.getElementById(id);
