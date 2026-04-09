@@ -920,6 +920,11 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .order-subtitle { font-size: 0.85rem; }
 }
 
+/* ---- CUSTOM MUSIC ---- */
+.vocal-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+
+@media (max-width: 480px) { .vocal-options { grid-template-columns: 1fr; } }
+
 /* ---- ADS PAGE ---- */
 .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
 

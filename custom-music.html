@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music on Demand | Flotion Records</title>
+    <meta name="description" content="Order custom music production from Flotion Records. Tailored tracks for your brand, video, podcast, or project.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ripple-container" id="rippleContainer"></div>
+    <div class="ambient">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Flotion Records&trade;</a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="services.html">Services</a>
+                <a href="custom-music.html" class="nav-active">Custom Music</a>
+                <a href="index.html#contact" class="nav-cta">Contact</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            </button>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="section order-section">
+        <div class="container">
+            <div class="section-head">
+                <a href="services.html" class="back-link">&larr; Back to Services</a>
+                <h2 class="reveal">Music on <span class="gradient-text">Demand</span></h2>
+            </div>
+            <p class="order-subtitle reveal">Your vision, our sound. Tell us what you need and we'll produce it from scratch.</p>
+
+            <div class="card card-lg order-card reveal">
+                <!-- Step 1: Package -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">1</div>
+                        <strong>Choose your package</strong>
+                    </div>
+                    <div class="package-options">
+                        <label class="package-option">
+                            <input type="radio" name="package" value="single" data-price="99" checked>
+                            <div class="package-card">
+                                <div class="package-name">Single Track</div>
+                                <div class="package-price">&euro;99</div>
+                                <div class="package-desc">1 custom track (up to 3 min), 2 revisions included</div>
+                            </div>
+                        </label>
+                        <label class="package-option">
+                            <input type="radio" name="package" value="content" data-price="249">
+                            <div class="package-card">
+                                <div class="package-tag">Best Value</div>
+                                <div class="package-name">Content Pack</div>
+                                <div class="package-price">&euro;249</div>
+                                <div class="package-desc">3 tracks + short edits for social media, 3 revisions each</div>
+                            </div>
+                        </label>
+                        <label class="package-option">
+                            <input type="radio" name="package" value="brand" data-price="0">
+                            <div class="package-card">
+                                <div class="package-name">Brand Sound</div>
+                                <div class="package-price">Custom</div>
+                                <div class="package-desc">Full sonic identity: jingle, intro/outro, background tracks</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 2: Brief -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">2</div>
+                        <strong>Describe your project</strong>
+                    </div>
+                    <div class="form-field">
+                        <label for="cm-purpose">What is this music for?</label>
+                        <select id="cm-purpose">
+                            <option value="" disabled selected>Select purpose</option>
+                            <option>YouTube video</option>
+                            <option>Podcast intro/outro</option>
+                            <option>Instagram / TikTok content</option>
+                            <option>Commercial / Advertisement</option>
+                            <option>Brand identity / Jingle</option>
+                            <option>Film / Documentary</option>
+                            <option>Video game</option>
+                            <option>Personal project</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="demo-form-grid">
+                        <div class="form-field">
+                            <label for="cm-genre">Genre / Style</label>
+                            <select id="cm-genre">
+                                <option value="" disabled selected>Select style</option>
+                                <option>Pop</option>
+                                <option>Hip-Hop / Trap</option>
+                                <option>R&B / Soul</option>
+                                <option>Electronic / EDM</option>
+                                <option>House / Deep House</option>
+                                <option>Lo-fi / Chill</option>
+                                <option>Ambient / Cinematic</option>
+                                <option>Classical / Piano</option>
+                                <option>Rock / Indie</option>
+                                <option>Afro / Latin</option>
+                                <option>Corporate / Uplifting</option>
+                                <option>Not sure, surprise me</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label for="cm-mood">Mood / Energy</label>
+                            <select id="cm-mood">
+                                <option value="" disabled selected>Select mood</option>
+                                <option>Energetic / Upbeat</option>
+                                <option>Calm / Relaxing</option>
+                                <option>Dark / Moody</option>
+                                <option>Happy / Positive</option>
+                                <option>Epic / Cinematic</option>
+                                <option>Romantic / Emotional</option>
+                                <option>Motivational / Inspiring</option>
+                                <option>Mysterious / Suspenseful</option>
+                                <option>Playful / Fun</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="demo-form-grid">
+                        <div class="form-field">
+                            <label for="cm-tempo">Tempo preference</label>
+                            <select id="cm-tempo">
+                                <option value="" disabled selected>Select tempo</option>
+                                <option>Slow (60-80 BPM)</option>
+                                <option>Medium (80-110 BPM)</option>
+                                <option>Upbeat (110-130 BPM)</option>
+                                <option>Fast (130-160 BPM)</option>
+                                <option>No preference</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label for="cm-length">Track length</label>
+                            <select id="cm-length">
+                                <option value="" disabled selected>Select length</option>
+                                <option>Short (under 1 min)</option>
+                                <option>Medium (1-2 min)</option>
+                                <option>Standard (2-3 min)</option>
+                                <option>Long (3-5 min)</option>
+                                <option>Not sure yet</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: References & extras -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">3</div>
+                        <strong>References and details</strong>
+                    </div>
+                    <div class="form-field">
+                        <label for="cm-ref">Reference tracks (paste Spotify/YouTube links of songs that match the vibe you want)</label>
+                        <textarea id="cm-ref" rows="2" placeholder="e.g. https://open.spotify.com/track/... or 'something like Kygo meets Hans Zimmer'"></textarea>
+                    </div>
+                    <div class="form-field">
+                        <label for="cm-details">Additional details or instructions</label>
+                        <textarea id="cm-details" rows="3" placeholder="Describe what you envision. What should the listener feel? Any specific instruments? Vocals or instrumental only? Any deadline?"></textarea>
+                    </div>
+                    <div class="form-field">
+                        <label>Do you need vocals?</label>
+                        <div class="vocal-options">
+                            <label class="genre-option"><input type="radio" name="vocals" value="no" checked><div class="genre-card">Instrumental only</div></label>
+                            <label class="genre-option"><input type="radio" name="vocals" value="yes"><div class="genre-card">Yes, with vocals</div></label>
+                            <label class="genre-option"><input type="radio" name="vocals" value="maybe"><div class="genre-card">Not sure yet</div></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Details + Pay -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">4</div>
+                        <strong>Your details and payment</strong>
+                    </div>
+                    <div class="demo-form-grid">
+                        <div class="form-field">
+                            <label for="cm-name">Your name / company</label>
+                            <input type="text" id="cm-name" placeholder="Name or company name" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="cm-email">Email</label>
+                            <input type="email" id="cm-email" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <div class="order-summary-row"><span>Package</span><span id="cmSumPkg">Single Track</span></div>
+                        <div class="order-summary-row"><span>Purpose</span><span id="cmSumPurpose">-</span></div>
+                        <div class="order-summary-row"><span>Style</span><span id="cmSumStyle">-</span></div>
+                        <div class="order-summary-row order-total"><span>Total</span><span id="cmSumPrice">&euro;99</span></div>
+                    </div>
+                    <p class="order-guarantee">Delivery within 5-7 business days. Revisions included in your package.</p>
+                    <button class="btn btn-color pricing-btn" id="cmPayBtn" type="button">Pay &euro;99 and Start Production</button>
+                    <div class="order-payment-methods">
+                        <span>Secure payment via</span>
+                        <strong>Stripe</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-row">
+                <a href="index.html" class="footer-logo">Flotion Records&trade;</a>
+                <div class="footer-links">
+                    <a href="https://open.spotify.com/user/31di2lkju4cqfsoyq2twyxfjzlne" target="_blank">Spotify</a>
+                    <a href="https://www.instagram.com/flotionrecords/" target="_blank">Instagram</a>
+                    <a href="https://www.tiktok.com/@flotion.records" target="_blank">TikTok</a>
+                </div>
+            </div>
+            <p class="footer-copy">&copy; 2026 Flotion Records. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    const pkgNames = { single: 'Single Track', content: 'Content Pack', brand: 'Brand Sound' };
+    const radios = document.querySelectorAll('input[name="package"]');
+    const sumPkg = document.getElementById('cmSumPkg');
+    const sumPrice = document.getElementById('cmSumPrice');
+    const payBtn = document.getElementById('cmPayBtn');
+
+    const stripeLinks = {
+        single: 'STRIPE_LINK_SINGLE',
+        content: 'STRIPE_LINK_CONTENT'
+    };
+
+    radios.forEach(r => {
+        r.addEventListener('change', () => {
+            const price = r.dataset.price;
+            const name = pkgNames[r.value];
+            sumPkg.textContent = name;
+
+            if (r.value === 'brand') {
+                sumPrice.textContent = 'On request';
+                payBtn.textContent = 'Request Brand Sound Quote';
+            } else {
+                sumPrice.innerHTML = '&euro;' + price;
+                payBtn.innerHTML = 'Pay &euro;' + price + ' and Start Production';
+            }
+        });
+    });
+
+    payBtn.addEventListener('click', () => {
+        const name = document.getElementById('cm-name').value;
+        const email = document.getElementById('cm-email').value;
+        if (!name || !email) { alert('Please fill in your name and email.'); return; }
+
+        const selected = document.querySelector('input[name="package"]:checked');
+        const purpose = document.getElementById('cm-purpose').value;
+        const genre = document.getElementById('cm-genre').value;
+        const mood = document.getElementById('cm-mood').value;
+        const tempo = document.getElementById('cm-tempo').value;
+        const length = document.getElementById('cm-length').value;
+        const ref = document.getElementById('cm-ref').value;
+        const details = document.getElementById('cm-details').value;
+        const vocals = document.querySelector('input[name="vocals"]:checked');
+
+        // Update summary before paying
+        document.getElementById('cmSumPurpose').textContent = purpose || '-';
+        document.getElementById('cmSumStyle').textContent = (genre || '-') + ' / ' + (mood || '-');
+
+        const pkgName = pkgNames[selected.value];
+        const price = selected.dataset.price;
+
+        // Check Stripe
+        const stripeLink = stripeLinks[selected.value];
+        if (stripeLink && !stripeLink.startsWith('STRIPE_')) {
+            window.location.href = stripeLink + '?prefilled_email=' + encodeURIComponent(email);
+        } else {
+            const subject = 'Custom Music Order - ' + pkgName;
+            const body = 'Name: ' + name +
+                '\nEmail: ' + email +
+                '\nPackage: ' + pkgName + (price > 0 ? ' (€' + price + ')' : ' (Custom pricing)') +
+                '\nPurpose: ' + (purpose || 'Not specified') +
+                '\nGenre: ' + (genre || 'Not specified') +
+                '\nMood: ' + (mood || 'Not specified') +
+                '\nTempo: ' + (tempo || 'Not specified') +
+                '\nLength: ' + (length || 'Not specified') +
+                '\nVocals: ' + (vocals ? vocals.value : 'Not specified') +
+                '\nReferences: ' + (ref || 'None') +
+                '\nDetails: ' + (details || 'None');
+            window.location.href = 'mailto:contact@flotionrecords.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        }
+    });
+    </script>
+</body>
+</html>
