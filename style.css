@@ -1347,6 +1347,16 @@ body.dark .theme-toggle .icon-moon { display: block; }
 
 .custom-item p { font-size: 0.78rem; color: var(--text-30); line-height: 1.5; }
 
+/* ---- TERMS ---- */
+.terms-content h3 { font-size: 1.05rem; font-weight: 700; margin: 2rem 0 0.6rem; }
+.terms-content h3:first-child { margin-top: 0; }
+.terms-content p { font-size: 0.9rem; line-height: 1.7; color: var(--text-60); margin-bottom: 0.8rem; }
+.terms-content ul { list-style: none; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.4rem; padding-left: 1rem; }
+.terms-content li { font-size: 0.85rem; line-height: 1.6; color: var(--text-60); position: relative; padding-left: 0.8rem; }
+.terms-content li::before { content: ''; position: absolute; left: 0; top: 9px; width: 4px; height: 4px; border-radius: 50%; background: var(--gradient); }
+.terms-content a { color: #3b82f6; text-decoration: none; }
+.terms-content a:hover { text-decoration: underline; }
+
 /* ---- FOOTER ---- */
 .footer { padding: 2.5rem 0; position: relative; z-index: 1; }
 .footer-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
