@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sync Licensing | Flotion Records</title>
+    <meta name="description" content="License music from Flotion Records for your YouTube videos, podcasts, commercials, and social media content.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ripple-container" id="rippleContainer"></div>
+    <div class="ambient">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">Flotion Records&trade;</a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="services.html">Services</a>
+                <a href="licensing.html" class="nav-active">Licensing</a>
+                <a href="index.html#contact" class="nav-cta">Contact</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            </button>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <section class="section order-section">
+        <div class="container">
+            <div class="section-head">
+                <a href="services.html" class="back-link">&larr; Back to Services</a>
+                <h2 class="reveal">Sync <span class="gradient-text">Licensing</span></h2>
+            </div>
+            <p class="order-subtitle reveal">Use our music in your content. Choose a license, tell us which track, and you're good to go.</p>
+
+            <div class="card card-lg order-card reveal">
+                <!-- Step 1: License type -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">1</div>
+                        <strong>Choose your license</strong>
+                    </div>
+                    <div class="package-options">
+                        <label class="package-option">
+                            <input type="radio" name="license" value="personal" data-price="25" checked>
+                            <div class="package-card">
+                                <div class="package-name">Personal</div>
+                                <div class="package-price">&euro;25</div>
+                                <div class="package-desc">YouTube, podcasts, personal projects, school projects</div>
+                            </div>
+                        </label>
+                        <label class="package-option">
+                            <input type="radio" name="license" value="commercial" data-price="75">
+                            <div class="package-card">
+                                <div class="package-tag">Most Popular</div>
+                                <div class="package-name">Commercial</div>
+                                <div class="package-price">&euro;75</div>
+                                <div class="package-desc">Ads, brand content, commercial videos, social media campaigns</div>
+                            </div>
+                        </label>
+                        <label class="package-option">
+                            <input type="radio" name="license" value="exclusive" data-price="0">
+                            <div class="package-card">
+                                <div class="package-name">Exclusive</div>
+                                <div class="package-price">Custom</div>
+                                <div class="package-desc">Full exclusive rights to the track. Price depends on the track.</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Step 2: What's included -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">2</div>
+                        <strong>What's included</strong>
+                    </div>
+                    <div class="license-features" id="licenseFeatures">
+                        <div class="license-col" id="personalFeatures">
+                            <ul class="pricing-features">
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Royalty-free, use forever</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>YouTube, Twitch, podcasts</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Personal social media posts</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>High-quality WAV download</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Instant delivery after payment</li>
+                            </ul>
+                        </div>
+                        <div class="license-col" id="commercialFeatures" style="display:none;">
+                            <ul class="pricing-features">
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Everything in Personal</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Paid advertisements and brand content</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>TV, radio, and streaming platforms</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Unlimited views / impressions</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Custom edits available on request</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>High-quality WAV + stems if needed</li>
+                            </ul>
+                        </div>
+                        <div class="license-col" id="exclusiveFeatures" style="display:none;">
+                            <ul class="pricing-features">
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Everything in Commercial</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Full exclusive ownership of the track</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Track removed from our catalog</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Full stems and project files included</li>
+                                <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Custom pricing based on track</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Track details -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">3</div>
+                        <strong>Which track do you want to license?</strong>
+                    </div>
+                    <div class="demo-form-grid">
+                        <div class="form-field">
+                            <label for="lic-track">Track name or Spotify link</label>
+                            <input type="text" id="lic-track" placeholder="e.g. Estrela or paste Spotify URL">
+                        </div>
+                        <div class="form-field">
+                            <label for="lic-use">How will you use it?</label>
+                            <input type="text" id="lic-use" placeholder="e.g. YouTube video, Instagram ad, podcast intro">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Your details + pay -->
+                <div class="order-step">
+                    <div class="order-step-header">
+                        <div class="step-n">4</div>
+                        <strong>Your details and payment</strong>
+                    </div>
+                    <div class="demo-form-grid">
+                        <div class="form-field">
+                            <label for="lic-name">Your name / company</label>
+                            <input type="text" id="lic-name" placeholder="Name or company name" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="lic-email">Email</label>
+                            <input type="email" id="lic-email" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+
+                    <div class="order-summary">
+                        <div class="order-summary-row">
+                            <span>License</span>
+                            <span id="licSumType">Personal</span>
+                        </div>
+                        <div class="order-summary-row order-total">
+                            <span>Total</span>
+                            <span id="licSumPrice">&euro;25</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-color pricing-btn" id="licPayBtn" type="button">Pay &euro;25 and Get License</button>
+                    <div class="order-payment-methods">
+                        <span>Secure payment via</span>
+                        <strong>Stripe</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-row">
+                <a href="index.html" class="footer-logo">Flotion Records&trade;</a>
+                <div class="footer-links">
+                    <a href="https://open.spotify.com/user/31di2lkju4cqfsoyq2twyxfjzlne" target="_blank">Spotify</a>
+                    <a href="https://www.instagram.com/flotionrecords/" target="_blank">Instagram</a>
+                    <a href="https://www.tiktok.com/@flotion.records" target="_blank">TikTok</a>
+                </div>
+            </div>
+            <p class="footer-copy">&copy; 2026 Flotion Records. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    const licenseNames = { personal: 'Personal Use', commercial: 'Commercial Use', exclusive: 'Exclusive License' };
+    const radios = document.querySelectorAll('input[name="license"]');
+    const sumType = document.getElementById('licSumType');
+    const sumPrice = document.getElementById('licSumPrice');
+    const payBtn = document.getElementById('licPayBtn');
+    const featureSections = {
+        personal: document.getElementById('personalFeatures'),
+        commercial: document.getElementById('commercialFeatures'),
+        exclusive: document.getElementById('exclusiveFeatures')
+    };
+
+    // Stripe Payment Links - replace with your actual links
+    const stripeLinks = {
+        personal: 'STRIPE_LINK_PERSONAL',
+        commercial: 'STRIPE_LINK_COMMERCIAL'
+    };
+
+    radios.forEach(r => {
+        r.addEventListener('change', () => {
+            const price = r.dataset.price;
+            const name = licenseNames[r.value];
+            sumType.textContent = name;
+
+            Object.values(featureSections).forEach(el => el.style.display = 'none');
+            featureSections[r.value].style.display = '';
+
+            if (r.value === 'exclusive') {
+                sumPrice.textContent = 'On request';
+                payBtn.textContent = 'Request Exclusive License';
+            } else {
+                sumPrice.innerHTML = '&euro;' + price;
+                payBtn.innerHTML = 'Pay &euro;' + price + ' and Get License';
+            }
+        });
+    });
+
+    payBtn.addEventListener('click', () => {
+        const name = document.getElementById('lic-name').value;
+        const email = document.getElementById('lic-email').value;
+        const track = document.getElementById('lic-track').value;
+        const use = document.getElementById('lic-use').value;
+
+        if (!name || !email) { alert('Please fill in your name and email.'); return; }
+
+        const selected = document.querySelector('input[name="license"]:checked');
+        const licName = licenseNames[selected.value];
+        const price = selected.dataset.price;
+
+        // Check Stripe link
+        const stripeLink = stripeLinks[selected.value];
+        if (stripeLink && !stripeLink.startsWith('STRIPE_')) {
+            window.location.href = stripeLink + '?prefilled_email=' + encodeURIComponent(email);
+        } else {
+            const subject = 'Sync License Request - ' + licName;
+            const body = 'Name: ' + name +
+                '\nEmail: ' + email +
+                '\nLicense: ' + licName + (price > 0 ? ' (€' + price + ')' : ' (Custom pricing)') +
+                '\nTrack: ' + (track || 'Not specified') +
+                '\nUsage: ' + (use || 'Not specified');
+            window.location.href = 'mailto:contact@flotionrecords.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        }
+    });
+    </script>
+</body>
+</html>
