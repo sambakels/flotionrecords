@@ -167,9 +167,16 @@
                                     <div class="strat-tag">Lowest cost per listener</div>
                                     <div class="strat-details">
                                         <p>Focus on emerging markets where competition is lowest. Acquire the most streams and followers at the lowest cost to trigger Spotify's algorithm.</p>
+                                        <p class="tier-hint">Toggle tiers on/off to customize your targeting.</p>
                                         <div class="strat-tiers">
-                                            <div class="strat-tier"><strong>Spanish Tier</strong><span>Argentina, Spain, Mexico, Colombia +11</span><small>CPL &euro;0.55 &middot; CPF &euro;0.33</small></div>
-                                            <div class="strat-tier"><strong>Emerging Tier</strong><span>Philippines, Turkey, Egypt, India +10</span><small>CPL &euro;0.40 &middot; CPF &euro;0.21</small></div>
+                                            <div class="strat-tier tier-toggle active" data-tier="spanish">
+                                                <div class="tier-header"><label class="tier-switch"><input type="checkbox" checked data-strat="growth" data-name="Spanish"><span class="tier-slider"></span></label><strong>Spanish Tier</strong></div>
+                                                <span>Argentina, Bolivia, Chile, Colombia, Costa Rica, Dominican Republic, Ecuador, Spain, Guatemala, Honduras, Mexico, Nicaragua, Paraguay, Peru, Uruguay</span><small>CPL &euro;0.55 &middot; CPF &euro;0.33</small>
+                                            </div>
+                                            <div class="strat-tier tier-toggle active" data-tier="emerging">
+                                                <div class="tier-header"><label class="tier-switch"><input type="checkbox" checked data-strat="growth" data-name="Emerging"><span class="tier-slider"></span></label><strong>Emerging Tier</strong></div>
+                                                <span>Armenia, Azerbaijan, Egypt, Georgia, India, Jordan, Kazakhstan, Morocco, North Macedonia, Philippines, Saudi Arabia, Serbia, Turkey, Ukraine, Vietnam</span><small>CPL &euro;0.40 &middot; CPF &euro;0.21</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -182,10 +189,20 @@
                                     <div class="strat-tag">Global testing</div>
                                     <div class="strat-details">
                                         <p>Spread across established, growth, and emerging markets to test performance globally.</p>
+                                        <p class="tier-hint">Toggle tiers on/off to customize your targeting.</p>
                                         <div class="strat-tiers">
-                                            <div class="strat-tier"><strong>High Tier</strong><span>US, UK, Germany, Netherlands +18</span><small>CPL &euro;1.50 &middot; CPF &euro;0.78</small></div>
-                                            <div class="strat-tier"><strong>Mid Tier</strong><span>Poland, Czech Republic, Greece +18</span><small>CPL &euro;0.73 &middot; CPF &euro;0.40</small></div>
-                                            <div class="strat-tier"><strong>Low Tier</strong><span>Philippines, Turkey, Egypt +11</span><small>CPL &euro;0.65 &middot; CPF &euro;0.38</small></div>
+                                            <div class="strat-tier tier-toggle active">
+                                                <div class="tier-header"><label class="tier-switch"><input type="checkbox" checked data-strat="discover" data-name="High"><span class="tier-slider"></span></label><strong>High Tier</strong></div>
+                                                <span>US, UK, Canada, Australia, Austria, Belgium, Denmark, Finland, France, Germany, Iceland, Ireland, Italy, Japan, Luxembourg, Netherlands, New Zealand, Norway, South Korea, Spain, Sweden, Switzerland</span><small>CPL &euro;1.50 &middot; CPF &euro;0.78</small>
+                                            </div>
+                                            <div class="strat-tier tier-toggle active">
+                                                <div class="tier-header"><label class="tier-switch"><input type="checkbox" checked data-strat="discover" data-name="Mid"><span class="tier-slider"></span></label><strong>Mid Tier</strong></div>
+                                                <span>Croatia, Cyprus, Czech Republic, Estonia, Greece, Hong Kong, Hungary, Israel, Latvia, Lithuania, Malaysia, Malta, Oman, Poland, Romania, Singapore, Slovakia, Slovenia, South Africa, Taiwan, UAE</span><small>CPL &euro;0.73 &middot; CPF &euro;0.40</small>
+                                            </div>
+                                            <div class="strat-tier tier-toggle active">
+                                                <div class="tier-header"><label class="tier-switch"><input type="checkbox" checked data-strat="discover" data-name="Low"><span class="tier-slider"></span></label><strong>Low Tier</strong></div>
+                                                <span>Armenia, Azerbaijan, Egypt, Georgia, Jordan, Kazakhstan, Morocco, North Macedonia, Philippines, Saudi Arabia, Serbia, Turkey, Ukraine, Vietnam</span><small>CPL &euro;0.65 &middot; CPF &euro;0.38</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -199,7 +216,10 @@
                                     <div class="strat-details">
                                         <p>Focus on established markets with highest per-stream payouts. Premium subscribers and high subscription rates.</p>
                                         <div class="strat-tiers">
-                                            <div class="strat-tier"><strong>Premium Tier</strong><span>US, UK, Canada, Australia, Germany, Netherlands, Sweden, Norway +14</span><small>CPL &euro;1.50 &middot; CPF &euro;0.78</small></div>
+                                            <div class="strat-tier tier-toggle active">
+                                                <div class="tier-header"><label class="tier-switch"><input type="checkbox" checked data-strat="revenue" data-name="Premium"><span class="tier-slider"></span></label><strong>Premium Tier</strong></div>
+                                                <span>US, UK, Canada, Australia, Austria, Belgium, Denmark, Finland, France, Germany, Iceland, Ireland, Italy, Japan, Luxembourg, Netherlands, New Zealand, Norway, South Korea, Spain, Sweden, Switzerland</span><small>CPL &euro;1.50 &middot; CPF &euro;0.78</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -220,33 +240,29 @@
                             <strong>Set your budget</strong>
                         </div>
                         <p class="order-hint">We handle everything. You only pay 20% on top of your daily ad budget as management fee.</p>
-                        <div class="budget-options">
-                            <label class="package-option">
-                                <input type="radio" name="budget" value="7-10" data-days="7" data-daily="10" checked>
-                                <div class="package-card">
-                                    <div class="package-name">Starter</div>
-                                    <div class="package-price">&euro;84</div>
-                                    <div class="package-desc">7 days &middot; &euro;10/day<br><small>(&euro;70 ads + &euro;14 management)</small></div>
-                                </div>
-                            </label>
-                            <label class="package-option">
-                                <input type="radio" name="budget" value="14-20" data-days="14" data-daily="20">
-                                <div class="package-card">
-                                    <div class="package-tag">Recommended</div>
-                                    <div class="package-name">Growth</div>
-                                    <div class="package-price">&euro;336</div>
-                                    <div class="package-desc">14 days &middot; &euro;20/day<br><small>(&euro;280 ads + &euro;56 management)</small></div>
-                                </div>
-                            </label>
-                            <label class="package-option">
-                                <input type="radio" name="budget" value="custom" data-days="0" data-daily="0">
-                                <div class="package-card">
-                                    <div class="package-name">Custom</div>
-                                    <div class="package-price">Custom</div>
-                                    <div class="package-desc">Custom duration and budget<br><small>Let's discuss your goals</small></div>
-                                </div>
-                            </label>
+
+                        <div class="slider-group">
+                            <label class="slider-label">Daily budget</label>
+                            <div class="slider-row">
+                                <input type="range" id="dailyBudget" min="10" max="200" step="10" value="20" class="budget-slider">
+                                <div class="slider-val" id="dailyVal">&euro;20/day</div>
+                            </div>
                         </div>
+
+                        <div class="slider-group">
+                            <label class="slider-label">Campaign duration</label>
+                            <div class="slider-row">
+                                <input type="range" id="campDays" min="7" max="60" step="1" value="14" class="budget-slider">
+                                <div class="slider-val" id="daysVal">14 days</div>
+                            </div>
+                        </div>
+
+                        <div class="budget-calc card">
+                            <div class="calc-row"><span>Ad spend</span><span id="calcAds">&euro;280</span></div>
+                            <div class="calc-row"><span>Management fee (20%)</span><span id="calcFee">&euro;56</span></div>
+                            <div class="calc-row calc-total"><span>Total campaign cost</span><span id="calcTotal">&euro;336</span></div>
+                        </div>
+
                         <div class="camp-nav">
                             <button class="btn btn-glass" id="back3">Back</button>
                             <button class="btn btn-color" id="toStep5">Continue</button>
@@ -358,13 +374,50 @@
             .catch(() => { preview.style.display='none'; });
     }
 
+    // Budget sliders
+    const dailySlider = document.getElementById('dailyBudget');
+    const daysSlider = document.getElementById('campDays');
+    const dailyVal = document.getElementById('dailyVal');
+    const daysVal = document.getElementById('daysVal');
+    const calcAds = document.getElementById('calcAds');
+    const calcFee = document.getElementById('calcFee');
+    const calcTotal = document.getElementById('calcTotal');
+
+    function updateBudget() {
+        const daily = parseInt(dailySlider.value);
+        const days = parseInt(daysSlider.value);
+        const ads = daily * days;
+        const fee = Math.round(ads * 0.2);
+        const total = ads + fee;
+        dailyVal.innerHTML = '&euro;' + daily + '/day';
+        daysVal.textContent = days + ' days';
+        calcAds.innerHTML = '&euro;' + ads;
+        calcFee.innerHTML = '&euro;' + fee;
+        calcTotal.innerHTML = '&euro;' + total;
+        // Update slider gradient
+        const pctDaily = (daily - 10) / 190 * 100;
+        const pctDays = (days - 7) / 53 * 100;
+        dailySlider.style.setProperty('--pct', pctDaily + '%');
+        daysSlider.style.setProperty('--pct', pctDays + '%');
+    }
+
+    dailySlider.addEventListener('input', updateBudget);
+    daysSlider.addEventListener('input', updateBudget);
+    updateBudget();
+
+    // Tier toggles
+    document.querySelectorAll('.tier-switch input').forEach(cb => {
+        cb.addEventListener('change', () => {
+            cb.closest('.tier-toggle').classList.toggle('active', cb.checked);
+        });
+    });
+
     // Summary
     function updateSummary() {
         const url = spotifyInput.value || 'Not provided';
         const title = document.getElementById('spotifyTitle').textContent || url;
         const genre = document.querySelector('input[name="genre"]:checked');
         const strat = document.querySelector('input[name="strategy"]:checked');
-        const budg = document.querySelector('input[name="budget"]:checked');
 
         document.getElementById('sumMusic').textContent = title || '-';
         document.getElementById('sumGenre').textContent = genre ? genre.value : '-';
@@ -372,16 +425,19 @@
         const stratNames = {growth:'Maximum Growth', discover:'Discover Markets', revenue:'Revenue Maximization'};
         document.getElementById('sumStrategy').textContent = strat ? stratNames[strat.value] : '-';
 
-        if (budg && budg.value !== 'custom') {
-            const days = budg.dataset.days;
-            const daily = budg.dataset.daily;
-            const total = days * daily * 1.2;
-            document.getElementById('sumBudget').textContent = days + ' days, €' + daily + '/day';
-            document.getElementById('sumTotal').textContent = '€' + total.toFixed(0);
-        } else {
-            document.getElementById('sumBudget').textContent = 'Custom';
-            document.getElementById('sumTotal').textContent = 'On request';
-        }
+        const daily = parseInt(dailySlider.value);
+        const days = parseInt(daysSlider.value);
+        const total = Math.round(daily * days * 1.2);
+        document.getElementById('sumBudget').textContent = days + ' days, €' + daily + '/day';
+        document.getElementById('sumTotal').textContent = '€' + total;
+
+        // Collect active tiers
+        const activeTiers = [];
+        const stratVal = strat ? strat.value : '';
+        document.querySelectorAll('.tier-switch input[data-strat="'+stratVal+'"]:checked').forEach(cb => {
+            activeTiers.push(cb.dataset.name);
+        });
+        window._activeTiers = activeTiers;
     }
 
     // Submit
@@ -393,18 +449,23 @@
         const url = spotifyInput.value;
         const genre = document.querySelector('input[name="genre"]:checked');
         const strat = document.querySelector('input[name="strategy"]:checked');
-        const budg = document.querySelector('input[name="budget"]:checked');
         const notes = document.getElementById('ads-notes').value;
+        const daily = parseInt(dailySlider.value);
+        const days = parseInt(daysSlider.value);
+        const total = Math.round(daily * days * 1.2);
 
         const stratNames = {growth:'Maximum Growth', discover:'Discover Markets', revenue:'Revenue Maximization'};
+        const tiers = window._activeTiers ? window._activeTiers.join(', ') : 'All';
 
-        const subject = 'New Meta Ads Campaign Request';
+        const subject = 'New Meta Ads Campaign - €' + total;
         const body = 'Artist: ' + name +
             '\nEmail: ' + email +
             '\nSpotify URL: ' + (url || 'Not provided') +
             '\nGenre: ' + (genre ? genre.value : 'Not selected') +
             '\nStrategy: ' + (strat ? stratNames[strat.value] : 'Not selected') +
-            '\nBudget: ' + (budg ? budg.value : 'Not selected') +
+            '\nActive Tiers: ' + tiers +
+            '\nBudget: €' + daily + '/day for ' + days + ' days' +
+            '\nAd spend: €' + (daily*days) + ' + €' + Math.round(daily*days*0.2) + ' management = €' + total +
             '\nNotes: ' + (notes || 'None');
 
         window.location.href = 'mailto:contact@flotionrecords.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
