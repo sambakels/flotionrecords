@@ -1140,7 +1140,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
 /* Service tabs */
 .service-tabs {
     position: sticky;
-    top: 60px;
+    top: 76px;
     z-index: 50;
     padding: 0.7rem 0;
     background: var(--glass);
