@@ -1500,9 +1500,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .card { background: rgba(255,255,255,0.5); border-color: rgba(0,0,0,0.06); }
     body.dark .card { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.08); }
     .nav { background: rgba(255,255,255,0.85); }
-    .nav.menu-open { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }
     body.dark .nav { background: rgba(14,17,23,0.9); }
-    body.dark .nav.menu-open { background: transparent !important; }
     .service-tabs { background: rgba(255,255,255,0.85); }
     body.dark .service-tabs { background: rgba(14,17,23,0.9); }
     .clink { background: rgba(255,255,255,0.5); }
