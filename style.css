@@ -1139,10 +1139,11 @@ body.dark .theme-toggle .icon-moon { display: block; }
 /* ---- SERVICES PAGE ---- */
 /* Service tabs */
 .service-tabs {
-    position: relative;
-    z-index: 10;
-    padding: 0.8rem 0;
-    background: var(--bg);
+    position: sticky;
+    top: 60px;
+    z-index: 50;
+    padding: 0.7rem 0;
+    background: var(--glass);
     border-bottom: 1px solid var(--glass-border);
 }
 
@@ -1164,7 +1165,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
     color: var(--text-30);
     text-decoration: none;
     border: 1px solid transparent;
-    transition: all 0.25s var(--ease);
+    transition: color 0.2s, background 0.2s;
     text-align: center;
 }
 
@@ -1182,9 +1183,9 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .tab-link svg { flex-shrink: 0; }
 
 @media (max-width: 768px) {
-    .service-tabs { padding: 0.5rem 0; }
+    .service-tabs { top: 48px; padding: 0.5rem 0; }
     .tabs-row { gap: 0.25rem; }
-    .tab-link { font-size: 0.58rem; padding: 0.45rem 0.2rem; gap: 0.2rem; border-radius: 8px; line-height: 1.2; }
+    .tab-link { font-size: 0.6rem; padding: 0.45rem 0.25rem; gap: 0; border-radius: 8px; }
     .tab-link svg { display: none; }
 }
 
@@ -1492,7 +1493,15 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .cprog-step { font-size: 0; gap: 0; }
     .cprog-step span { font-size: 0.6rem; width: 20px; height: 20px; }
 
-    /* Service tabs handled in its own media query */
+    /* Performance: reduce blur on mobile */
+    .card { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255,255,255,0.4); }
+    body.dark .card { background: rgba(255,255,255,0.08); }
+    .service-tabs { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(255,255,255,0.5); }
+    body.dark .service-tabs { background: rgba(14,17,23,0.85); }
+    .nav { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    .clink { backdrop-filter: none; -webkit-backdrop-filter: none; }
+    .blob { filter: blur(80px); animation: none; }
+    .ripple-container { display: none; }
 
     /* Marquee */
     .marquee-track span { font-size: 0.65rem; letter-spacing: 2px; }
