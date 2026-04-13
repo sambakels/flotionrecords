@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.flotionrecords.com/sitemap.xml
+Sitemap: https://flotionrecords.com/sitemap.xml
