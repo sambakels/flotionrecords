@@ -112,7 +112,7 @@
 
                 <div class="submission-id-box">
                     <div class="submission-id-label">Your submission ID</div>
-                    <div class="submission-id-code" id="submissionIdDisplay">&mdash;</div>
+                    <div class="submission-id-code" id="submissionIdDisplay">...</div>
                 </div>
 
                 <div style="text-align:left">
@@ -121,7 +121,7 @@
                         <li id="step-window">We'll review your track within the agreed time window. You'll get an email either way.</li>
                         <li id="step-upload">If you uploaded an unreleased file, we already have it. <span id="upload-fallback" style="display:none">If your file was &gt;50MB, send a WeTransfer link to <a href="mailto:submissions@flotionrecords.com" style="color:var(--blue)">submissions@flotionrecords.com</a> with your submission ID above.</span></li>
                         <li>If accepted: we add your track to a matching Flotion playlist and email confirmation with the playlist link.</li>
-                        <li>If not accepted: you get honest feedback explaining why &mdash; that's the trade-off for paid review.</li>
+                        <li>If not accepted: you get honest feedback explaining why. That's the trade-off for paid review.</li>
                     </ol>
                 </div>
 
@@ -170,9 +170,9 @@
         const stepWindow = document.getElementById('step-window');
         const windowMsg = {
             standard: 'We\'ll review your track within 72 hours. You\'ll get an email either way.',
-            express:  'We\'ll review your track within 24 hours &mdash; priority queue. You\'ll get an email either way.',
+            express:  'We\'ll review your track within 24 hours via priority queue. You\'ll get an email either way.',
             detailed: 'We\'ll review your track within 24-72 hours with detailed feedback. You\'ll get an email either way.',
-            free:     'We\'ll listen when we have time &mdash; usually within a few weeks. No time guarantee for free tier.',
+            free:     'We\'ll listen when we have time, usually within a few weeks. No time guarantee for free tier.',
         };
         if (tier && windowMsg[tier]) stepWindow.innerHTML = windowMsg[tier];
 
