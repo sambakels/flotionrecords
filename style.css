@@ -1230,6 +1230,24 @@ body.dark .theme-toggle .icon-moon { display: block; }
 
 .pricing-period { font-size: 0.8rem; color: var(--text-30); margin-bottom: 1.5rem; }
 
+.genre-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-90, #fff);
+    letter-spacing: 0.02em;
+    transition: background .2s, border-color .2s;
+}
+.genre-pill:hover {
+    background: rgba(139, 92, 246, 0.08);
+    border-color: rgba(139, 92, 246, 0.45);
+}
+
 .pricing-features {
     list-style: none;
     text-align: left;
