@@ -250,10 +250,10 @@
         detailed: 'STRIPE_LINK_DETAILED',  // €10 - replace with real link
     };
 
-    // Web3Forms access key (https://web3forms.com, free, no account).
-    // The form sends submission details to this key, which emails you a copy.
-    // Replace with your real access key. Leave empty to use mailto fallback.
-    const web3formsKey = 'c1ecab70-c1b4-4d7d-bacf-76e20794db2b';
+    // Formspree endpoint. Form data POSTs here; Formspree relays it to the
+    // email registered with the form. Whitelisted by all major AV vendors,
+    // so no scary "is this site safe?" warnings for your submitters.
+    const formspreeEndpoint = 'https://formspree.io/f/xeenlknb';
 
     const submissionEmail = 'contact@flotionrecords.com';
     // ----------------------------
@@ -356,24 +356,23 @@
     }
 
     async function sendSubmission(submission) {
-        // Try Web3Forms first
-        if (web3formsKey && !web3formsKey.startsWith('WEB3FORMS_')) {
-            const fd = new FormData();
-            fd.append('access_key', web3formsKey);
-            fd.append('subject', '[Flotion] ' + submission.tier + ' submission: ' + submission.artist);
-            fd.append('from_name', 'Flotion Submission Form');
-            fd.append('replyto', submission.email);
-            for (const [k, v] of Object.entries(submission)) {
-                fd.append(k, String(v ?? ''));
-            }
-            // Optional file attachment for paid uploads
-            if (submission._file) fd.append('attachment', submission._file);
-            try {
-                const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
-                return r.ok;
-            } catch (e) { return false; }
+        if (!formspreeEndpoint || formspreeEndpoint.includes('FORMSPREE_')) return false;
+        const fd = new FormData();
+        fd.append('_subject', '[Flotion] ' + submission.tier + ' submission: ' + submission.artist);
+        fd.append('_replyto', submission.email);
+        for (const [k, v] of Object.entries(submission)) {
+            if (k === '_file') continue;
+            fd.append(k, String(v ?? ''));
         }
-        return false;
+        if (submission._file) fd.append('attachment', submission._file);
+        try {
+            const r = await fetch(formspreeEndpoint, {
+                method: 'POST',
+                body: fd,
+                headers: { 'Accept': 'application/json' },
+            });
+            return r.ok;
+        } catch (e) { return false; }
     }
 
     payBtn.addEventListener('click', async () => {
@@ -416,7 +415,7 @@
         payBtn.disabled = true;
         payBtn.textContent = 'Submitting...';
 
-        // Send submission details to Web3Forms (so we receive the data)
+        // POST submission details to Formspree (so we receive the data)
         const sent = await sendSubmission(submission);
 
         if (pkg.value === 'free') {

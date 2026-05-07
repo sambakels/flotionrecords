@@ -309,8 +309,8 @@
 
     <script src="script.js"></script>
     <script>
-    // Web3Forms access key. Same key as order.html. Replace with real key.
-    const web3formsKey = 'c1ecab70-c1b4-4d7d-bacf-76e20794db2b';
+    // Formspree endpoint. Same as order.html. Whitelisted by major AV vendors.
+    const formspreeEndpoint = 'https://formspree.io/f/xeenlknb';
 
     const btn = document.getElementById('curApplyBtn');
     btn.addEventListener('click', async () => {
@@ -345,15 +345,17 @@
             timestamp: new Date().toISOString(),
         };
 
-        if (web3formsKey && !web3formsKey.startsWith('WEB3FORMS_')) {
+        if (formspreeEndpoint && !formspreeEndpoint.includes('FORMSPREE_')) {
             const fd = new FormData();
-            fd.append('access_key', web3formsKey);
-            fd.append('subject', '[Flotion] Curator application: ' + name);
-            fd.append('from_name', 'Flotion Curator Application');
-            fd.append('replyto', email);
+            fd.append('_subject', '[Flotion] Curator application: ' + name);
+            fd.append('_replyto', email);
             for (const [k, v] of Object.entries(submission)) fd.append(k, String(v ?? ''));
             try {
-                const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
+                const r = await fetch(formspreeEndpoint, {
+                    method: 'POST',
+                    body: fd,
+                    headers: { 'Accept': 'application/json' },
+                });
                 if (r.ok) {
                     window.location.href = 'curator-thanks.html';
                     return;
