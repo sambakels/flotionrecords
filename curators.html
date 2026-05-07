@@ -20,9 +20,15 @@
     .curator-hero h1{font-size:clamp(2.4rem,6vw,4rem);font-weight:900;line-height:1.05;margin-bottom:1rem}
     .curator-hero .lead{font-size:1.05rem;color:var(--text-60);max-width:640px;margin:0 auto 2rem;line-height:1.6}
     .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:2.5rem 0}
-    .stat-box{padding:1.4rem 1.2rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;text-align:center}
-    .stat-box .stat-num{font-size:2.2rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.05}
-    .stat-box .stat-lbl{font-size:.72rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.1em;margin-top:.4rem;font-weight:600}
+    .stat-box{padding:1.6rem 1.2rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;text-align:center}
+    .stat-box .stat-text{font-size:1.5rem;font-weight:800;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;letter-spacing:-.01em}
+    .stat-box .stat-lbl{font-size:.72rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.1em;margin-top:.5rem;font-weight:600;line-height:1.4}
+    .stat-icon{width:38px;height:38px;margin:0 auto .6rem;border-radius:50%;background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(59,130,246,.12));display:flex;align-items:center;justify-content:center;color:#22c55e}
+    .order-card input[type="checkbox"]{width:18px;height:18px;padding:0;border-radius:4px;accent-color:#8b5cf6;cursor:pointer;flex-shrink:0;background:none;backdrop-filter:none}
+    .form-section{padding:1.4rem 0;border-bottom:1px solid var(--glass-border)}
+    .form-section:last-of-type{border-bottom:none}
+    .form-section-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--text-50);margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+    .form-section-title .num{display:inline-flex;width:22px;height:22px;border-radius:50%;background:var(--gradient);color:#fff;font-weight:800;align-items:center;justify-content:center;font-size:.7rem;letter-spacing:0}
     .step-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin:1.5rem 0}
     .step-card{padding:1.4rem;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;position:relative}
     .step-card .step-icon{width:42px;height:42px;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;margin-bottom:.8rem}
@@ -80,15 +86,24 @@
         <div class="container" style="max-width:880px">
             <div class="stat-row">
                 <div class="stat-box">
-                    <div class="stat-num">Performance-based</div>
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <div class="stat-text">Performance-based</div>
                     <div class="stat-lbl">You earn from the streams you drive</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-num">SEPA</div>
-                    <div class="stat-lbl">Free monthly EU payouts</div>
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                    </div>
+                    <div class="stat-text">SEPA payouts</div>
+                    <div class="stat-lbl">Free monthly EU transfers</div>
                 </div>
                 <div class="stat-box">
-                    <div class="stat-num">No fees</div>
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                    </div>
+                    <div class="stat-text">No fees</div>
                     <div class="stat-lbl">Free to apply, free to stay listed</div>
                 </div>
             </div>
@@ -172,61 +187,70 @@
             </div>
             <p class="section-intro reveal">Manual review takes 5 to 10 days. We'll reply via email either way. No fee to apply. If approved, we'll send you onboarding instructions including the exact payout rates for your tier.</p>
 
-            <div class="card card-lg reveal">
-                <div class="demo-form-grid">
-                    <div class="form-field">
-                        <label for="cur-name">Full name</label>
-                        <input type="text" id="cur-name" placeholder="Your full name" required>
-                    </div>
-                    <div class="form-field">
-                        <label for="cur-email">Email</label>
-                        <input type="email" id="cur-email" placeholder="your@email.com" required>
-                    </div>
-                    <div class="form-field">
-                        <label for="cur-country">Country</label>
-                        <input type="text" id="cur-country" placeholder="Netherlands" required>
-                    </div>
-                    <div class="form-field">
-                        <label for="cur-spotify">Your Spotify profile URL</label>
-                        <input type="url" id="cur-spotify" placeholder="https://open.spotify.com/user/..." required>
-                    </div>
-                </div>
-
-                <div class="form-field">
-                    <label for="cur-playlists">Playlist URL(s) you curate <span style="color:var(--text-50);font-weight:400;font-size:.75rem">one per line</span></label>
-                    <textarea id="cur-playlists" rows="3" placeholder="https://open.spotify.com/playlist/...&#10;https://open.spotify.com/playlist/..." required></textarea>
-                </div>
-
-                <div class="demo-form-grid">
-                    <div class="form-field">
-                        <label for="cur-followers">Combined followers across your playlists</label>
-                        <input type="text" id="cur-followers" placeholder="e.g. 1,200" required>
-                    </div>
-                    <div class="form-field">
-                        <label for="cur-genres">Primary genre(s) you accept</label>
-                        <input type="text" id="cur-genres" placeholder="House, Deep House, Ibiza" required>
+            <div class="card card-lg order-card reveal" style="padding:2rem">
+                <div class="form-section">
+                    <div class="form-section-title"><span class="num">1</span>About you</div>
+                    <div class="demo-form-grid">
+                        <div class="form-field">
+                            <label for="cur-name">Full name</label>
+                            <input type="text" id="cur-name" placeholder="Your full name" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="cur-email">Email</label>
+                            <input type="email" id="cur-email" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="cur-country">Country</label>
+                            <input type="text" id="cur-country" placeholder="Netherlands" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="cur-spotify">Your Spotify profile URL</label>
+                            <input type="url" id="cur-spotify" placeholder="https://open.spotify.com/user/..." required>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-field">
-                    <label for="cur-monthly">Approximate monthly streams across your playlists <span style="color:var(--text-50);font-weight:400;font-size:.75rem">from Spotify for Artists</span></label>
-                    <input type="text" id="cur-monthly" placeholder="e.g. 50,000" required>
+                <div class="form-section">
+                    <div class="form-section-title"><span class="num">2</span>Your playlists</div>
+                    <div class="form-field">
+                        <label for="cur-playlists">Playlist URL(s) you curate <span style="color:var(--text-50);font-weight:400;font-size:.75rem">one per line</span></label>
+                        <textarea id="cur-playlists" rows="3" placeholder="https://open.spotify.com/playlist/...&#10;https://open.spotify.com/playlist/..." required></textarea>
+                    </div>
+                    <div class="demo-form-grid">
+                        <div class="form-field">
+                            <label for="cur-followers">Combined followers</label>
+                            <input type="text" id="cur-followers" placeholder="e.g. 1,200" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="cur-genres">Primary genre(s)</label>
+                            <input type="text" id="cur-genres" placeholder="House, Deep House, Ibiza" required>
+                        </div>
+                    </div>
+                    <div class="form-field">
+                        <label for="cur-monthly">Approximate monthly streams across your playlists <span style="color:var(--text-50);font-weight:400;font-size:.75rem">from Spotify for Artists</span></label>
+                        <input type="text" id="cur-monthly" placeholder="e.g. 50,000" required>
+                    </div>
                 </div>
 
-                <div class="form-field">
-                    <label for="cur-bio">About you and your curation style</label>
-                    <textarea id="cur-bio" rows="4" placeholder="Tell us about your taste, why artists should want to be on your playlist, how you select tracks, anything that makes you stand out..." required></textarea>
+                <div class="form-section">
+                    <div class="form-section-title"><span class="num">3</span>Your curation</div>
+                    <div class="form-field">
+                        <label for="cur-bio">Tell us about yourself and your curation style</label>
+                        <textarea id="cur-bio" rows="5" placeholder="What's your taste? Why should artists want to be on your playlist? How do you select tracks? What makes you stand out as a curator?" required></textarea>
+                    </div>
                 </div>
 
-                <div class="form-field">
-                    <label style="display:flex;align-items:flex-start;gap:.6rem;cursor:pointer;font-size:.85rem;line-height:1.5">
-                        <input type="checkbox" id="cur-agree" required style="margin-top:.2rem">
-                        <span>I confirm my followers are organic (no bots), my playlists are genuinely curated, and I commit to honest, professional feedback.</span>
+                <div class="form-section">
+                    <label style="display:flex;align-items:flex-start;gap:.7rem;cursor:pointer;font-size:.85rem;line-height:1.5;color:var(--text-70,#fff);padding:1rem 1.1rem;background:rgba(34,197,94,.04);border:1px solid rgba(34,197,94,.18);border-radius:12px">
+                        <input type="checkbox" id="cur-agree" required>
+                        <span>I confirm my followers are organic (no bots), my playlists are genuinely curated, and I commit to honest, professional feedback on every submission I review.</span>
                     </label>
                 </div>
 
-                <button class="btn btn-color pricing-btn" id="curApplyBtn" type="button">Submit application</button>
-                <p style="font-size:.7rem;color:var(--text-30);text-align:center;margin-top:.5rem">By applying you agree to our <a href="terms.html" style="color:var(--blue)">Terms &amp; Conditions</a>.</p>
+                <div style="text-align:center">
+                    <button class="btn btn-color pricing-btn" id="curApplyBtn" type="button" style="min-width:240px">Submit application</button>
+                    <p style="font-size:.7rem;color:var(--text-30);text-align:center;margin-top:.6rem">By applying you agree to our <a href="terms.html" style="color:var(--blue)">Terms &amp; Conditions</a>.</p>
+                </div>
             </div>
         </div>
     </section>
