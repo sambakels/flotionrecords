@@ -75,10 +75,6 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
                     Track Review
                 </a>
-                <a href="#meta-ads" class="tab-link">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    Meta Ads
-                </a>
                 <a href="#sync-licensing" class="tab-link">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                     Sync Licensing
@@ -215,51 +211,6 @@
         </div>
     </section>
 
-    <!-- Meta Ads -->
-    <section class="section" id="meta-ads">
-        <div class="container">
-            <div class="section-head">
-                <span class="tag reveal">Paid Promotion</span>
-                <h2 class="reveal">Meta <span class="gradient-text">Ads</span></h2>
-            </div>
-            <div class="card card-lg reveal">
-                <div class="sync-grid">
-                    <div class="sync-info">
-                        <h3>Professional ad campaigns for your music</h3>
-                        <p class="lead">We run targeted Meta (Instagram &amp; Facebook) ad campaigns for your track, playlist, album, or artist profile. You provide the budget, we handle everything from creative design to audience targeting and optimization.</p>
-                        <ul class="sync-perks">
-                            <li>We create high-quality ad creatives</li>
-                            <li>Targeted audiences based on genre and demographics</li>
-                            <li>Works for singles, playlists, albums, or artist profiles</li>
-                            <li>Daily reporting and optimization</li>
-                            <li>You only pay 20% on top of your daily ad budget</li>
-                            <li>We handle the full setup, you do nothing</li>
-                        </ul>
-                        <a href="ads.html" class="btn btn-color">Start a Campaign</a>
-                    </div>
-                    <div class="sync-pricing">
-                        <div class="card sync-tier">
-                            <strong>Starter</strong>
-                            <div class="sync-price">7 days</div>
-                            <p>&euro;10/day minimum budget + 20% management fee</p>
-                        </div>
-                        <div class="card sync-tier pricing-featured" style="border-color: rgba(139,92,246,0.3);">
-                            <div class="pricing-popular">Recommended</div>
-                            <strong>Growth</strong>
-                            <div class="sync-price">14 days</div>
-                            <p>&euro;20/day budget + 20% management fee. Best results with longer runtime.</p>
-                        </div>
-                        <div class="card sync-tier">
-                            <strong>Custom</strong>
-                            <div class="sync-price">You decide</div>
-                            <p>&euro;10-200/day, 7-60 days. Choose your own budget, duration and target countries.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <!-- Sync Licensing -->
     <section class="section" id="sync-licensing">
         <div class="container">
@@ -321,7 +272,7 @@
                             </div>
                             <strong>Album</strong>
                             <div class="custom-price">&euro;99</div>
-                            <p>10-track album in 1 genre of your choice. Includes a full marketing strategy with 5% discount on Meta Ads daily budget.</p>
+                            <p>10-track album in 1 genre of your choice. Includes a full marketing strategy.</p>
                         </div>
                         <div class="card custom-item">
                             <div class="custom-icon">
@@ -329,7 +280,7 @@
                             </div>
                             <strong>Triple Album</strong>
                             <div class="custom-price">&euro;249</div>
-                            <p>3 albums of 10 tracks each. Each album can be a different genre. Includes marketing strategy with 10% discount on Meta Ads daily budget.</p>
+                            <p>3 albums of 10 tracks each. Each album can be a different genre. Includes marketing strategy.</p>
                         </div>
                         <div class="card custom-item">
                             <div class="custom-icon">
@@ -376,7 +327,7 @@
     <script>
     // Tab click with offset for sticky header
     const tabLinks = document.querySelectorAll('.tab-link');
-    const tabSections = ['track-review', 'meta-ads', 'sync-licensing', 'custom-music'];
+    const tabSections = ['track-review', 'sync-licensing', 'custom-music'];
 
     tabLinks.forEach(link => {
         link.addEventListener('click', (e) => {
