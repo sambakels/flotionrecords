@@ -1128,7 +1128,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
 
 .tabs-row {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.4rem;
 }
 
