@@ -1,4 +1,42 @@
-/* FLOTION RECORDS — Liquid Glass */
+/* FLOTION RECORDS - Liquid Glass */
+
+// Cookie consent banner. Shows on first visit. Decision is stored in
+// localStorage and read by the inline gtag script in each page's <head>,
+// which uses Google's Consent Mode v2 to keep analytics_storage denied
+// until consent is granted.
+(function () {
+    var key = 'flotion_cookie_consent';
+    if (localStorage.getItem(key)) return;
+    function build() {
+        if (!document.body) { setTimeout(build, 50); return; }
+        var b = document.createElement('div');
+        b.className = 'cookie-banner';
+        b.setAttribute('role', 'dialog');
+        b.setAttribute('aria-label', 'Cookie consent');
+        b.innerHTML =
+            '<div class="cookie-banner-text">We use minimal cookies for anonymised site analytics. ' +
+            '<a href="privacy.html">Read our privacy statement</a>.</div>' +
+            '<div class="cookie-banner-buttons">' +
+                '<button class="decline" type="button">Decline</button>' +
+                '<button class="accept" type="button">Accept</button>' +
+            '</div>';
+        document.body.appendChild(b);
+        b.querySelector('.accept').addEventListener('click', function () {
+            localStorage.setItem(key, 'granted');
+            if (window.gtag) window.gtag('consent', 'update', { analytics_storage: 'granted' });
+            b.remove();
+        });
+        b.querySelector('.decline').addEventListener('click', function () {
+            localStorage.setItem(key, 'denied');
+            b.remove();
+        });
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', build);
+    } else {
+        build();
+    }
+})();
 
 // Ripple
 document.addEventListener('click', e => {
