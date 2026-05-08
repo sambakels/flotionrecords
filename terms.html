@@ -23,12 +23,17 @@
     }
     .terms-toc{margin:0 0 2rem;padding:1.2rem 1.4rem;background:rgba(255,255,255,.02);border:1px solid var(--glass-border);border-radius:14px}
     .terms-toc-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text-50);font-weight:700;margin-bottom:.6rem}
-    .terms-toc ol{column-count:2;column-gap:1.4rem;margin:0;padding-left:1.2rem;font-size:.85rem;line-height:1.7}
-    @media(max-width:560px){.terms-toc ol{column-count:1}}
-    .terms-toc a{color:var(--text-80,#fff);text-decoration:none}
-    .terms-toc a:hover{color:#8b5cf6}
+    .terms-toc ul.toc-list{display:grid;grid-template-columns:1fr 1fr;gap:.3rem .8rem;margin:0;padding:0;list-style:none}
+    .terms-toc ul.toc-list li{position:static;padding:0;font-size:.82rem;line-height:1.5;color:var(--text-60)}
+    .terms-toc ul.toc-list li::before{display:none}
+    .terms-toc ul.toc-list a{color:var(--text-80,#fff);text-decoration:none}
+    .terms-toc ul.toc-list a:hover{color:#8b5cf6}
+    @media(max-width:560px){.terms-toc ul.toc-list{grid-template-columns:1fr}}
     .terms-content h3{scroll-margin-top:90px}
-    .highlight-box{margin:1rem 0;padding:1rem 1.2rem;background:rgba(139,92,246,.06);border-left:3px solid #8b5cf6;border-radius:0 10px 10px 0;font-size:.88rem;line-height:1.6}
+    .terms-content h4{font-size:.95rem;font-weight:700;margin:1.2rem 0 .5rem;color:var(--text-80,#fff)}
+    .highlight-box{margin:1rem 0;padding:1rem 1.2rem;background:rgba(139,92,246,.06);border-left:3px solid #8b5cf6;border-radius:0 10px 10px 0;font-size:.88rem;line-height:1.6;color:var(--text-70,#fff)}
+    /* Force terms content to render immediately (no .reveal opacity animation) */
+    .terms-page-content{opacity:1!important;transform:none!important}
     </style>
 </head>
 <body>
@@ -64,7 +69,7 @@
             </div>
             <p class="order-subtitle reveal">Last updated: 8 May 2026 &middot; Version 2.0</p>
 
-            <div class="card card-lg reveal terms-content">
+            <div class="card card-lg terms-content terms-page-content">
 
                 <div class="highlight-box">
                     <strong>Plain summary (this is just a summary, the actual terms below control):</strong>
@@ -73,28 +78,28 @@
 
                 <div class="terms-toc">
                     <div class="terms-toc-title">Contents</div>
-                    <ol>
-                        <li><a href="#s1">Definitions</a></li>
-                        <li><a href="#s2">Acceptance and changes</a></li>
-                        <li><a href="#s3">Eligibility and account</a></li>
-                        <li><a href="#s4">Track Review service</a></li>
-                        <li><a href="#s5">Curator Network</a></li>
-                        <li><a href="#s6">Sync Licensing</a></li>
-                        <li><a href="#s7">Music on Demand</a></li>
-                        <li><a href="#s8">Label demo submissions</a></li>
-                        <li><a href="#s9">Payments, taxes and refunds</a></li>
-                        <li><a href="#s10">Your obligations and warranties</a></li>
-                        <li><a href="#s11">Intellectual property</a></li>
-                        <li><a href="#s12">Disclaimers (no warranties)</a></li>
-                        <li><a href="#s13">Limitation of liability</a></li>
-                        <li><a href="#s14">Indemnification</a></li>
-                        <li><a href="#s15">Termination and suspension</a></li>
-                        <li><a href="#s16">Force majeure</a></li>
-                        <li><a href="#s17">Governing law and disputes</a></li>
-                        <li><a href="#s18">Privacy and data protection</a></li>
-                        <li><a href="#s19">Miscellaneous</a></li>
-                        <li><a href="#s20">Contact</a></li>
-                    </ol>
+                    <ul class="toc-list">
+                        <li>1. <a href="#s1">Definitions</a></li>
+                        <li>2. <a href="#s2">Acceptance and changes</a></li>
+                        <li>3. <a href="#s3">Eligibility and account</a></li>
+                        <li>4. <a href="#s4">Track Review service</a></li>
+                        <li>5. <a href="#s5">Curator Network</a></li>
+                        <li>6. <a href="#s6">Sync Licensing</a></li>
+                        <li>7. <a href="#s7">Music on Demand</a></li>
+                        <li>8. <a href="#s8">Label demo submissions</a></li>
+                        <li>9. <a href="#s9">Payments, taxes and refunds</a></li>
+                        <li>10. <a href="#s10">Your obligations and warranties</a></li>
+                        <li>11. <a href="#s11">Intellectual property</a></li>
+                        <li>12. <a href="#s12">Disclaimers (no warranties)</a></li>
+                        <li>13. <a href="#s13">Limitation of liability</a></li>
+                        <li>14. <a href="#s14">Indemnification</a></li>
+                        <li>15. <a href="#s15">Termination and suspension</a></li>
+                        <li>16. <a href="#s16">Force majeure</a></li>
+                        <li>17. <a href="#s17">Governing law and disputes</a></li>
+                        <li>18. <a href="#s18">Privacy and data protection</a></li>
+                        <li>19. <a href="#s19">Miscellaneous</a></li>
+                        <li>20. <a href="#s20">Contact</a></li>
+                    </ul>
                 </div>
 
                 <h3 id="s1">1. Definitions</h3>
