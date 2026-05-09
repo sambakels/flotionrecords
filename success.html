@@ -179,6 +179,39 @@
 
         // If user uploaded a file, hint about the >50MB fallback
         document.getElementById('upload-fallback').style.display = '';
+
+        // GA4 conversion event: a successful submission landing on this page.
+        // Dedupes via the submission ID so refreshes don't double-count.
+        if (window.gtag && id) {
+            var seenKey = 'flotion_ga_logged_' + id;
+            try {
+                if (!sessionStorage.getItem(seenKey)) {
+                    sessionStorage.setItem(seenKey, '1');
+                    var tierValue = { standard: 3, express: 6, detailed: 10, free: 0 }[tier] || 0;
+                    gtag('event', 'submission_complete', {
+                        submission_id: id,
+                        tier: tier || 'unknown',
+                        value: tierValue,
+                        currency: 'EUR',
+                    });
+                    if (tierValue > 0) {
+                        // Standard ecommerce purchase event so GA4 sees the revenue
+                        gtag('event', 'purchase', {
+                            transaction_id: id,
+                            value: tierValue,
+                            currency: 'EUR',
+                            items: [{
+                                item_id: 'track_review_' + (tier || 'unknown'),
+                                item_name: 'Track Review (' + (tier || 'unknown') + ')',
+                                item_category: 'track-review',
+                                price: tierValue,
+                                quantity: 1,
+                            }],
+                        });
+                    }
+                }
+            } catch (e) {}
+        }
     })();
     </script>
 </body>
