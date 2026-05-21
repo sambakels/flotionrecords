@@ -200,8 +200,33 @@ if (demoLink) {
     if (demoLink.value) renderPreview(demoLink.value);
 }
 
-// Demo form submit -> Formspree
+// Demo form submit -> Formspree, then swap form for in-card success state
 const demoForm = document.getElementById('demoForm');
+const demoSuccess = document.getElementById('demoSuccess');
+const demoSuccessArtist = document.getElementById('demoSuccessArtist');
+const demoSuccessEmail = document.getElementById('demoSuccessEmail');
+const demoResetBtn = document.getElementById('demoResetBtn');
+
+function showDemoSuccess(artist, email) {
+    if (!demoSuccess) return false;
+    if (demoSuccessArtist) demoSuccessArtist.textContent = artist || 'there';
+    if (demoSuccessEmail) demoSuccessEmail.textContent = email || 'your email';
+    demoForm.style.display = 'none';
+    demoSuccess.hidden = false;
+    demoSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return true;
+}
+
+function resetDemoForm() {
+    if (!demoForm) return;
+    demoForm.reset();
+    if (trackPreview) { trackPreview.hidden = true; trackPreview.innerHTML = ''; }
+    const b = demoForm.querySelector('.btn');
+    if (b) { b.textContent = 'Submit Demo'; b.disabled = false; }
+    demoForm.style.display = '';
+    if (demoSuccess) demoSuccess.hidden = true;
+}
+
 if (demoForm) demoForm.addEventListener('submit', e => {
     e.preventDefault();
     const b = demoForm.querySelector('.btn'), o = b.textContent;
@@ -209,9 +234,11 @@ if (demoForm) demoForm.addEventListener('submit', e => {
     b.disabled = true;
 
     const fd = new FormData(demoForm);
-    fd.append('_subject', '[Flotion DEMO] ' + (fd.get('artist-name') || 'Unknown') + ' / ' + (fd.get('track-title') || ''));
-    const replyto = fd.get('email');
-    if (replyto) fd.append('_replyto', replyto);
+    const artist = (fd.get('artist-name') || '').toString().trim();
+    const email = (fd.get('email') || '').toString().trim();
+    const track = (fd.get('track-title') || '').toString().trim();
+    fd.append('_subject', '[Flotion DEMO] ' + (artist || 'Unknown') + ' / ' + track);
+    if (email) fd.append('_replyto', email);
 
     fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
@@ -219,10 +246,15 @@ if (demoForm) demoForm.addEventListener('submit', e => {
         headers: { 'Accept': 'application/json' }
     }).then(res => {
         if (res.ok) {
-            b.textContent = 'Demo submitted!';
-            demoForm.reset();
-            if (trackPreview) { trackPreview.hidden = true; trackPreview.innerHTML = ''; }
-            setTimeout(() => { b.textContent = o; b.disabled = false; }, 4000);
+            if (window.gtag) gtag('event', 'demo_submission', {
+                track_genre: (fd.get('genre') || 'unknown').toString(),
+            });
+            if (!showDemoSuccess(artist, email)) {
+                b.textContent = 'Demo submitted!';
+                demoForm.reset();
+                if (trackPreview) { trackPreview.hidden = true; trackPreview.innerHTML = ''; }
+                setTimeout(() => { b.textContent = o; b.disabled = false; }, 4000);
+            }
         } else {
             b.textContent = 'Error, try again';
             b.disabled = false;
@@ -234,6 +266,8 @@ if (demoForm) demoForm.addEventListener('submit', e => {
         setTimeout(() => { b.textContent = o; }, 3000);
     });
 });
+
+if (demoResetBtn) demoResetBtn.addEventListener('click', resetDemoForm);
 
 // Mailto fallback for unreleased material the artist can't link publicly
 const demoMailto = document.getElementById('demoMailto');

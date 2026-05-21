@@ -696,6 +696,60 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .demo-fallback a { color: var(--blue); font-weight: 600; text-decoration: none; }
 .demo-fallback a:hover { text-decoration: underline; }
 
+/* ---- DEMO SUBMISSION SUCCESS STATE ---- */
+.demo-success { text-align: center; padding: 0.5rem 0 0.2rem; animation: trackPreviewIn 0.35s ease both; }
+.demo-success[hidden] { display: none; }
+.demo-success-icon {
+    width: 64px; height: 64px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex; align-items: center; justify-content: center;
+}
+.demo-success h3 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.6rem;
+}
+.demo-success-sub {
+    color: var(--text-60);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 auto 1.6rem;
+    max-width: 460px;
+}
+.demo-next-steps {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+    margin: 0 auto 1.8rem;
+    text-align: left;
+    max-width: 480px;
+}
+.demo-next-steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 0.55rem 0 0.55rem 2.2rem;
+    font-size: 0.88rem;
+    color: var(--text-80);
+    line-height: 1.6;
+}
+.demo-next-steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0.65rem;
+    width: 1.4rem; height: 1.4rem;
+    line-height: 1.4rem;
+    text-align: center;
+    background: var(--gradient);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.75rem;
+    border-radius: 50%;
+}
+
 /* ---- CONTACT ---- */
 .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
 

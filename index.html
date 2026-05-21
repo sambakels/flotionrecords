@@ -273,7 +273,7 @@
                 <div style="display:flex;flex-wrap:wrap;gap:.6rem;margin-bottom:1.4rem;padding:.9rem 1.1rem;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.18);border-radius:12px;font-size:.83rem;color:var(--text-70,#fff);line-height:1.55">
                     <strong style="color:var(--blue);font-weight:700">Looking for something else?</strong>
                     <span>Just want feedback or playlist placement? &rarr; <a href="services.html#track-review" style="color:var(--blue);font-weight:600">Track Review</a> from &euro;3.</span>
-                    <span style="display:block">Run your own playlist? &rarr; <a href="curators.html" style="color:var(--blue);font-weight:600">Apply as a curator</a> and earn 60% per submission.</span>
+                    <span style="display:block">Run your own playlist? &rarr; <a href="curators.html" style="color:var(--blue);font-weight:600">Apply as a curator</a> and get paid for the streams you drive.</span>
                 </div>
                 <form id="demoForm" name="demo-submission" method="POST" class="demo-form">
                     <p style="display:none;" aria-hidden="true"><input name="_gotcha" tabindex="-1" autocomplete="off"></p>
@@ -326,6 +326,19 @@
                     <button type="submit" class="btn btn-color">Submit Demo</button>
                     <p class="demo-fallback">No public link? <a href="#" id="demoMailto">Email your demo straight to A&amp;R &rarr;</a> (attach MP3/WAV up to 25MB, or paste a WeTransfer link).</p>
                 </form>
+                <div id="demoSuccess" class="demo-success" hidden>
+                    <div class="demo-success-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <h3>Demo <span class="gradient-text">received</span></h3>
+                    <p class="demo-success-sub">Thanks <span id="demoSuccessArtist">there</span>! We've logged your submission and will reply to <span id="demoSuccessEmail">your email</span> within <strong>7 days</strong>.</p>
+                    <ol class="demo-next-steps">
+                        <li>Our A&amp;R team listens with full attention to your track and the context you wrote.</li>
+                        <li>If we want to move forward we email you to discuss release terms. No release commitment until we both sign.</li>
+                        <li>If it's not a fit for the label, you still get a short honest note so you know why.</li>
+                    </ol>
+                    <button type="button" id="demoResetBtn" class="btn btn-glass">Submit another track</button>
+                </div>
             </div>
         </div>
     </section>
