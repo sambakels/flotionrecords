@@ -669,6 +669,33 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .file-upload.has-file .file-upload-label { color: var(--text-60); }
 .file-upload.has-file .file-upload-label svg { color: var(--green); }
 
+/* ---- TRACK URL PREVIEW (demo form) ---- */
+.track-preview { margin-top: 0.7rem; animation: trackPreviewIn 0.25s ease both; }
+.track-preview[hidden] { display: none; }
+.track-preview iframe { width: 100%; border: 0; border-radius: 12px; display: block; background: var(--glass); }
+.track-preview-pill {
+    display: flex; align-items: center; gap: 0.7rem;
+    padding: 0.7rem 0.9rem;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    border-radius: 12px; font-size: 0.85rem; color: var(--text-70);
+}
+.track-preview-pill svg { flex-shrink: 0; }
+.track-preview-pill .check { color: #22c55e; }
+.track-preview-pill .url { color: var(--text-50); font-size: 0.75rem; word-break: break-all; flex: 1; }
+.track-preview-pill.error { background: rgba(239,68,68,0.06); border-color: rgba(239,68,68,0.3); color: rgba(239,68,68,0.95); }
+.track-preview-pill.error .check { color: #ef4444; }
+@keyframes trackPreviewIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+.demo-fallback {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--text-50);
+    margin-top: 0.6rem;
+    line-height: 1.55;
+}
+.demo-fallback a { color: var(--blue); font-weight: 600; text-decoration: none; }
+.demo-fallback a:hover { text-decoration: underline; }
+
 /* ---- CONTACT ---- */
 .contact-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
 

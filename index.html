@@ -275,7 +275,7 @@
                     <span>Just want feedback or playlist placement? &rarr; <a href="services.html#track-review" style="color:var(--blue);font-weight:600">Track Review</a> from &euro;3.</span>
                     <span style="display:block">Run your own playlist? &rarr; <a href="curators.html" style="color:var(--blue);font-weight:600">Apply as a curator</a> and earn 60% per submission.</span>
                 </div>
-                <form id="demoForm" name="demo-submission" method="POST" enctype="multipart/form-data" class="demo-form">
+                <form id="demoForm" name="demo-submission" method="POST" class="demo-form">
                     <p style="display:none;" aria-hidden="true"><input name="_gotcha" tabindex="-1" autocomplete="off"></p>
                     <div class="demo-form-grid">
                         <div class="form-field">
@@ -311,24 +311,20 @@
                         </div>
                     </div>
                     <div class="form-field">
+                        <label for="demo-link">Share your track <span style="color:var(--text-50);font-weight:400;font-size:.75rem">Spotify, SoundCloud, YouTube, Apple Music, WeTransfer or Google Drive</span></label>
+                        <input type="url" id="demo-link" name="track-link" placeholder="https://open.spotify.com/track/... or https://wetransfer.com/..." required>
+                        <div id="trackPreview" class="track-preview" hidden></div>
+                    </div>
+                    <div class="form-field">
                         <label for="demo-highlight">Where is the best part of the track? (timestamp or description)</label>
                         <input type="text" id="demo-highlight" name="best-part" placeholder="e.g. Drop at 1:24 or the chorus at 0:45">
                     </div>
                     <div class="form-field">
                         <label for="demo-info">Tell us about yourself and this track</label>
-                        <textarea id="demo-info" name="artist-info" rows="3" placeholder="Short bio, what inspired this track, your Spotify/SoundCloud link, etc."></textarea>
-                    </div>
-                    <div class="form-field">
-                        <label for="demo-file">Upload your demo (MP3 or WAV, max 10MB)</label>
-                        <div class="file-upload" id="fileUpload">
-                            <input type="file" id="demo-file" name="demo-file" accept=".mp3,.wav,audio/mpeg,audio/wav" required>
-                            <div class="file-upload-label">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                                <span id="fileName">Drag and drop or click to upload</span>
-                            </div>
-                        </div>
+                        <textarea id="demo-info" name="artist-info" rows="3" placeholder="Short bio, what inspired this track, references, release plans, etc."></textarea>
                     </div>
                     <button type="submit" class="btn btn-color">Submit Demo</button>
+                    <p class="demo-fallback">No public link? <a href="#" id="demoMailto">Email your demo straight to A&amp;R &rarr;</a> (attach MP3/WAV up to 25MB, or paste a WeTransfer link).</p>
                 </form>
             </div>
         </div>

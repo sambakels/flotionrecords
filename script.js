@@ -124,36 +124,88 @@ document.querySelectorAll('.track').forEach(tr => {
     bar.addEventListener('touchend', () => { drag=false; });
 });
 
-// Demo form
-const demoFile = document.getElementById('demo-file');
-const fileUpload = document.getElementById('fileUpload');
-const fileName = document.getElementById('fileName');
-
-if (demoFile) {
-    demoFile.addEventListener('change', () => {
-        if (demoFile.files.length > 0) {
-            const f = demoFile.files[0];
-            const sizeMB = (f.size / 1024 / 1024).toFixed(1);
-            fileName.textContent = f.name + ' (' + sizeMB + ' MB)';
-            fileUpload.classList.add('has-file');
-        } else {
-            fileName.textContent = 'Drag and drop or click to upload';
-            fileUpload.classList.remove('has-file');
-        }
-    });
-
-    fileUpload.addEventListener('dragover', e => { e.preventDefault(); fileUpload.classList.add('dragover'); });
-    fileUpload.addEventListener('dragleave', () => { fileUpload.classList.remove('dragover'); });
-    fileUpload.addEventListener('drop', () => { fileUpload.classList.remove('dragover'); });
-}
-
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xeenlknb';
 
+// Demo form: track URL preview (Spotify / SoundCloud / YouTube embed,
+// or a simple confirmation pill for other hosts).
+const demoLink = document.getElementById('demo-link');
+const trackPreview = document.getElementById('trackPreview');
+
+function parseTrackUrl(raw) {
+    const url = (raw || '').trim();
+    if (!url) return { type: 'empty' };
+    let parsed;
+    try { parsed = new URL(url); } catch (e) { return { type: 'invalid', url }; }
+    const host = parsed.hostname.replace(/^www\./, '');
+
+    if (host === 'open.spotify.com') {
+        const m = parsed.pathname.match(/^\/(track|album|playlist|episode)\/([a-zA-Z0-9]+)/);
+        if (m) return { type: 'spotify', kind: m[1], id: m[2], embed: 'https://open.spotify.com/embed/' + m[1] + '/' + m[2], url };
+    }
+    if (host === 'soundcloud.com' || host === 'm.soundcloud.com') {
+        return { type: 'soundcloud', url, embed: 'https://w.soundcloud.com/player/?url=' + encodeURIComponent(url) + '&color=%238b5cf6&inverse_colors=false&auto_play=false&show_user=true&visual=false' };
+    }
+    if (host === 'youtube.com' || host === 'm.youtube.com' || host === 'music.youtube.com') {
+        const id = parsed.searchParams.get('v');
+        if (id) return { type: 'youtube', id, embed: 'https://www.youtube.com/embed/' + id, url };
+    }
+    if (host === 'youtu.be') {
+        const id = parsed.pathname.slice(1);
+        if (id) return { type: 'youtube', id, embed: 'https://www.youtube.com/embed/' + id, url };
+    }
+    if (host === 'music.apple.com') return { type: 'apple', label: 'Apple Music', url };
+    if (host === 'wetransfer.com' || host === 'we.tl') return { type: 'wetransfer', label: 'WeTransfer', url };
+    if (host === 'drive.google.com') return { type: 'drive', label: 'Google Drive', url };
+    if (host === 'www.dropbox.com' || host === 'dropbox.com') return { type: 'dropbox', label: 'Dropbox', url };
+    if (host === 'tidal.com' || host === 'listen.tidal.com') return { type: 'tidal', label: 'Tidal', url };
+    return { type: 'link', label: 'External link', url };
+}
+
+function renderPreview(raw) {
+    if (!trackPreview) return;
+    const p = parseTrackUrl(raw);
+    if (p.type === 'empty') { trackPreview.hidden = true; trackPreview.innerHTML = ''; return; }
+    trackPreview.hidden = false;
+
+    if (p.type === 'spotify') {
+        const h = p.kind === 'track' ? 80 : 152;
+        trackPreview.innerHTML = '<iframe src="' + p.embed + '" height="' + h + '" loading="lazy" allow="encrypted-media; autoplay; clipboard-write; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+        return;
+    }
+    if (p.type === 'soundcloud') {
+        trackPreview.innerHTML = '<iframe src="' + p.embed + '" height="120" loading="lazy" allow="autoplay"></iframe>';
+        return;
+    }
+    if (p.type === 'youtube') {
+        trackPreview.innerHTML = '<iframe src="' + p.embed + '" height="200" loading="lazy" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+        return;
+    }
+    if (p.type === 'invalid') {
+        trackPreview.innerHTML = '<div class="track-preview-pill error"><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>That doesn\'t look like a valid URL.</span></div>';
+        return;
+    }
+    // Known host without embed (Apple, WeTransfer, Drive, Dropbox, Tidal, generic link)
+    const label = p.label || 'Link';
+    trackPreview.innerHTML = '<div class="track-preview-pill"><svg class="check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><div><div>' + label + ' link received</div><div class="url">' + p.url + '</div></div></div>';
+}
+
+if (demoLink) {
+    let previewTimer;
+    demoLink.addEventListener('input', () => {
+        clearTimeout(previewTimer);
+        previewTimer = setTimeout(() => renderPreview(demoLink.value), 350);
+    });
+    demoLink.addEventListener('blur', () => renderPreview(demoLink.value));
+    // Run once in case browser auto-filled the field
+    if (demoLink.value) renderPreview(demoLink.value);
+}
+
+// Demo form submit -> Formspree
 const demoForm = document.getElementById('demoForm');
 if (demoForm) demoForm.addEventListener('submit', e => {
     e.preventDefault();
     const b = demoForm.querySelector('.btn'), o = b.textContent;
-    b.textContent = 'Uploading...';
+    b.textContent = 'Submitting...';
     b.disabled = true;
 
     const fd = new FormData(demoForm);
@@ -169,8 +221,7 @@ if (demoForm) demoForm.addEventListener('submit', e => {
         if (res.ok) {
             b.textContent = 'Demo submitted!';
             demoForm.reset();
-            fileName.textContent = 'Drag and drop or click to upload';
-            fileUpload.classList.remove('has-file');
+            if (trackPreview) { trackPreview.hidden = true; trackPreview.innerHTML = ''; }
             setTimeout(() => { b.textContent = o; b.disabled = false; }, 4000);
         } else {
             b.textContent = 'Error, try again';
@@ -182,6 +233,35 @@ if (demoForm) demoForm.addEventListener('submit', e => {
         b.disabled = false;
         setTimeout(() => { b.textContent = o; }, 3000);
     });
+});
+
+// Mailto fallback for unreleased material the artist can't link publicly
+const demoMailto = document.getElementById('demoMailto');
+if (demoMailto) demoMailto.addEventListener('click', e => {
+    e.preventDefault();
+    const v = id => (document.getElementById(id) || {}).value || '';
+    const artist = v('demo-name').trim();
+    const email = v('demo-email').trim();
+    const track = v('demo-track').trim();
+    const genre = v('demo-genre').trim();
+    const highlight = v('demo-highlight').trim();
+    const info = v('demo-info').trim();
+    const subject = '[Flotion DEMO] ' + (artist || 'Demo submission') + (track ? ' — ' + track : '');
+    const body = [
+        'Artist / Producer: ' + (artist || '(please fill in)'),
+        'Reply email: ' + (email || '(please fill in)'),
+        'Track title: ' + (track || '(please fill in)'),
+        'Genre: ' + (genre || '(please fill in)'),
+        'Best part: ' + (highlight || '-'),
+        '',
+        'About the track:',
+        info || '(please describe yourself and this track)',
+        '',
+        '---',
+        'Attach your demo file (MP3 or WAV, max 25MB) to this email,',
+        'or paste a WeTransfer / Google Drive / Dropbox link below.'
+    ].join('\n');
+    window.location.href = 'mailto:contact@flotionrecords.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 });
 
 // Contact form via Formspree
