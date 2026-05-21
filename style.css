@@ -25,10 +25,10 @@
     --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-    --blob-opacity: 0.55;
-    --blob-1: #6366f1;
-    --blob-2: #d946ef;
-    --blob-3: #3b82f6;
+    --blob-opacity: 0.85;
+    --blob-1: #818cf8;
+    --blob-2: #f472b6;
+    --blob-3: #38bdf8;
     --nav-bg: rgba(255,255,255,0.45);
     --track-hover: rgba(0,0,0,0.03);
     --track-active: rgba(41,151,255,0.07);
