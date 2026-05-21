@@ -2,50 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://flotionrecords.com/</loc>
-        <lastmod>2026-04-09</lastmod>
+        <lastmod>2026-05-21</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
         <loc>https://flotionrecords.com/services.html</loc>
-        <lastmod>2026-04-09</lastmod>
+        <lastmod>2026-05-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://flotionrecords.com/order.html</loc>
+        <lastmod>2026-05-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://flotionrecords.com/order.html</loc>
-        <lastmod>2026-05-06</lastmod>
+        <loc>https://flotionrecords.com/curators.html</loc>
+        <lastmod>2026-05-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://flotionrecords.com/licensing.html</loc>
+        <lastmod>2026-05-21</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://flotionrecords.com/success.html</loc>
-        <lastmod>2026-05-06</lastmod>
+        <loc>https://flotionrecords.com/custom-music.html</loc>
+        <lastmod>2026-05-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://flotionrecords.com/terms.html</loc>
+        <lastmod>2026-05-21</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
     <url>
-        <loc>https://flotionrecords.com/terms.html</loc>
-        <lastmod>2026-05-06</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.4</priority>
-    </url>
-    <url>
-        <loc>https://flotionrecords.com/curators.html</loc>
-        <lastmod>2026-05-06</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
         <loc>https://flotionrecords.com/privacy.html</loc>
-        <lastmod>2026-05-08</lastmod>
+        <lastmod>2026-05-21</lastmod>
         <changefreq>yearly</changefreq>
-        <priority>0.4</priority>
-    </url>
-    <url>
-        <loc>https://flotionrecords.com/curator-thanks.html</loc>
-        <lastmod>2026-05-06</lastmod>
-        <changefreq>yearly</changefreq>
-        <priority>0.2</priority>
+        <priority>0.3</priority>
     </url>
 </urlset>

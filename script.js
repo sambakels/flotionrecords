@@ -147,6 +147,8 @@ if (demoFile) {
     fileUpload.addEventListener('drop', () => { fileUpload.classList.remove('dragover'); });
 }
 
+const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xeenlknb';
+
 const demoForm = document.getElementById('demoForm');
 if (demoForm) demoForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -154,9 +156,15 @@ if (demoForm) demoForm.addEventListener('submit', e => {
     b.textContent = 'Uploading...';
     b.disabled = true;
 
-    fetch('/', {
+    const fd = new FormData(demoForm);
+    fd.append('_subject', '[Flotion DEMO] ' + (fd.get('artist-name') || 'Unknown') + ' / ' + (fd.get('track-title') || ''));
+    const replyto = fd.get('email');
+    if (replyto) fd.append('_replyto', replyto);
+
+    fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
-        body: new FormData(demoForm)
+        body: fd,
+        headers: { 'Accept': 'application/json' }
     }).then(res => {
         if (res.ok) {
             b.textContent = 'Demo submitted!';
@@ -176,7 +184,7 @@ if (demoForm) demoForm.addEventListener('submit', e => {
     });
 });
 
-// Contact form (Netlify)
+// Contact form via Formspree
 const form = document.getElementById('contactForm');
 if (form) form.addEventListener('submit', e => {
     e.preventDefault();
@@ -184,10 +192,15 @@ if (form) form.addEventListener('submit', e => {
     b.textContent = 'Sending...';
     b.disabled = true;
 
-    fetch('/', {
+    const fd = new FormData(form);
+    fd.append('_subject', '[Flotion CONTACT] ' + (fd.get('subject') || 'General') + ' - ' + (fd.get('name') || 'Unknown'));
+    const replyto = fd.get('email');
+    if (replyto) fd.append('_replyto', replyto);
+
+    fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(new FormData(form)).toString()
+        body: fd,
+        headers: { 'Accept': 'application/json' }
     }).then(res => {
         if (res.ok) {
             b.textContent = 'Sent!';
