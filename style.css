@@ -2,13 +2,13 @@
    FLOTION RECORDS — Liquid Glass Light
    ======================================== */
 :root {
-    --bg: #e8e9f0;
-    --surface: rgba(255,255,255,0.55);
-    --glass: rgba(255,255,255,0.25);
-    --glass-border: rgba(255,255,255,0.45);
-    --glass-shadow: rgba(0,0,0,0.06);
+    --bg: #dadce5;
+    --surface: rgba(255,255,255,0.50);
+    --glass: rgba(255,255,255,0.30);
+    --glass-border: rgba(255,255,255,0.50);
+    --glass-shadow: rgba(0,0,0,0.08);
     --glass-blur: 40px;
-    --glass-inner: inset 0 1px 0 rgba(255,255,255,0.5), inset 0 -1px 0 rgba(255,255,255,0.1);
+    --glass-inner: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(0,0,0,0.02);
     --text: #1a1a2e;
     --text-90: rgba(26,26,46,0.92);
     --text-80: rgba(26,26,46,0.85);
@@ -25,14 +25,14 @@
     --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-    --blob-opacity: 0.45;
-    --nav-bg: rgba(255,255,255,0.4);
-    --track-hover: rgba(0,0,0,0.02);
-    --track-active: rgba(41,151,255,0.06);
-    --input-bg: rgba(255,255,255,0.35);
-    --input-focus: rgba(255,255,255,0.55);
-    --mobile-menu-bg: rgba(226,228,234,0.97);
-    --form-option-bg: #f5f5f5;
+    --blob-opacity: 0.32;
+    --nav-bg: rgba(255,255,255,0.45);
+    --track-hover: rgba(0,0,0,0.03);
+    --track-active: rgba(41,151,255,0.07);
+    --input-bg: rgba(255,255,255,0.40);
+    --input-focus: rgba(255,255,255,0.60);
+    --mobile-menu-bg: rgba(218,220,229,0.97);
+    --form-option-bg: #ebeef3;
 }
 
 /* Dark mode */
