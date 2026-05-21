@@ -284,41 +284,41 @@ body.dark .theme-toggle .icon-moon { display: block; }
 
 /* ---- HERO ---- */
 .hero {
-    min-height: 100vh;
+    min-height: 78vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     position: relative;
     z-index: 1;
-    padding: 8rem 2rem 4rem;
+    padding: 7rem 2rem 3.5rem;
 }
 
-.hero-inner { max-width: 720px; }
+.hero-inner { max-width: 760px; }
 
 .hero-tag {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--text-30);
-    margin-bottom: 1.5rem;
-}
-
-.hero-title {
-    font-size: clamp(3rem, 9vw, 6.5rem);
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    line-height: 1;
+    color: var(--text-50);
     margin-bottom: 1.2rem;
 }
 
+.hero-title {
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.4rem;
+}
+
 .hero-sub {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
     color: var(--text-60);
     line-height: 1.6;
-    max-width: 480px;
-    margin: 0 auto 2.5rem;
+    max-width: 540px;
+    margin: 0 auto 2.2rem;
 }
 
 .hero-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
@@ -1516,7 +1516,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .hero { min-height: auto; padding: 5.5rem 1rem 2.5rem; }
     .services-hero { min-height: auto; padding: 5.5rem 1rem 2rem; }
     .hero-inner { max-width: 100%; }
-    .hero-title { font-size: 2.8rem; }
+    .hero-title { font-size: 2rem; line-height: 1.15; }
     .hero-tag { font-size: 0.65rem; letter-spacing: 3px; margin-bottom: 1rem; }
     .hero-sub { font-size: 0.95rem; margin-bottom: 1.5rem; }
 
@@ -1613,7 +1613,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
 }
 
 @media (max-width: 480px) {
-    .hero-title { font-size: 2.2rem; }
+    .hero-title { font-size: 1.7rem; line-height: 1.2; }
     .hero-actions { flex-direction: column; gap: 0.5rem; }
     .hero-actions .btn { width: 100%; }
 
