@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Submission received | Flotion Records</title>
     <meta name="description" content="Your track submission has been received. We'll review it within the agreed window.">
+    <meta name="robots" content="noindex">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="stylesheet" href="style.css">
@@ -68,12 +69,6 @@
         border-radius: 50%;
     }
     .next-steps { counter-reset: step; }
-    @media(max-width:768px){
-        .nav{border-radius:20px!important;transition:border-radius .3s,max-height .3s!important;overflow:hidden!important}
-        .nav-links{position:static!important;display:flex!important;flex-direction:column!important;gap:0.4rem!important;max-height:0!important;overflow:hidden!important;opacity:1!important;pointer-events:auto!important;padding:0 0.8rem!important;transition:max-height .35s ease,padding .35s ease!important;background:none!important}
-        .nav-links.active{max-height:300px!important;padding:0.6rem 0.8rem 0.8rem!important}
-        .nav-links a{font-size:0.82rem!important;font-weight:600!important;padding:0.7rem 1rem!important;border-radius:12px!important;background:linear-gradient(135deg,#3b82f6,#8b5cf6,#d946ef)!important;border:none!important;color:#fff!important;-webkit-text-fill-color:#fff!important;-webkit-background-clip:unset!important;background-clip:unset!important;text-decoration:none!important;text-align:center!important;display:block!important;transition:transform 0.15s!important}
-    }
     </style>
 </head>
 <body>
@@ -107,7 +102,7 @@
                 <div style="width:64px;height:64px;margin:0 auto 1rem;border-radius:50%;background:var(--gradient);display:flex;align-items:center;justify-content:center">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
-                <h2 class="reveal" style="font-size:2rem;margin-bottom:.4rem">Submission <span class="gradient-text">received</span></h2>
+                <h1 class="reveal" style="font-size:2rem;margin-bottom:.4rem">Submission <span class="gradient-text">received</span></h1>
                 <p style="color:var(--text-60);margin-bottom:0">Thanks <span id="artistName">artist</span>! We've got your track.</p>
 
                 <div class="submission-id-box">

@@ -23,13 +23,9 @@
     .nf-links{margin-top:2.5rem;padding-top:1.6rem;border-top:1px solid var(--glass-border)}
     .nf-links-title{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--text-50);font-weight:700;margin-bottom:.8rem}
     .nf-links-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;text-align:left;font-size:.85rem}
-    .nf-links-grid a{color:var(--text-80,#fff);text-decoration:none;padding:.5rem .8rem;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid var(--glass-border);transition:background .2s,border-color .2s}
+    .nf-links-grid a{color:var(--text-80);text-decoration:none;padding:.5rem .8rem;border-radius:8px;background:var(--glass);border:1px solid var(--glass-border);transition:background .2s,border-color .2s}
     .nf-links-grid a:hover{background:rgba(139,92,246,.08);border-color:rgba(139,92,246,.25)}
     @media(max-width:768px){
-        .nav{border-radius:20px!important;transition:border-radius .3s,max-height .3s!important;overflow:hidden!important}
-        .nav-links{position:static!important;display:flex!important;flex-direction:column!important;gap:0.4rem!important;max-height:0!important;overflow:hidden!important;opacity:1!important;pointer-events:auto!important;padding:0 0.8rem!important;transition:max-height .35s ease,padding .35s ease!important;background:none!important}
-        .nav-links.active{max-height:300px!important;padding:0.6rem 0.8rem 0.8rem!important}
-        .nav-links a{font-size:0.82rem!important;font-weight:600!important;padding:0.7rem 1rem!important;border-radius:12px!important;background:linear-gradient(135deg,#3b82f6,#8b5cf6,#d946ef)!important;border:none!important;color:#fff!important;-webkit-text-fill-color:#fff!important;-webkit-background-clip:unset!important;background-clip:unset!important;text-decoration:none!important;text-align:center!important;display:block!important;transition:transform 0.15s!important}
         .nf-links-grid{grid-template-columns:1fr}
     }
     </style>
@@ -62,7 +58,7 @@
     <div class="nf-wrap">
         <div class="nf-card">
             <div class="nf-num">404</div>
-            <div class="nf-title">This track doesn't exist</div>
+            <h1 class="nf-title">This track doesn't exist</h1>
             <div class="nf-sub">The page you're looking for has moved, been removed or never existed. No worries, the rest of Flotion Records is still here.</div>
             <div class="nf-actions">
                 <a href="index.html" class="btn btn-color">Back to home</a>

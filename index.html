@@ -54,15 +54,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-    @media(max-width:768px){
-        .nav{border-radius:20px!important;transition:border-radius .3s,max-height .3s!important;overflow:hidden!important}
-        .nav-links{position:static!important;display:flex!important;flex-direction:column!important;gap:0.4rem!important;max-height:0!important;overflow:hidden!important;opacity:1!important;pointer-events:auto!important;padding:0 0.8rem!important;transition:max-height .35s ease,padding .35s ease!important;background:none!important}
-        .nav-links.active{max-height:300px!important;padding:0.6rem 0.8rem 0.8rem!important}
-        .nav-links a{font-size:0.82rem!important;font-weight:600!important;padding:0.7rem 1rem!important;border-radius:12px!important;background:linear-gradient(135deg,#3b82f6,#8b5cf6,#d946ef)!important;border:none!important;color:#fff!important;-webkit-text-fill-color:#fff!important;-webkit-background-clip:unset!important;background-clip:unset!important;text-decoration:none!important;text-align:center!important;display:block!important;transition:transform 0.15s!important}
-        .nav-links a:active{transform:scale(0.97)!important}
-    }
-    </style>
 </head>
 <body>
     <div class="ripple-container" id="rippleContainer"></div>
@@ -354,15 +345,15 @@
             <div class="card card-lg reveal" style="background:linear-gradient(135deg,rgba(34,197,94,.06),rgba(59,130,246,.04));border:1px solid rgba(34,197,94,.2)">
                 <p class="lead" style="margin-bottom:1.4rem">If you curate a Spotify playlist with real followers, join our curator network. We send you genre-matched submissions. You decide what fits. Earnings are tied to the streams our submissions generate from your playlist, tracked via Spotify for Artists. Quality curators with engaged audiences earn more. No fees to apply.</p>
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.6rem">
-                    <div style="padding:1rem;background:rgba(255,255,255,.03);border-radius:12px;text-align:center">
+                    <div style="padding:1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;text-align:center">
                         <div style="font-size:1.4rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Performance</div>
                         <div style="font-size:.7rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem;font-weight:600">Stream-based payouts</div>
                     </div>
-                    <div style="padding:1rem;background:rgba(255,255,255,.03);border-radius:12px;text-align:center">
+                    <div style="padding:1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;text-align:center">
                         <div style="font-size:1.4rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">SEPA</div>
                         <div style="font-size:.7rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem;font-weight:600">Free EU payouts</div>
                     </div>
-                    <div style="padding:1rem;background:rgba(255,255,255,.03);border-radius:12px;text-align:center">
+                    <div style="padding:1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;text-align:center">
                         <div style="font-size:1.4rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">500+</div>
                         <div style="font-size:.7rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem;font-weight:600">Min. real followers</div>
                     </div>

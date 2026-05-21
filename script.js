@@ -14,7 +14,7 @@
         b.setAttribute('role', 'dialog');
         b.setAttribute('aria-label', 'Cookie consent');
         b.innerHTML =
-            '<div class="cookie-banner-text">We use minimal cookies for anonymised site analytics. ' +
+            '<div class="cookie-banner-text">We use Google Analytics 4 with IP anonymisation to understand site usage. No advertising or tracking cookies. ' +
             '<a href="privacy.html">Read our privacy statement</a>.</div>' +
             '<div class="cookie-banner-buttons">' +
                 '<button class="decline" type="button">Decline</button>' +
