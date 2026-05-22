@@ -1654,17 +1654,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .cprog-step { font-size: 0; gap: 0; }
     .cprog-step span { font-size: 0.6rem; width: 20px; height: 20px; }
 
-    /* Performance: kill all blur on mobile, swap to solid theme-aware fills */
-    *, *::before, *::after { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-    .card { background: rgba(255,255,255,0.55); border-color: var(--glass-border); }
-    body.dark .card { background: rgba(255,255,255,0.07); border-color: var(--glass-border); }
-    .nav { background: rgba(255,255,255,0.85); }
-    body.dark .nav { background: rgba(14,17,23,0.9); }
-    .service-tabs { background: rgba(255,255,255,0.85); }
-    body.dark .service-tabs { background: rgba(14,17,23,0.9); }
-    .clink { background: rgba(255,255,255,0.55); }
-    body.dark .clink { background: rgba(255,255,255,0.06); }
-    .blob { filter: blur(60px); animation: none; opacity: 0.3; }
+    /* Touch ripples don't add value on mobile, but glass + blobs stay
+       intact so the look matches desktop. */
     .ripple-container { display: none; }
 
     /* Marquee */
