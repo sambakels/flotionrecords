@@ -1,5 +1,17 @@
 /* FLOTION RECORDS - Liquid Glass */
 
+// Anti-spam: any form submitted within 3 seconds of page load is almost
+// certainly a bot. Honest humans take longer than 3s to fill out a form.
+// Capture-phase listener so this runs before any per-form handler can
+// fire off a fetch.
+const flotionPageLoaded = Date.now();
+document.addEventListener('submit', function (e) {
+    if (Date.now() - flotionPageLoaded < 3000) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+}, true);
+
 // Cookie consent banner. Shows on first visit. Decision is stored in
 // localStorage and read by the inline gtag script in each page's <head>,
 // which uses Google's Consent Mode v2 to keep analytics_storage denied
