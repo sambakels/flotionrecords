@@ -1,5 +1,5 @@
 /* ========================================
-   FLOTION RECORDS — Liquid Glass Light
+   FLOTION RECORDS - Liquid Glass Light
    ======================================== */
 :root {
     --bg: #d2d5de;
@@ -1818,7 +1818,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
     .cprog-step span { font-size: 0.6rem; width: 20px; height: 20px; }
 
     /* Keep desktop look on mobile, but trim GPU cost:
-       - lighter glass blur (20px instead of 40px) — visually nearly
+       - lighter glass blur (20px instead of 40px) - visually nearly
          identical, halves repaint work on every scroll
        - lighter blob blur (80px instead of 120px)
        - stop the infinite blob animation so the 80px blurred regions

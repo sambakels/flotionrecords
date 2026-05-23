@@ -280,7 +280,7 @@ if (demoMailto) demoMailto.addEventListener('click', e => {
     const genre = v('demo-genre').trim();
     const highlight = v('demo-highlight').trim();
     const info = v('demo-info').trim();
-    const subject = '[Flotion DEMO] ' + (artist || 'Demo submission') + (track ? ' — ' + track : '');
+    const subject = '[Flotion DEMO] ' + (artist || 'Demo submission') + (track ? ' - ' + track : '');
     const body = [
         'Artist / Producer: ' + (artist || '(please fill in)'),
         'Reply email: ' + (email || '(please fill in)'),
