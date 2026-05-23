@@ -865,14 +865,16 @@ body.dark .theme-toggle .icon-moon { display: block; }
     color: var(--text-70);
     line-height: 1.6;
 }
-.article-body a {
+.article-body a:not(.btn) {
     color: var(--blue);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-underline-offset: 2px;
     font-weight: 500;
 }
-.article-body a:hover { color: #8b5cf6; }
+.article-body a:not(.btn):hover { color: #8b5cf6; }
+.article-body .btn { color: #fff; text-decoration: none; }
+.article-body .btn:hover { color: #fff; }
 .article-body strong { color: var(--text-90); font-weight: 700; }
 .article-body em { font-style: italic; color: var(--text-80); }
 .article-body code {
