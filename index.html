@@ -28,25 +28,56 @@
     <meta name="twitter:description" content="Home to 30+ artists and over 10 million streams worldwide.">
     <meta name="twitter:image" content="https://flotionrecords.com/images/og-image.jpg">
 
-    <!-- Structured Data -->
+    <!-- Structured Data: Organization + MusicGroup + WebSite -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "MusicGroup",
-        "name": "Flotion Records",
-        "url": "https://flotionrecords.com",
-        "description": "Independent record label managing 30+ artists with over 10 million streams on Spotify and Apple Music.",
-        "genre": ["Hip-Hop", "R&B", "Electronic", "Pop"],
-        "sameAs": [
-            "https://open.spotify.com/user/31di2lkju4cqfsoyq2twyxfjzlne",
-            "https://www.instagram.com/flotionrecords/",
-            "https://www.tiktok.com/@flotion.records"
-        ],
-        "contactPoint": {
-            "@type": "ContactPoint",
-            "email": "contact@flotionrecords.com",
-            "contactType": "customer service"
-        }
+        "@graph": [
+            {
+                "@type": ["Organization","MusicGroup"],
+                "@id": "https://flotionrecords.com/#organization",
+                "name": "Flotion Records",
+                "alternateName": "Flotion",
+                "url": "https://flotionrecords.com/",
+                "logo": {
+                    "@type": "ImageObject",
+                    "url": "https://flotionrecords.com/apple-touch-icon.png",
+                    "width": 180,
+                    "height": 180
+                },
+                "image": "https://flotionrecords.com/images/og-image.jpg",
+                "description": "Independent record label with 30+ artists and 10M+ streams on Spotify and Apple Music. Distribution, playlist curation, marketing and artist development.",
+                "foundingDate": "2023",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressRegion": "Zuid-Holland",
+                    "addressCountry": "NL"
+                },
+                "vatID": "NL866065994B01",
+                "taxID": "92478875",
+                "genre": ["House","UK Garage","Solo Piano","Ambient","Hip-Hop","R&B","Electronic","Pop"],
+                "sameAs": [
+                    "https://open.spotify.com/user/31di2lkju4cqfsoyq2twyxfjzlne",
+                    "https://www.instagram.com/flotionrecords/",
+                    "https://www.tiktok.com/@flotion.records"
+                ],
+                "contactPoint": {
+                    "@type": "ContactPoint",
+                    "email": "contact@flotionrecords.com",
+                    "contactType": "customer service",
+                    "areaServed": "Worldwide",
+                    "availableLanguage": ["English","Dutch"]
+                }
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://flotionrecords.com/#website",
+                "url": "https://flotionrecords.com/",
+                "name": "Flotion Records",
+                "publisher": {"@id": "https://flotionrecords.com/#organization"},
+                "inLanguage": "en"
+            }
+        ]
     }
     </script>
 

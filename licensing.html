@@ -27,6 +27,30 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "Music Sync Licensing",
+        "description": "License Flotion Records original music for YouTube videos, podcasts, commercials and social media content. Royalty-free, instant delivery, optional commercial and exclusive tiers.",
+        "image": "https://flotionrecords.com/images/og-image.jpg",
+        "brand": {"@type":"Brand","name":"Flotion Records"},
+        "category": "Music licensing",
+        "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "EUR",
+            "lowPrice": "25.00",
+            "highPrice": "75.00",
+            "offerCount": 2,
+            "url": "https://flotionrecords.com/licensing",
+            "availability": "https://schema.org/InStock",
+            "offers": [
+                {"@type":"Offer","name":"Personal Use License","price":"25.00","priceCurrency":"EUR","url":"https://flotionrecords.com/licensing","availability":"https://schema.org/InStock"},
+                {"@type":"Offer","name":"Commercial Use License","price":"75.00","priceCurrency":"EUR","url":"https://flotionrecords.com/licensing","availability":"https://schema.org/InStock"}
+            ]
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type":"ListItem","position":1,"name":"Home","item":"https://flotionrecords.com/"},

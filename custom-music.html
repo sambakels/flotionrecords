@@ -27,6 +27,30 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
+        "@type": "Product",
+        "name": "Custom Music Production",
+        "description": "Custom 10-track album produced from scratch by Flotion Records in your chosen genre. Triple album option for 3 separate genres. Full marketing strategy included.",
+        "image": "https://flotionrecords.com/images/og-image.jpg",
+        "brand": {"@type":"Brand","name":"Flotion Records"},
+        "category": "Music production",
+        "offers": {
+            "@type": "AggregateOffer",
+            "priceCurrency": "EUR",
+            "lowPrice": "99.00",
+            "highPrice": "249.00",
+            "offerCount": 2,
+            "url": "https://flotionrecords.com/custom-music",
+            "availability": "https://schema.org/InStock",
+            "offers": [
+                {"@type":"Offer","name":"Album (10 tracks, 1 genre)","price":"99.00","priceCurrency":"EUR","url":"https://flotionrecords.com/custom-music","availability":"https://schema.org/InStock"},
+                {"@type":"Offer","name":"Triple Album (30 tracks, 3 genres)","price":"249.00","priceCurrency":"EUR","url":"https://flotionrecords.com/custom-music","availability":"https://schema.org/InStock"}
+            ]
+        }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         "itemListElement": [
             {"@type":"ListItem","position":1,"name":"Home","item":"https://flotionrecords.com/"},
