@@ -144,14 +144,13 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     100% { width: 250px; height: 250px; opacity: 0; transform: translate(-50%,-50%); }
 }
 
-/* Gradient text */
+/* Gradient text - static (no animation) so blue text can't briefly
+   land on top of a blue ambient blob and become unreadable */
 .gradient-text {
     background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    background-size: 200% auto;
-    animation: gradShift 6s ease infinite;
 }
 
 @keyframes gradShift {
