@@ -81,6 +81,30 @@ body {
 
 ::selection { background: var(--blue); color: #fff; }
 
+/* Accessibility: respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .blob { animation: none !important; }
+    .marquee-track { animation: none !important; }
+    .gradient-text, .btn-color, .nav-logo, .nav-cta { animation: none !important; }
+}
+
+/* Visible focus state for keyboard users */
+*:focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+.btn:focus-visible { outline-offset: 4px; }
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: none;
+}
+
 /* Ambient blobs */
 .ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 
@@ -375,9 +399,9 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .section { padding: 4.5rem 0; position: relative; z-index: 1; }
 .container { max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
 
-.section-head { text-align: center; margin-bottom: 2.2rem; }
-.section-head h1,
-.section-head h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.15; }
+.section-head { text-align: center; margin-bottom: 2.4rem; }
+.section-head h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+.section-head h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
 
 .tag {
     display: inline-block;
@@ -586,24 +610,30 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .demo-form select,
 .demo-form textarea {
     width: 100%;
-    padding: 0.8rem 1rem;
+    padding: 0.85rem 1rem;
     background: var(--input-bg);
-    backdrop-filter: blur(12px);
     border: 1px solid var(--glass-border);
-    border-radius: 14px;
+    border-radius: 12px;
     color: var(--text);
     font-family: var(--font);
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     outline: none;
-    transition: all 0.3s;
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
+
+.demo-form input::placeholder,
+.demo-form textarea::placeholder { color: var(--text-40); }
+
+.demo-form input:hover,
+.demo-form select:hover,
+.demo-form textarea:hover { border-color: var(--text-40); }
 
 .demo-form input:focus,
 .demo-form select:focus,
 .demo-form textarea:focus {
     border-color: var(--blue);
     background: var(--input-focus);
-    box-shadow: 0 0 0 3px rgba(41,151,255,0.1);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
 }
 
 .demo-form select {
