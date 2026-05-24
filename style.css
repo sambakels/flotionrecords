@@ -21,11 +21,11 @@
     --green: #30d158;
     --pink: #e846a8;
     --orange: #f59e0b;
-    --gradient: linear-gradient(135deg, #3b82f6, #8b5cf6, #d946ef);
+    --gradient: linear-gradient(135deg, #1d4ed8, #6d28d9, #a21caf);
     --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-    --blob-opacity: 0.85;
+    --blob-opacity: 0.45;
     --blob-1: #4f46e5;
     --blob-2: #db2777;
     --blob-3: #2563eb;
@@ -152,10 +152,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.35)) drop-shadow(0 2px 6px rgba(0,0,0,0.3));
-}
-body.dark .gradient-text {
-    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.7)) drop-shadow(0 2px 6px rgba(0,0,0,0.6));
 }
 
 @keyframes gradShift {
