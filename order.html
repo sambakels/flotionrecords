@@ -139,14 +139,6 @@
                                 <div class="package-desc">3+ sentence feedback &middot; production tips</div>
                             </div>
                         </label>
-                        <label class="package-option">
-                            <input type="radio" name="package" value="free" data-price="0" data-time="best-effort">
-                            <div class="package-card">
-                                <div class="package-name">Free</div>
-                                <div class="package-price">&euro;0</div>
-                                <div class="package-desc">Other genres &middot; no time guarantee</div>
-                            </div>
-                        </label>
                     </div>
                 </div>
 
@@ -219,7 +211,7 @@
                                 <option value="lounge-house">Lounge House</option>
                                 <option value="chill-electronic">Chill Electronic</option>
                             </optgroup>
-                            <optgroup label="Other (free tier only)">
+                            <optgroup label="Other (paid review, placement unlikely)">
                                 <option value="hiphop">Hip-Hop / Rap</option>
                                 <option value="rnb">R&amp;B / Soul</option>
                                 <option value="pop">Pop</option>
@@ -319,13 +311,11 @@
         standard: 'Standard',
         express:  'Express',
         detailed: 'Detailed',
-        free:     'Free',
     };
     const windowText = {
         standard: 'Within 72h',
         express:  'Within 24h',
         detailed: 'Within 24-72h',
-        free:     'Best effort, no guarantee',
     };
 
     const radios = document.querySelectorAll('input[name="package"]');
@@ -342,19 +332,12 @@
         const v = r.value;
         const price = r.dataset.price;
         summaryPackage.textContent = packageNames[v];
-        summaryPrice.innerHTML = price === '0' ? 'Free' : '&euro;' + price;
+        summaryPrice.innerHTML = '&euro;' + price;
         summaryWindow.textContent = windowText[v];
-        if (v === 'free') {
-            step4Label.textContent = 'Submit';
-            payBtn.innerHTML = 'Submit for Free';
-            paymentMethods.style.display = 'none';
-            orderGuarantee.innerHTML = 'No charge, no time guarantee, no playlist match. Honest feedback when we have time, usually within a few weeks.';
-        } else {
-            step4Label.textContent = 'Payment';
-            payBtn.innerHTML = 'Pay &euro;' + price + ' and Submit';
-            paymentMethods.style.display = '';
-            orderGuarantee.innerHTML = 'Auto-refund if we miss our ' + windowText[v].toLowerCase().replace('within ','') + ' window. No refund if your track is reviewed but rejected. You accept that risk in exchange for our curator\'s listening time.';
-        }
+        step4Label.textContent = 'Payment';
+        payBtn.innerHTML = 'Pay &euro;' + price + ' and Submit';
+        paymentMethods.style.display = '';
+        orderGuarantee.innerHTML = 'Auto-refund if we miss our ' + windowText[v].toLowerCase().replace('within ','') + ' window. No refund if your track is reviewed but rejected. You accept that risk in exchange for our curator\'s listening time.';
     }
 
     radios.forEach(r => r.addEventListener('change', refreshSummary));
@@ -476,19 +459,6 @@
 
         // POST submission details to Formspree (so we receive the data)
         const sent = await sendSubmission(submission);
-
-        if (pkg.value === 'free') {
-            // Free tier: no Stripe, just confirm
-            if (sent) {
-                window.location.href = 'success?id=' + encodeURIComponent(submissionId) + '&tier=free';
-            } else {
-                // Fallback: open mailto
-                const subject = '[Flotion FREE] ' + name + ' / ' + genre;
-                const body = ['Submission ID: ' + submissionId, 'Artist: ' + name, 'Email: ' + email, 'Genre: ' + genre, 'Track: ' + (isLink ? link : '(unreleased, will email)'), 'Notes: ' + (notes || 'none')].join('\n');
-                window.location.href = 'mailto:' + submissionEmail + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-            }
-            return;
-        }
 
         // Paid tier: redirect to Stripe Payment Link
         const stripeLink = stripeLinks[pkg.value];
