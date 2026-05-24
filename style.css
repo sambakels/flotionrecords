@@ -1673,19 +1673,22 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .genre-pill {
     display: inline-flex;
     align-items: center;
+    gap: 0.3rem;
     padding: 0.45rem 0.85rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.04);
+    background: var(--glass);
     border: 1px solid rgba(139, 92, 246, 0.25);
     font-size: 0.78rem;
     font-weight: 600;
-    color: var(--text-90, #fff);
+    color: var(--text-90);
     letter-spacing: 0.02em;
-    transition: background .2s, border-color .2s;
+    text-decoration: none;
+    transition: background .2s, border-color .2s, transform .15s;
 }
 .genre-pill:hover {
-    background: rgba(139, 92, 246, 0.08);
-    border-color: rgba(139, 92, 246, 0.45);
+    background: rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.55);
+    transform: translateY(-1px);
 }
 
 .pricing-features {
