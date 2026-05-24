@@ -114,7 +114,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     filter: blur(120px);
     opacity: var(--blob-opacity);
     transition: opacity 0.5s;
-    animation: blobFloat 20s ease-in-out infinite alternate;
 }
 
 .blob-1 { width: 600px; height: 600px; background: var(--blob-1); top: -10%; right: -5%; animation-delay: 0s; }
@@ -200,10 +199,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 
 .btn-color {
     background: var(--gradient);
-    background-size: 200% auto;
     color: #fff;
     box-shadow: 0 4px 20px rgba(41,151,255,0.25);
-    animation: gradShift 6s ease infinite;
 }
 
 .btn-color:hover {
@@ -255,8 +252,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    background-size: 200% auto;
-    animation: gradShift 6s ease infinite;
 }
 
 .nav-links { display: flex; align-items: center; gap: 1.5rem; }
@@ -273,8 +268,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 
 .nav-cta {
     background: var(--gradient);
-    background-size: 200% auto;
-    animation: gradShift 6s ease infinite;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -363,7 +356,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
     display: flex;
     align-items: center;
     gap: 2.5rem;
-    animation: marquee 40s linear infinite;
     width: max-content;
     will-change: transform;
 }
@@ -384,8 +376,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
     min-width: 6px;
     border-radius: 50%;
     background: var(--gradient);
-    background-size: 200% auto;
-    animation: gradShift 6s ease infinite;
     display: inline-block;
 }
 
@@ -406,7 +396,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
     display: inline-block;
     font-size: 0.7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
     background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    background-size: 200% auto; animation: gradShift 6s ease infinite;
     margin-bottom: 0.8rem;
 }
 
@@ -637,7 +626,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .pbar { width: 100%; height: 3px; background: rgba(0,0,0,0.06); border-radius: 3px; position: relative; cursor: pointer; transition: height 0.15s; }
 .track:hover .pbar, .track.playing .pbar { height: 4px; }
 
-.pfill { height: 100%; background: var(--gradient); background-size: 200% auto; border-radius: 3px; width: 0%; }
+.pfill { height: 100%; background: var(--gradient); border-radius: 3px; width: 0%; }
 
 .phandle {
     width: 10px; height: 10px; border-radius: 50%; background: var(--blue);
@@ -665,7 +654,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
 
 .step-n {
     width: 28px; height: 28px; border-radius: 50%;
-    background: var(--gradient); background-size: 200% auto; animation: gradShift 6s ease infinite;
+    background: var(--gradient);
     color: #fff; font-size: 0.75rem; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 0.5rem;
@@ -1194,8 +1183,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    background-size: 200% auto;
-    animation: gradShift 6s ease infinite;
     margin: 0.3rem 0;
 }
 
@@ -1207,8 +1194,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
     left: 50%;
     transform: translateX(-50%);
     background: var(--gradient);
-    background-size: 200% auto;
-    animation: gradShift 6s ease infinite;
     color: #fff;
     font-size: 0.6rem;
     font-weight: 700;
@@ -1322,7 +1307,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
 }
 
 .cprog-step.active { color: var(--text-60); }
-.cprog-step.active span { background: var(--gradient); background-size: 200% auto; border: none; color: #fff; }
+.cprog-step.active span { background: var(--gradient); border: none; color: #fff; }
 
 /* Spotify preview */
 .spotify-preview {
@@ -1376,7 +1361,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .strat-rec {
     display: inline-block; font-size: 0.6rem; font-weight: 700;
     letter-spacing: 1px; text-transform: uppercase;
-    background: var(--gradient); background-size: 200% auto; animation: gradShift 6s ease infinite;
+    background: var(--gradient);
     color: #fff; padding: 0.2rem 0.6rem; border-radius: 100px; margin-bottom: 0.5rem;
 }
 
@@ -1415,7 +1400,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
     min-width: 80px; text-align: center;
     font-size: 0.9rem; font-weight: 800;
     background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    background-size: 200% auto; animation: gradShift 6s ease infinite;
 }
 
 .budget-slider {
@@ -1634,8 +1618,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
     left: 50%;
     transform: translateX(-50%);
     background: var(--gradient);
-    background-size: 200% auto;
-    animation: gradShift 6s ease infinite;
     color: #fff;
     font-size: 0.7rem;
     font-weight: 700;
@@ -1662,8 +1644,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    background-size: 200% auto;
-    animation: gradShift 6s ease infinite;
     line-height: 1;
 }
 
@@ -1759,8 +1739,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    background-size: 200% auto;
-    animation: gradShift 6s ease infinite;
     margin: 0.3rem 0;
 }
 
@@ -1800,8 +1778,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    background-size: 200% auto;
-    animation: gradShift 6s ease infinite;
     margin-bottom: 0.5rem;
 }
 
@@ -1835,7 +1811,6 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .footer-logo {
     font-size: 1rem; font-weight: 800; letter-spacing: -0.01em; text-decoration: none;
     background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    background-size: 200% auto; animation: gradShift 6s ease infinite;
 }
 .footer-social { display: flex; gap: 0.5rem; }
 .footer-social a {
