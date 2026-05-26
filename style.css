@@ -481,13 +481,28 @@ body.dark .theme-toggle .icon-moon { display: block; }
     transform: scale(1);
 }
 
+/* Inherits .card (glass + blur + shadow + inner highlight). Border is WHITE
+   instead of a purple accent: on the page's pink/purple/blue blob background
+   a purple rim visually disappears (no contrast), while a white rim — same
+   trick the curator card's inner tiles use — pops clearly. The purple
+   character comes from the gradient overlay over the glass, not from the
+   border. */
 .playlist-cta {
-    margin-top: 1.8rem;
-    padding: 1.6rem 1.4rem;
+    margin-top: 2.4rem;
+    padding: 2.6rem 2rem;
     text-align: center;
-    background: linear-gradient(135deg, rgba(59,130,246,.06), rgba(139,92,246,.05));
-    border: 1px solid rgba(139,92,246,.18);
-    border-radius: 18px;
+    background:
+        linear-gradient(135deg, rgba(168,85,247,.06), rgba(59,130,246,.04)),
+        var(--glass);
+    border: 2px solid rgba(255,255,255,0.85);
+}
+.playlist-cta .tag { margin-bottom: 0.7rem; }
+.playlist-cta h3 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin-bottom: 0.7rem;
+    letter-spacing: -0.01em;
 }
 
 /* ---- OTHER SERVICES CARDS (services page) ---- */
@@ -551,10 +566,10 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .playlist-cta p {
     font-size: 1rem;
     color: var(--text-70);
-    margin-bottom: 1rem;
-    line-height: 1.5;
+    margin: 0 auto 1.4rem;
+    max-width: 520px;
+    line-height: 1.6;
 }
-.playlist-cta p strong { color: var(--text); font-weight: 700; }
 .playlist-cta .playlist-cta-meta {
     display: block;
     margin-top: 0.9rem;
@@ -563,7 +578,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
     letter-spacing: 0.01em;
 }
 @media (max-width: 640px) {
-    .playlist-cta { padding: 1.3rem 1rem; }
+    .playlist-cta { padding: 1.8rem 1.2rem; margin-top: 1.6rem; }
+    .playlist-cta h3 { font-size: 1.25rem; }
     .playlist-cta p { font-size: 0.92rem; }
 }
 
