@@ -4,11 +4,20 @@
 :root {
     --bg: #d2d5de;
     --surface: rgba(255,255,255,0.50);
-    --glass: rgba(255,255,255,0.30);
-    --glass-border: rgba(255,255,255,0.50);
-    --glass-shadow: rgba(0,0,0,0.08);
-    --glass-blur: 40px;
-    --glass-inner: inset 0 1px 0 rgba(255,255,255,0.45), inset 0 -1px 0 rgba(0,0,0,0.02);
+    --glass: rgba(255,255,255,0.32);
+    --glass-border: rgba(255,255,255,0.55);
+    --glass-shadow: rgba(0,0,0,0.10);
+    --glass-blur: 48px;
+    /* Apple-style liquid glass filter: heavier blur + saturation pump so
+       the colours behind the glass remain vivid instead of washing out. */
+    --glass-filter: blur(48px) saturate(180%);
+    /* Multi-layer rim light: bright top edge (the 'shine'), faint full
+       inner outline, soft bottom inset for depth. Mimics how Apple's
+       material reads as a 3D surface, not a flat tint. */
+    --glass-inner:
+        inset 0 1px 0 rgba(255,255,255,0.65),
+        inset 0 0 0 1px rgba(255,255,255,0.08),
+        inset 0 -1px 0 rgba(0,0,0,0.04);
     --text: #1a1a2e;
     --text-90: rgba(26,26,46,0.92);
     --text-80: rgba(26,26,46,0.85);
@@ -41,10 +50,14 @@
 /* Dark mode */
 body.dark {
     --bg: #0c0f16;
-    --glass: rgba(255,255,255,0.06);
-    --glass-border: rgba(255,255,255,0.1);
-    --glass-shadow: rgba(0,0,0,0.2);
-    --glass-inner: inset 0 1px 0 rgba(255,255,255,0.08), inset 0 -1px 0 rgba(255,255,255,0.02);
+    --glass: rgba(255,255,255,0.07);
+    --glass-border: rgba(255,255,255,0.14);
+    --glass-shadow: rgba(0,0,0,0.25);
+    --glass-filter: blur(48px) saturate(160%);
+    --glass-inner:
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        inset 0 -1px 0 rgba(0,0,0,0.10);
     --text: #eef0f4;
     --text-90: rgba(238,240,244,0.95);
     --text-80: rgba(238,240,244,0.85);
@@ -163,12 +176,18 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 /* ---- GLASS CARD ---- */
 .card {
     background: var(--glass);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: var(--glass-filter);
+    -webkit-backdrop-filter: var(--glass-filter);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
     padding: 2rem;
-    box-shadow: 0 4px 24px var(--glass-shadow), var(--glass-inner);
+    /* Two-layer drop shadow: tight close shadow for the lift, soft wide
+       shadow for the floating-on-glass feel. Plus the inner rim light
+       chain from --glass-inner. */
+    box-shadow:
+        0 1px 2px rgba(0,0,0,0.04),
+        0 8px 32px var(--glass-shadow),
+        var(--glass-inner);
     transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), background 0.4s, border-color 0.4s;
     position: relative;
     z-index: 1;
@@ -176,7 +195,10 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 
 .card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 40px var(--glass-shadow), var(--glass-inner);
+    box-shadow:
+        0 1px 2px rgba(0,0,0,0.04),
+        0 16px 48px var(--glass-shadow),
+        var(--glass-inner);
 }
 
 .card:active { transform: scale(0.985); transition: transform 0.12s; }
@@ -214,10 +236,13 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 
 .btn-glass {
     background: var(--glass);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid var(--glass-border);
     color: var(--text);
-    box-shadow: 0 2px 12px var(--glass-shadow);
+    box-shadow:
+        0 2px 12px var(--glass-shadow),
+        inset 0 1px 0 rgba(255,255,255,0.5);
 }
 
 .btn-glass:hover {
@@ -235,8 +260,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     width: calc(100% - 2rem);
     max-width: 900px;
     background: var(--nav-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: var(--glass-filter);
+    -webkit-backdrop-filter: var(--glass-filter);
     border: 1px solid var(--glass-border);
     border-radius: 100px;
     box-shadow: 0 4px 24px var(--glass-shadow);
@@ -342,13 +367,21 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .hero-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
 
 /* ---- MARQUEE ---- */
+/* Same liquid-glass recipe as .card so the strip reads as a continuous
+   surface bridging hero and content — not a contrasting band. Rim light
+   on top + bottom edges (from --glass-inner top/bottom inset) gives it
+   the floating-pane feel. */
 .marquee-strip {
     padding: 1.1rem 0;
     background: var(--glass);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: var(--glass-filter);
+    -webkit-backdrop-filter: var(--glass-filter);
     border-top: 1px solid var(--glass-border);
     border-bottom: 1px solid var(--glass-border);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.4),
+        inset 0 -1px 0 rgba(0,0,0,0.04),
+        0 1px 2px rgba(0,0,0,0.03);
     overflow: hidden;
     position: relative;
     z-index: 1;
@@ -597,7 +630,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .track.playing .tmeta h3 { color: var(--blue); }
 .tmeta span { font-size: 0.72rem; color: var(--text-30); }
 
-.tprog { height: 14px; display: flex; align-items: center; }
+.tprog { height: 14px; display: flex; align-items: center; cursor: pointer; }
 
 .pbar { width: 100%; height: 3px; background: rgba(0,0,0,0.06); border-radius: 3px; position: relative; cursor: pointer; transition: height 0.15s; }
 .track:hover .pbar, .track.playing .pbar { height: 4px; }
@@ -621,7 +654,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
 
 .step {
     background: rgba(255,255,255,0.4);
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border: 1px solid var(--glass-border);
     border-radius: 18px;
     padding: 1.5rem;
@@ -841,8 +875,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
     display: block;
     padding: 1.6rem 1.4rem;
     background: var(--glass);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: var(--glass-filter);
+    -webkit-backdrop-filter: var(--glass-filter);
     border: 1px solid var(--glass-border);
     border-radius: 18px;
     box-shadow: 0 4px 24px var(--glass-shadow), var(--glass-inner);

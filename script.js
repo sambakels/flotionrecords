@@ -112,6 +112,11 @@ document.querySelectorAll('.track').forEach(tr => {
     const btn = tr.querySelector('.tplay'), au = tr.querySelector('audio');
     const bar = tr.querySelector('.pbar'), fill = tr.querySelector('.pfill');
     const tc = tr.querySelector('.tc'), tt = tr.querySelector('.tt');
+    // Click/drag handlers attach to .tprog (14px tall wrapper) instead of
+    // the 3-4px .pbar so the hit area is comfortable to scrub with. seek()
+    // still computes the position relative to the .pbar's bounding rect,
+    // so percentages stay accurate.
+    const hit = tr.querySelector('.tprog');
 
     // pendingSeek holds the target percentage when the user scrubs before
     // the audio has finished loading metadata. preload="none" means duration
@@ -160,10 +165,10 @@ document.querySelectorAll('.track').forEach(tr => {
         au.load();
     }
 
-    bar.addEventListener('mousedown', e => { drag=true; seek(e); const m=e=>seek(e), u=()=>{drag=false;document.removeEventListener('mousemove',m);document.removeEventListener('mouseup',u);}; document.addEventListener('mousemove',m); document.addEventListener('mouseup',u); });
-    bar.addEventListener('touchstart', e => { drag=true; seek(e.touches[0]); }, {passive:true});
-    bar.addEventListener('touchmove', e => { if(drag) seek(e.touches[0]); }, {passive:true});
-    bar.addEventListener('touchend', () => { drag=false; });
+    hit.addEventListener('mousedown', e => { drag=true; seek(e); const m=e=>seek(e), u=()=>{drag=false;document.removeEventListener('mousemove',m);document.removeEventListener('mouseup',u);}; document.addEventListener('mousemove',m); document.addEventListener('mouseup',u); });
+    hit.addEventListener('touchstart', e => { drag=true; seek(e.touches[0]); }, {passive:true});
+    hit.addEventListener('touchmove', e => { if(drag) seek(e.touches[0]); }, {passive:true});
+    hit.addEventListener('touchend', () => { drag=false; });
 });
 
 const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xeenlknb';
