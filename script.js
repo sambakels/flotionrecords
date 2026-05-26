@@ -113,6 +113,13 @@ document.querySelectorAll('.track').forEach(tr => {
     const bar = tr.querySelector('.pbar'), fill = tr.querySelector('.pfill');
     const tc = tr.querySelector('.tc'), tt = tr.querySelector('.tt');
 
+    // pendingSeek holds the target percentage when the user scrubs before
+    // the audio has finished loading metadata. preload="none" means duration
+    // is NaN until the user actually plays, so an early click silently did
+    // nothing and play started at 0. We now capture the intent, trigger a
+    // load(), and apply currentTime once duration becomes known.
+    let pendingSeek = null;
+
     btn.addEventListener('click', e => {
         e.stopPropagation();
         if (cAudio === au && !au.paused) { au.pause(); tr.classList.remove('playing'); cTrack = cAudio = null; return; }
@@ -120,14 +127,37 @@ document.querySelectorAll('.track').forEach(tr => {
         au.play().then(() => { tr.classList.add('playing'); cTrack = tr; cAudio = au; }).catch(() => {});
     });
 
-    au.addEventListener('timeupdate', () => { if (!drag) { fill.style.width = (au.currentTime/au.duration*100)+'%'; tc.textContent = fmt(au.currentTime); } });
-    au.addEventListener('loadedmetadata', () => { tt.textContent = fmt(au.duration); });
+    // While a pendingSeek is queued, keep the visual fill on the user's
+    // intended position — otherwise the au.load() reset can briefly flicker
+    // it back to 0% before the queued seek applies.
+    au.addEventListener('timeupdate', () => {
+        if (drag || pendingSeek !== null) return;
+        fill.style.width = (au.currentTime/au.duration*100)+'%';
+        tc.textContent = fmt(au.currentTime);
+    });
+    au.addEventListener('loadedmetadata', () => {
+        tt.textContent = fmt(au.duration);
+        if (pendingSeek !== null && isFinite(au.duration)) {
+            au.currentTime = pendingSeek * au.duration;
+            pendingSeek = null;
+        }
+    });
     au.addEventListener('durationchange', () => { if (au.duration && isFinite(au.duration)) tt.textContent = fmt(au.duration); });
     au.addEventListener('ended', () => { tr.classList.remove('playing'); fill.style.width='0%'; tc.textContent='0:00'; cTrack=cAudio=null; });
 
     function seek(e) {
         const r = bar.getBoundingClientRect(), p = Math.max(0, Math.min((e.clientX-r.left)/r.width, 1));
-        if (au.duration && isFinite(au.duration)) { au.currentTime = p*au.duration; fill.style.width=(p*100)+'%'; }
+        fill.style.width = (p*100) + '%';  // immediate visual feedback either way
+        if (au.duration && isFinite(au.duration)) {
+            au.currentTime = p * au.duration;
+            return;
+        }
+        // Metadata not loaded yet — queue the seek for when it arrives.
+        pendingSeek = p;
+        // load() is safe here precisely because duration unknown means
+        // the audio hasn't started playing yet (otherwise duration would
+        // have already been set).
+        au.load();
     }
 
     bar.addEventListener('mousedown', e => { drag=true; seek(e); const m=e=>seek(e), u=()=>{drag=false;document.removeEventListener('mousemove',m);document.removeEventListener('mouseup',u);}; document.addEventListener('mousemove',m); document.addEventListener('mouseup',u); });
