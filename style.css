@@ -180,8 +180,14 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 
 /* ---- GLASS CARD ---- */
+/* Default tint baked into every .card so blank stretches without a colorful
+   blob behind them still read as glass instead of plain white. Inline
+   background overrides on specific cards stack ON TOP of this and win
+   visually, so the per-card colour identity is preserved. */
 .card {
-    background: var(--glass);
+    background:
+        linear-gradient(135deg, rgba(168,85,247,0.05), rgba(59,130,246,0.035)),
+        var(--glass);
     backdrop-filter: var(--glass-filter);
     -webkit-backdrop-filter: var(--glass-filter);
     border: 1px solid var(--glass-border);

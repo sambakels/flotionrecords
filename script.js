@@ -118,52 +118,84 @@ document.querySelectorAll('.track').forEach(tr => {
     // so percentages stay accurate.
     const hit = tr.querySelector('.tprog');
 
-    // pendingSeek holds the target percentage when the user scrubs before
-    // the audio has finished loading metadata. preload="none" means duration
-    // is NaN until the user actually plays, so an early click silently did
-    // nothing and play started at 0. We now capture the intent, trigger a
-    // load(), and apply currentTime once duration becomes known.
+    // pendingSeek holds the target percentage when seek can't apply
+    // synchronously yet. With preload="metadata" the duration is known on
+    // page load, but the actual audio data isn't buffered — and setting
+    // currentTime to a position outside the seekable range silently fails
+    // in most browsers. The result: user clicks the bar, looks like it
+    // worked for a frame, then play starts at 0.
+    //
+    // The fix: track pendingSeek and apply on whichever ready event fires
+    // first that means seeking will actually stick (canplay, seeked, or
+    // loadedmetadata with seekable data).
     let pendingSeek = null;
+
+    const tryApplyPending = () => {
+        if (pendingSeek === null || !isFinite(au.duration)) return;
+        const target = pendingSeek * au.duration;
+        // Only apply if the audio has buffered enough to allow a seek to
+        // that point. Otherwise the set is silently ignored and we end up
+        // back at 0 on play.
+        if (au.seekable.length > 0 && au.seekable.end(au.seekable.length - 1) >= target) {
+            au.currentTime = target;
+            pendingSeek = null;
+        }
+    };
 
     btn.addEventListener('click', e => {
         e.stopPropagation();
         if (cAudio === au && !au.paused) { au.pause(); tr.classList.remove('playing'); cTrack = cAudio = null; return; }
         if (cAudio && cAudio !== au) { cAudio.pause(); cAudio.currentTime = 0; if (cTrack) cTrack.classList.remove('playing'); }
-        au.play().then(() => { tr.classList.add('playing'); cTrack = tr; cAudio = au; }).catch(() => {});
+        au.play().then(() => {
+            tr.classList.add('playing'); cTrack = tr; cAudio = au;
+            // Once play() kicks off the actual data load, the canplay /
+            // seeked listeners below will apply any pendingSeek that the
+            // user queued before hitting play.
+        }).catch(() => {});
     });
 
-    // While a pendingSeek is queued, keep the visual fill on the user's
-    // intended position — otherwise the au.load() reset can briefly flicker
-    // it back to 0% before the queued seek applies.
     au.addEventListener('timeupdate', () => {
         if (drag || pendingSeek !== null) return;
         fill.style.width = (au.currentTime/au.duration*100)+'%';
         tc.textContent = fmt(au.currentTime);
     });
-    au.addEventListener('loadedmetadata', () => {
-        tt.textContent = fmt(au.duration);
-        if (pendingSeek !== null && isFinite(au.duration)) {
-            au.currentTime = pendingSeek * au.duration;
-            pendingSeek = null;
-        }
-    });
+    au.addEventListener('loadedmetadata', () => { tt.textContent = fmt(au.duration); tryApplyPending(); });
     au.addEventListener('durationchange', () => { if (au.duration && isFinite(au.duration)) tt.textContent = fmt(au.duration); });
+    // canplay / loadeddata / progress all imply more data is buffered, so the
+    // seekable range may now include the user's target.
+    au.addEventListener('canplay', tryApplyPending);
+    au.addEventListener('loadeddata', tryApplyPending);
+    au.addEventListener('progress', tryApplyPending);
     au.addEventListener('ended', () => { tr.classList.remove('playing'); fill.style.width='0%'; tc.textContent='0:00'; cTrack=cAudio=null; });
 
     function seek(e) {
         const r = bar.getBoundingClientRect(), p = Math.max(0, Math.min((e.clientX-r.left)/r.width, 1));
-        fill.style.width = (p*100) + '%';  // immediate visual feedback either way
-        if (au.duration && isFinite(au.duration)) {
-            au.currentTime = p * au.duration;
+        fill.style.width = (p*100) + '%';  // immediate visual feedback
+        // Always record the user's intent. Even if we apply immediately,
+        // having pendingSeek cleared by the seeked event below makes the
+        // bookkeeping simpler.
+        pendingSeek = p;
+        if (!au.duration || !isFinite(au.duration)) {
+            // No duration yet — trigger metadata load, pendingSeek will be
+            // applied by loadedmetadata (and refined by canplay if needed).
+            au.load();
             return;
         }
-        // Metadata not loaded yet — queue the seek for when it arrives.
-        pendingSeek = p;
-        // load() is safe here precisely because duration unknown means
-        // the audio hasn't started playing yet (otherwise duration would
-        // have already been set).
-        au.load();
+        const target = p * au.duration;
+        if (au.seekable.length > 0 && au.seekable.end(au.seekable.length - 1) >= target) {
+            au.currentTime = target;
+            pendingSeek = null;
+        } else {
+            // Data isn't buffered far enough yet. Kick off load (preload
+            // metadata only loaded the header bytes) and wait for canplay.
+            // Calling au.load() resets currentTime to 0 but timeupdate is
+            // gated by pendingSeek so the visual fill stays put.
+            try { au.load(); } catch (_) {}
+        }
     }
+
+    // When the browser actually completes a seek, clear pendingSeek.
+    au.addEventListener('seeked', () => { pendingSeek = null; });
 
     hit.addEventListener('mousedown', e => { drag=true; seek(e); const m=e=>seek(e), u=()=>{drag=false;document.removeEventListener('mousemove',m);document.removeEventListener('mouseup',u);}; document.addEventListener('mousemove',m); document.addEventListener('mouseup',u); });
     hit.addEventListener('touchstart', e => { drag=true; seek(e.touches[0]); }, {passive:true});
