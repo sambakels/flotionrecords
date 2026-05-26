@@ -4,20 +4,24 @@
 :root {
     --bg: #d2d5de;
     --surface: rgba(255,255,255,0.50);
-    --glass: rgba(255,255,255,0.32);
-    --glass-border: rgba(255,255,255,0.55);
-    --glass-shadow: rgba(0,0,0,0.10);
-    --glass-blur: 48px;
-    /* Apple-style liquid glass filter: heavier blur + saturation pump so
-       the colours behind the glass remain vivid instead of washing out. */
-    --glass-filter: blur(48px) saturate(180%);
+    --glass: rgba(255,255,255,0.34);
+    --glass-border: rgba(255,255,255,0.60);
+    --glass-shadow: rgba(0,0,0,0.12);
+    --glass-blur: 56px;
+    /* Apple-style liquid glass filter tiered by element size. Saturation
+       pump (200%) keeps the colours behind the glass vivid; without it the
+       material reads as grey haze. Always pair both halves of the filter
+       to keep the look consistent across the page. */
+    --glass-filter:    blur(56px) saturate(200%);
+    --glass-filter-md: blur(28px) saturate(180%);
+    --glass-filter-sm: blur(16px) saturate(180%);
     /* Multi-layer rim light: bright top edge (the 'shine'), faint full
-       inner outline, soft bottom inset for depth. Mimics how Apple's
-       material reads as a 3D surface, not a flat tint. */
+       inner outline, soft bottom inset for depth. Reads as a 3D surface,
+       not a flat tint. */
     --glass-inner:
-        inset 0 1px 0 rgba(255,255,255,0.65),
-        inset 0 0 0 1px rgba(255,255,255,0.08),
-        inset 0 -1px 0 rgba(0,0,0,0.04);
+        inset 0 1px 0 rgba(255,255,255,0.75),
+        inset 0 0 0 1px rgba(255,255,255,0.10),
+        inset 0 -1px 0 rgba(0,0,0,0.05);
     --text: #1a1a2e;
     --text-90: rgba(26,26,46,0.92);
     --text-80: rgba(26,26,46,0.85);
@@ -50,14 +54,16 @@
 /* Dark mode */
 body.dark {
     --bg: #0c0f16;
-    --glass: rgba(255,255,255,0.07);
-    --glass-border: rgba(255,255,255,0.14);
-    --glass-shadow: rgba(0,0,0,0.25);
-    --glass-filter: blur(48px) saturate(160%);
+    --glass: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.16);
+    --glass-shadow: rgba(0,0,0,0.30);
+    --glass-filter:    blur(56px) saturate(180%);
+    --glass-filter-md: blur(28px) saturate(160%);
+    --glass-filter-sm: blur(16px) saturate(160%);
     --glass-inner:
-        inset 0 1px 0 rgba(255,255,255,0.14),
-        inset 0 0 0 1px rgba(255,255,255,0.04),
-        inset 0 -1px 0 rgba(0,0,0,0.10);
+        inset 0 1px 0 rgba(255,255,255,0.18),
+        inset 0 0 0 1px rgba(255,255,255,0.05),
+        inset 0 -1px 0 rgba(0,0,0,0.12);
     --text: #eef0f4;
     --text-90: rgba(238,240,244,0.95);
     --text-80: rgba(238,240,244,0.85);
@@ -203,6 +209,32 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 
 .card:active { transform: scale(0.985); transition: transform 0.12s; }
 
+/* Sheen layer: a faint diagonal gradient that simulates real glass
+   catching light from the top-left. Sits above the background tint but
+   below the content. pointer-events:none keeps clicks pass-through, and
+   z-index:0 stays under the inline-flow content (which has the default
+   stacking context above ::before). The card itself is positioned and
+   z-indexed already so its child stack is its own. */
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg,
+        rgba(255,255,255,0.20) 0%,
+        rgba(255,255,255,0.05) 30%,
+        transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+}
+body.dark .card::before {
+    background: linear-gradient(135deg,
+        rgba(255,255,255,0.08) 0%,
+        rgba(255,255,255,0.02) 30%,
+        transparent 60%);
+}
+.card > * { position: relative; z-index: 1; }
+
 .card-lg { padding: 2.2rem; border-radius: 24px; }
 
 /* ---- BUTTONS ---- */
@@ -236,8 +268,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 
 .btn-glass {
     background: var(--glass);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: var(--glass-filter-md);
+    -webkit-backdrop-filter: var(--glass-filter-md);
     border: 1px solid var(--glass-border);
     color: var(--text);
     box-shadow:
@@ -304,7 +336,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 /* Theme toggle */
 .theme-toggle {
     width: 36px; height: 36px; border-radius: 50%;
-    background: var(--glass); backdrop-filter: blur(12px);
+    background: var(--glass); backdrop-filter: var(--glass-filter-sm); -webkit-backdrop-filter: var(--glass-filter-sm);
     border: 1px solid var(--glass-border);
     cursor: pointer; display: flex; align-items: center; justify-content: center;
     color: var(--text-60); transition: all 0.3s;
@@ -584,7 +616,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
     width: 48px; height: 48px; border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
     margin-bottom: 1.2rem;
-    backdrop-filter: blur(8px);
+    backdrop-filter: var(--glass-filter-sm);
+    -webkit-backdrop-filter: var(--glass-filter-sm);
     border: 1px solid rgba(255,255,255,0.5);
 }
 
@@ -653,9 +686,9 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.8rem; margin: 2rem 0; text-align: left; }
 
 .step {
-    background: rgba(255,255,255,0.4);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: var(--glass);
+    backdrop-filter: var(--glass-filter-md);
+    -webkit-backdrop-filter: var(--glass-filter-md);
     border: 1px solid var(--glass-border);
     border-radius: 18px;
     padding: 1.5rem;
@@ -1036,7 +1069,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
     display: flex; align-items: center; gap: 0.7rem;
     padding: 0.7rem 1rem;
     background: var(--glass);
-    backdrop-filter: blur(12px);
+    backdrop-filter: var(--glass-filter-sm);
+    -webkit-backdrop-filter: var(--glass-filter-sm);
     border: 1px solid var(--glass-border);
     border-radius: 14px;
     text-decoration: none;
@@ -1053,7 +1087,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
 #contactForm input, #contactForm select, #contactForm textarea {
     width: 100%; padding: 0.8rem 1rem;
     background: var(--input-bg);
-    backdrop-filter: blur(12px);
+    backdrop-filter: var(--glass-filter-sm);
+    -webkit-backdrop-filter: var(--glass-filter-sm);
     border: 1px solid var(--glass-border);
     border-radius: 14px;
     color: var(--text);
@@ -1131,8 +1166,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
     width: 100%;
     padding: 0.8rem 1rem;
     background: var(--input-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: var(--glass-filter-sm);
+    -webkit-backdrop-filter: var(--glass-filter-sm);
     border: 1px solid var(--glass-border);
     border-radius: 14px;
     color: var(--text);
@@ -1512,8 +1547,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
     margin: 0 auto;
     padding: 1.1rem 1.3rem;
     background: rgba(14, 17, 23, 0.96);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: var(--glass-filter-md);
+    -webkit-backdrop-filter: var(--glass-filter-md);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 16px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
@@ -1976,7 +2011,12 @@ body.dark .theme-toggle .icon-moon { display: block; }
        - stop the infinite blob animation so the 80px blurred regions
          under every card don't have to repaint continuously
        - hide touch ripples (desktop-mouse interaction) */
-    body { --glass-blur: 20px; }
+    body {
+        --glass-blur: 28px;
+        --glass-filter: blur(28px) saturate(180%);
+        --glass-filter-md: blur(20px) saturate(160%);
+        --glass-filter-sm: blur(12px) saturate(160%);
+    }
     .blob { animation: none; filter: blur(80px); }
     .ripple-container { display: none; }
 
