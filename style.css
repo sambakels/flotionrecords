@@ -360,6 +360,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
     gap: 2.5rem;
     width: max-content;
     will-change: transform;
+    animation: marquee 50s linear infinite;
 }
 
 .marquee-track span {
@@ -405,7 +406,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
 .card p:not(.lead) { font-size: 0.92rem; line-height: 1.7; color: var(--text-30); }
 
 /* ---- STATS ---- */
-.about-row { margin-bottom: 1.5rem; }
+.about-row { margin-bottom: 2rem; }
 
 .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
 
