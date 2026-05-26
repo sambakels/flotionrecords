@@ -650,7 +650,13 @@ body.dark .theme-toggle .icon-moon { display: block; }
     display: flex; align-items: center; justify-content: center; transition: all 0.2s;
 }
 
-.tplay:hover { background: rgba(0,0,0,0.04); color: var(--text); }
+.tplay:hover {
+    background: var(--glass);
+    backdrop-filter: var(--glass-filter-sm);
+    -webkit-backdrop-filter: var(--glass-filter-sm);
+    color: var(--text);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.45);
+}
 .track.playing .tplay { color: var(--blue); }
 
 .tplay .ipa { display: none; }
@@ -729,12 +735,15 @@ body.dark .theme-toggle .icon-moon { display: block; }
     width: 100%;
     padding: 0.85rem 1rem;
     background: var(--input-bg);
+    backdrop-filter: var(--glass-filter-sm);
+    -webkit-backdrop-filter: var(--glass-filter-sm);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
     color: var(--text);
     font-family: var(--font);
     font-size: 0.92rem;
     outline: none;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
     transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 
@@ -774,6 +783,8 @@ body.dark .theme-toggle .icon-moon { display: block; }
     cursor: pointer;
     transition: all 0.3s;
     background: var(--input-bg);
+    backdrop-filter: var(--glass-filter-sm);
+    -webkit-backdrop-filter: var(--glass-filter-sm);
 }
 
 .file-upload:hover,
@@ -1093,7 +1104,9 @@ body.dark .theme-toggle .icon-moon { display: block; }
     border-radius: 14px;
     color: var(--text);
     font-family: var(--font); font-size: 0.88rem;
-    outline: none; transition: all 0.3s;
+    outline: none;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+    transition: all 0.3s;
 }
 
 #contactForm input:focus, #contactForm select:focus, #contactForm textarea:focus {
@@ -1174,6 +1187,7 @@ body.dark .theme-toggle .icon-moon { display: block; }
     font-family: var(--font);
     font-size: 0.88rem;
     outline: none;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
     transition: all 0.3s;
 }
 
@@ -1862,18 +1876,26 @@ body.dark .theme-toggle .icon-moon { display: block; }
     width: 38px; height: 38px;
     border-radius: 50%;
     background: var(--glass);
+    backdrop-filter: var(--glass-filter-sm);
+    -webkit-backdrop-filter: var(--glass-filter-sm);
     border: 1px solid var(--glass-border);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.45),
+        0 2px 8px var(--glass-shadow);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     color: var(--text-60);
     text-decoration: none;
-    transition: color 0.2s, background 0.2s, border-color 0.2s, transform 0.2s;
+    transition: color 0.2s, background 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 .footer-social a:hover {
     color: var(--text);
-    border-color: rgba(139, 92, 246, 0.35);
+    border-color: rgba(139, 92, 246, 0.5);
     transform: translateY(-2px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.55),
+        0 6px 16px var(--glass-shadow);
 }
 .footer-bottom {
     display: flex;
