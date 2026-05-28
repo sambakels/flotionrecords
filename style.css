@@ -149,21 +149,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 
 /* Ripple */
-.ripple-container { position: fixed; inset: 0; pointer-events: none; z-index: 9999; }
-
-.ripple {
-    position: absolute;
-    border-radius: 50%;
-    border: 1.5px solid rgba(41, 151, 255, 0.3);
-    background: radial-gradient(circle, rgba(41,151,255,0.06) 0%, transparent 70%);
-    animation: rip 0.7s var(--ease-out) forwards;
-}
-
-@keyframes rip {
-    0% { width: 0; height: 0; opacity: 1; transform: translate(-50%,-50%); }
-    100% { width: 250px; height: 250px; opacity: 0; transform: translate(-50%,-50%); }
-}
-
 /* Gradient text - static + drop-shadow so the gradient colours can
    never visually disappear against a same-coloured ambient blob
    behind them. Shadow follows the glyph shape and gives the text
@@ -2502,8 +2487,7 @@ body.dark .pill-badge {
          identical, halves repaint work on every scroll
        - lighter blob blur (80px instead of 120px)
        - stop the infinite blob animation so the 80px blurred regions
-         under every card don't have to repaint continuously
-       - hide touch ripples (desktop-mouse interaction) */
+         under every card don't have to repaint continuously */
     body {
         --glass-blur: 16px;
         --glass-filter: blur(16px) saturate(170%) contrast(1.05);
@@ -2511,8 +2495,6 @@ body.dark .pill-badge {
         --glass-filter-sm: blur(6px)  saturate(150%) contrast(1.05);
     }
     .blob { animation: none; filter: blur(80px); }
-    .ripple-container { display: none; }
-
     /* Marquee */
     .marquee-track span { font-size: 0.65rem; letter-spacing: 2px; }
 

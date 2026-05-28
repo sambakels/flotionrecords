@@ -50,20 +50,6 @@ document.addEventListener('submit', function (e) {
     }
 })();
 
-// Ripple
-document.addEventListener('click', e => {
-    const c = document.getElementById('rippleContainer');
-    for (let i = 0; i < 2; i++) {
-        const r = document.createElement('div');
-        r.className = 'ripple';
-        r.style.left = e.clientX + 'px';
-        r.style.top = e.clientY + 'px';
-        r.style.animationDelay = (i * 0.1) + 's';
-        c.appendChild(r);
-        setTimeout(() => r.remove(), 900);
-    }
-});
-
 // Dark mode
 const themeToggle = document.getElementById('themeToggle');
 if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
