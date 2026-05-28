@@ -1396,15 +1396,41 @@ body.dark .theme-toggle .icon-moon { display: block; }
     border-radius: 16px;
     border: 2px solid var(--glass-border);
     background: var(--glass);
+    backdrop-filter: var(--glass-filter-sm);
+    -webkit-backdrop-filter: var(--glass-filter-sm);
     text-align: center;
     transition: all 0.25s var(--ease);
     position: relative;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.35),
+        0 1px 4px rgba(0,0,0,0.04);
 }
 
+/* Hover (unselected) — subtle lift so it's clear the card is clickable */
+.package-option:hover .package-card {
+    border-color: rgba(139,92,246,0.45);
+    transform: translateY(-2px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.5),
+        0 4px 14px rgba(0,0,0,0.06);
+}
+
+/* Selected — clear purple border + tinted glass body + glow halo so
+   there is zero doubt which tier is active */
 .package-option input:checked + .package-card {
     border-color: #8b5cf6;
-    background: rgba(139, 92, 246, 0.06);
-    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2);
+    background:
+        linear-gradient(135deg, rgba(139,92,246,0.16), rgba(59,130,246,0.10)),
+        var(--glass);
+    transform: translateY(-2px);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.6),
+        inset 0 0 0 1px rgba(139,92,246,0.30),
+        0 0 0 4px rgba(139,92,246,0.12),
+        0 8px 22px rgba(139,92,246,0.20);
+}
+.package-option input:checked + .package-card .package-name {
+    color: #8b5cf6;
 }
 
 .package-name { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-30); }
