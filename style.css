@@ -1864,11 +1864,49 @@ body.dark .theme-toggle .icon-moon { display: block; }
     align-items: start;
 }
 
-.pricing-card { text-align: center; padding: 2.5rem 2rem; position: relative; }
+.pricing-card {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    position: relative;
+    transition: transform 0.25s var(--ease), border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
 
+/* Hover state for ALL pricing cards: purple border + lift + halo glow.
+   Makes it obvious the cards are clickable and which one the cursor is
+   over. Each card type can override with its own tint below. */
+.pricing-card:hover {
+    transform: translateY(-4px);
+    border-color: #8b5cf6;
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.55),
+        0 0 0 3px rgba(139,92,246,0.10),
+        0 12px 32px rgba(139,92,246,0.18);
+    background:
+        linear-gradient(135deg, rgba(139,92,246,0.10), rgba(59,130,246,0.06)),
+        var(--glass);
+}
+.pricing-card:active { transform: translateY(-2px) scale(0.99); }
+
+/* Featured (Express) — always visibly purple so it reads as "this is
+   the recommended pick", not just "a card with a tag on it". */
 .pricing-featured {
-    border-color: rgba(139, 92, 246, 0.3);
-    box-shadow: 0 8px 40px rgba(139, 92, 246, 0.08), var(--glass-inner);
+    border: 2px solid rgba(139, 92, 246, 0.55);
+    background:
+        linear-gradient(135deg, rgba(139,92,246,0.12), rgba(59,130,246,0.08)),
+        var(--glass);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.55),
+        0 0 0 3px rgba(139,92,246,0.10),
+        0 12px 36px rgba(139,92,246,0.20),
+        var(--glass-inner);
+}
+.pricing-featured:hover {
+    transform: translateY(-6px);
+    border-color: rgba(139, 92, 246, 0.85);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.65),
+        0 0 0 4px rgba(139,92,246,0.15),
+        0 18px 44px rgba(139,92,246,0.28);
 }
 
 /* "Best Value" ribbon on the featured pricing card — keeps the bold
