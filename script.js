@@ -82,6 +82,35 @@ const navLinks = document.getElementById('navLinks');
 navToggle.addEventListener('click', () => { navToggle.classList.toggle('active'); navLinks.classList.toggle('active'); nav.classList.toggle('menu-open'); });
 navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { navToggle.classList.remove('active'); navLinks.classList.remove('active'); nav.classList.remove('menu-open'); }));
 
+// Apple-style liquid glass hover pill that slides between nav links.
+// Only wired on desktop (pointer:fine) — mobile gets the stacked menu so
+// the pill would have nothing to slide between. The pill element is
+// injected at runtime so the HTML stays unchanged.
+if (window.matchMedia('(pointer: fine)').matches) {
+    const pill = document.createElement('span');
+    pill.className = 'nav-hover-pill';
+    navLinks.insertBefore(pill, navLinks.firstChild);
+
+    const moveTo = (link) => {
+        // Skip the gradient CTA link — pill behind it would clash with
+        // the solid colour. Hide pill instead so the CTA stands alone.
+        if (link.classList.contains('nav-cta')) {
+            pill.classList.remove('active');
+            return;
+        }
+        const parentRect = navLinks.getBoundingClientRect();
+        const linkRect = link.getBoundingClientRect();
+        pill.style.left = (linkRect.left - parentRect.left) + 'px';
+        pill.style.width = linkRect.width + 'px';
+        pill.classList.add('active');
+    };
+
+    navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('mouseenter', () => moveTo(link));
+    });
+    navLinks.addEventListener('mouseleave', () => pill.classList.remove('active'));
+}
+
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector(a.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth' }); });

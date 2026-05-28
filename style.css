@@ -289,6 +289,11 @@ body.dark .card::before {
 }
 
 /* ---- NAV ---- */
+/* Nav is the most prominent glass surface on the page: heavier blur than
+   the cards (80px) and saturation pump (220%) so the colour behind it
+   really pops through. Layered insets give the floating pill a bright top
+   rim like real polished glass; the outer drop shadow lifts it off the
+   page so it doesn't read as a flat strip. */
 .nav {
     position: fixed;
     top: 16px;
@@ -297,13 +302,33 @@ body.dark .card::before {
     z-index: 100;
     width: calc(100% - 2rem);
     max-width: 900px;
-    background: var(--nav-bg);
-    backdrop-filter: var(--glass-filter);
-    -webkit-backdrop-filter: var(--glass-filter);
+    background:
+        linear-gradient(135deg, rgba(168,85,247,0.05), rgba(59,130,246,0.04)),
+        var(--nav-bg);
+    backdrop-filter: blur(80px) saturate(220%);
+    -webkit-backdrop-filter: blur(80px) saturate(220%);
     border: 1px solid var(--glass-border);
     border-radius: 100px;
-    box-shadow: 0 4px 24px var(--glass-shadow);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.7),
+        inset 0 0 0 1px rgba(255,255,255,0.08),
+        inset 0 -1px 0 rgba(0,0,0,0.04),
+        0 2px 4px rgba(0,0,0,0.04),
+        0 10px 32px rgba(0,0,0,0.08);
     transition: all 0.4s var(--ease);
+}
+body.dark .nav {
+    background:
+        linear-gradient(135deg, rgba(168,85,247,0.06), rgba(59,130,246,0.05)),
+        var(--nav-bg);
+    backdrop-filter: blur(80px) saturate(180%);
+    -webkit-backdrop-filter: blur(80px) saturate(180%);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.15),
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        inset 0 -1px 0 rgba(0,0,0,0.20),
+        0 2px 4px rgba(0,0,0,0.15),
+        0 10px 32px rgba(0,0,0,0.30);
 }
 
 .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 1.5rem; }
@@ -319,7 +344,12 @@ body.dark .card::before {
     background-clip: text;
 }
 
-.nav-links { display: flex; align-items: center; gap: 1.5rem; }
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    position: relative;  /* anchor for the sliding hover pill */
+}
 
 .nav-links a {
     font-size: 0.82rem;
@@ -327,9 +357,49 @@ body.dark .card::before {
     color: var(--text-60);
     text-decoration: none;
     transition: color 0.3s;
+    padding: 0.45rem 0.85rem;
+    border-radius: 100px;
+    position: relative;  /* keep link text above the pill */
+    z-index: 1;
 }
 
 .nav-links a:hover { color: var(--text); }
+
+/* Apple-style liquid glass hover pill that slides between nav items.
+   Its left + width are driven by JS (mouseenter on each link); opacity is
+   toggled via the .active class. The transition curve gives the pill the
+   slight overshoot that Apple's material has when settling on a target. */
+.nav-hover-pill {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 32px;
+    left: 0;
+    width: 0;
+    border-radius: 100px;
+    background: var(--glass);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid var(--glass-border);
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.55),
+        inset 0 -1px 0 rgba(0,0,0,0.04),
+        0 2px 10px rgba(0,0,0,0.06);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+        left 0.45s cubic-bezier(0.34, 1.4, 0.64, 1),
+        width 0.45s cubic-bezier(0.34, 1.4, 0.64, 1),
+        opacity 0.25s ease;
+    z-index: 0;
+}
+.nav-hover-pill.active { opacity: 1; }
+body.dark .nav-hover-pill {
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.14),
+        inset 0 -1px 0 rgba(0,0,0,0.20),
+        0 2px 10px rgba(0,0,0,0.20);
+}
 
 .nav-cta {
     background: var(--gradient);
