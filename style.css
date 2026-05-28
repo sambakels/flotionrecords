@@ -385,31 +385,43 @@ body.dark .nav {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    height: 32px;
+    height: 36px;
     left: 0;
     width: 0;
     border-radius: 100px;
+    /* Vertical gradient body so the pill reads as a curved 3D surface.
+       Brighter on top (light catches the dome), darker at the bottom. */
     background:
-        linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.06) 50%, rgba(0,0,0,0.04) 100%),
+        linear-gradient(180deg,
+            rgba(255,255,255,0.28) 0%,
+            rgba(255,255,255,0.08) 45%,
+            rgba(0,0,0,0.05) 100%),
         var(--glass);
-    backdrop-filter: blur(20px) saturate(220%) contrast(1.08);
-    -webkit-backdrop-filter: blur(20px) saturate(220%) contrast(1.08);
-    border: 1px solid rgba(255,255,255,0.7);
+    /* THE refraction trick: feDisplacementMap distorts the actual backdrop
+       pixels under the pill, giving the wobbled-glass look Apple has. Plus
+       blur, big saturation pump and contrast boost so the colours under
+       the lens look pumped, the way real glass amplifies them. The url()
+       filter chain only takes effect on browsers that support backdrop
+       SVG filters (Chrome 76+, Safari 16+); others get the rest of the
+       chain which still looks glassy. */
+    backdrop-filter: url(#lensRefract) blur(14px) saturate(240%) contrast(1.12) brightness(1.05);
+    -webkit-backdrop-filter: url(#lensRefract) blur(14px) saturate(240%) contrast(1.12) brightness(1.05);
+    border: 1.5px solid rgba(255,255,255,0.85);
     box-shadow:
-        /* outer hairline = outer lens edge */
-        0 0 0 0.5px rgba(255,255,255,0.3),
-        /* bright top inner rim = highlight reflection on the glass dome */
-        inset 0 1.5px 1px rgba(255,255,255,0.85),
-        /* faint perimeter inner ring = inside of the lens edge */
-        inset 0 0 0 1px rgba(255,255,255,0.12),
-        /* side highlights = the curved sides catching ambient light */
-        inset 1.5px 0 2px -1px rgba(255,255,255,0.35),
-        inset -1.5px 0 2px -1px rgba(255,255,255,0.35),
-        /* darker bottom inner rim = where the curve falls into shadow */
-        inset 0 -1.5px 1px rgba(0,0,0,0.06),
-        /* soft outer drop shadow = floating off the nav */
-        0 2px 12px rgba(0,0,0,0.10),
-        0 6px 24px rgba(0,0,0,0.06);
+        /* outer hairline = the OUTSIDE rim of the glass lens */
+        0 0 0 0.5px rgba(255,255,255,0.45),
+        /* bright top inner = the highlight reflection along the dome */
+        inset 0 2px 1.5px rgba(255,255,255,0.95),
+        /* faint inner perimeter ring = inside surface of the glass rim */
+        inset 0 0 0 1px rgba(255,255,255,0.18),
+        /* strong side highlights = the curved sides glinting */
+        inset 2px 0 3px -1px rgba(255,255,255,0.55),
+        inset -2px 0 3px -1px rgba(255,255,255,0.55),
+        /* darker bottom inner = where the curve falls into shadow */
+        inset 0 -2px 1.5px rgba(0,0,0,0.10),
+        /* two-layer outer drop shadow = clearly floating off the nav */
+        0 3px 12px rgba(0,0,0,0.12),
+        0 8px 28px rgba(0,0,0,0.08);
     opacity: 0;
     pointer-events: none;
     transition:
@@ -418,14 +430,27 @@ body.dark .nav {
         opacity 0.25s ease;
     z-index: 0;
 }
-/* Inner glow that gives the centre of the pill a deeper "filled" feel
-   compared to the bright rim — sells the curvature. */
+/* Inner radial-ish glow that gives the centre of the pill a deeper / more
+   filled feel than the bright rim — sells the dome curvature. */
 .nav-hover-pill::before {
     content: '';
     position: absolute;
-    inset: 2px;
+    inset: 3px;
     border-radius: inherit;
-    box-shadow: inset 0 0 8px rgba(255,255,255,0.25);
+    box-shadow:
+        inset 0 0 12px rgba(255,255,255,0.35),
+        inset 0 4px 6px -3px rgba(255,255,255,0.4);
+    pointer-events: none;
+}
+/* Outer ring layer that simulates the refraction halo just outside the
+   lens — like the way light bends around a glass dome's edge. Very subtle
+   but it sells the thickness. */
+.nav-hover-pill::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    border: 0.5px solid rgba(255,255,255,0.2);
     pointer-events: none;
 }
 .nav-hover-pill.active { opacity: 1; }
