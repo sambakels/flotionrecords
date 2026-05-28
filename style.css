@@ -7,14 +7,14 @@
     --glass: rgba(255,255,255,0.34);
     --glass-border: rgba(255,255,255,0.60);
     --glass-shadow: rgba(0,0,0,0.12);
-    --glass-blur: 56px;
-    /* Apple-style liquid glass filter tiered by element size. Saturation
-       pump (200%) keeps the colours behind the glass vivid; without it the
-       material reads as grey haze. Always pair both halves of the filter
-       to keep the look consistent across the page. */
-    --glass-filter:    blur(56px) saturate(200%);
-    --glass-filter-md: blur(28px) saturate(180%);
-    --glass-filter-sm: blur(16px) saturate(180%);
+    --glass-blur: 24px;
+    /* Water-clear glass: blur is dialed WAY back so the content behind
+       comes through clearly with just soft haze, not heavy fog. Saturation
+       and contrast pump replace the visual weight that the blur used to
+       carry — colours pop more without the milky frosted look. */
+    --glass-filter:    blur(24px) saturate(200%) contrast(1.05);
+    --glass-filter-md: blur(14px) saturate(180%) contrast(1.05);
+    --glass-filter-sm: blur(8px)  saturate(180%) contrast(1.05);
     /* Multi-layer rim light: bright top edge (the 'shine'), faint full
        inner outline, soft bottom inset for depth. Reads as a 3D surface,
        not a flat tint. */
@@ -57,9 +57,9 @@ body.dark {
     --glass: rgba(255,255,255,0.08);
     --glass-border: rgba(255,255,255,0.16);
     --glass-shadow: rgba(0,0,0,0.30);
-    --glass-filter:    blur(56px) saturate(180%);
-    --glass-filter-md: blur(28px) saturate(160%);
-    --glass-filter-sm: blur(16px) saturate(160%);
+    --glass-filter:    blur(24px) saturate(160%) contrast(1.05);
+    --glass-filter-md: blur(14px) saturate(150%) contrast(1.05);
+    --glass-filter-sm: blur(8px)  saturate(150%) contrast(1.05);
     --glass-inner:
         inset 0 1px 0 rgba(255,255,255,0.18),
         inset 0 0 0 1px rgba(255,255,255,0.05),
@@ -305,8 +305,8 @@ body.dark .card::before {
     background:
         linear-gradient(135deg, rgba(168,85,247,0.05), rgba(59,130,246,0.04)),
         var(--nav-bg);
-    backdrop-filter: blur(80px) saturate(220%);
-    -webkit-backdrop-filter: blur(80px) saturate(220%);
+    backdrop-filter: blur(32px) saturate(220%) contrast(1.05);
+    -webkit-backdrop-filter: blur(32px) saturate(220%) contrast(1.05);
     border: 1px solid var(--glass-border);
     border-radius: 100px;
     box-shadow:
@@ -321,8 +321,8 @@ body.dark .nav {
     background:
         linear-gradient(135deg, rgba(168,85,247,0.06), rgba(59,130,246,0.05)),
         var(--nav-bg);
-    backdrop-filter: blur(80px) saturate(180%);
-    -webkit-backdrop-filter: blur(80px) saturate(180%);
+    backdrop-filter: blur(32px) saturate(180%) contrast(1.05);
+    -webkit-backdrop-filter: blur(32px) saturate(180%) contrast(1.05);
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.15),
         inset 0 0 0 1px rgba(255,255,255,0.04),
@@ -389,37 +389,35 @@ body.dark .nav {
     left: 0;
     width: 0;
     border-radius: 100px;
-    /* Vertical gradient body so the pill reads as a curved 3D surface.
-       Brighter on top (light catches the dome), darker at the bottom. */
-    background:
-        linear-gradient(180deg,
-            rgba(255,255,255,0.28) 0%,
-            rgba(255,255,255,0.08) 45%,
-            rgba(0,0,0,0.05) 100%),
-        var(--glass);
-    /* THE refraction trick: feDisplacementMap distorts the actual backdrop
-       pixels under the pill, giving the wobbled-glass look Apple has. Plus
-       blur, big saturation pump and contrast boost so the colours under
-       the lens look pumped, the way real glass amplifies them. The url()
-       filter chain only takes effect on browsers that support backdrop
-       SVG filters (Chrome 76+, Safari 16+); others get the rest of the
-       chain which still looks glassy. */
-    backdrop-filter: url(#lensRefract) blur(14px) saturate(240%) contrast(1.12) brightness(1.05);
-    -webkit-backdrop-filter: url(#lensRefract) blur(14px) saturate(240%) contrast(1.12) brightness(1.05);
-    border: 1.5px solid rgba(255,255,255,0.85);
+    /* WATER-LIKE TRANSPARENCY: middle is nearly clear (3% white) so you
+       can see straight through the pill to the content behind. Top has a
+       subtle sheen (10% white) and bottom a hint of shadow (5% black).
+       No --glass underlay — it would make the pill foggy/frosted, which
+       is exactly what the user said NOT to do. */
+    background: linear-gradient(180deg,
+        rgba(255,255,255,0.12) 0%,
+        rgba(255,255,255,0.03) 45%,
+        rgba(0,0,0,0.04) 100%);
+    /* Refraction stays (the wobble-glass at the rim) but blur drops hard:
+       6px instead of 14px so the content behind is CLEARLY visible with
+       only a soft water-like haze. Saturate + contrast still pump the
+       colours behind so they look amplified like through real water. */
+    backdrop-filter: url(#lensRefract) blur(6px) saturate(220%) contrast(1.15) brightness(1.05);
+    -webkit-backdrop-filter: url(#lensRefract) blur(6px) saturate(220%) contrast(1.15) brightness(1.05);
+    border: 1.5px solid rgba(255,255,255,0.95);
     box-shadow:
-        /* outer hairline = the OUTSIDE rim of the glass lens */
-        0 0 0 0.5px rgba(255,255,255,0.45),
-        /* bright top inner = the highlight reflection along the dome */
-        inset 0 2px 1.5px rgba(255,255,255,0.95),
-        /* faint inner perimeter ring = inside surface of the glass rim */
-        inset 0 0 0 1px rgba(255,255,255,0.18),
-        /* strong side highlights = the curved sides glinting */
-        inset 2px 0 3px -1px rgba(255,255,255,0.55),
-        inset -2px 0 3px -1px rgba(255,255,255,0.55),
-        /* darker bottom inner = where the curve falls into shadow */
-        inset 0 -2px 1.5px rgba(0,0,0,0.10),
-        /* two-layer outer drop shadow = clearly floating off the nav */
+        /* outer hairline */
+        0 0 0 0.5px rgba(255,255,255,0.5),
+        /* bright top inner rim = water droplet's top highlight */
+        inset 0 2px 1.5px rgba(255,255,255,1),
+        /* faint perimeter ring */
+        inset 0 0 0 1px rgba(255,255,255,0.25),
+        /* side highlights = curved sides catching light */
+        inset 2.5px 0 3px -1px rgba(255,255,255,0.6),
+        inset -2.5px 0 3px -1px rgba(255,255,255,0.6),
+        /* darker bottom rim = where curve falls into shadow */
+        inset 0 -2px 1.5px rgba(0,0,0,0.12),
+        /* floating shadows */
         0 3px 12px rgba(0,0,0,0.12),
         0 8px 28px rgba(0,0,0,0.08);
     opacity: 0;
@@ -430,27 +428,26 @@ body.dark .nav {
         opacity 0.25s ease;
     z-index: 0;
 }
-/* Inner radial-ish glow that gives the centre of the pill a deeper / more
-   filled feel than the bright rim — sells the dome curvature. */
+/* Inner curved-surface highlight: a soft white gleam on the top half so
+   the pill looks like a real water droplet catching light from above. */
 .nav-hover-pill::before {
     content: '';
     position: absolute;
-    inset: 3px;
+    inset: 2px;
     border-radius: inherit;
-    box-shadow:
-        inset 0 0 12px rgba(255,255,255,0.35),
-        inset 0 4px 6px -3px rgba(255,255,255,0.4);
+    background: linear-gradient(180deg,
+        rgba(255,255,255,0.18) 0%,
+        rgba(255,255,255,0) 55%);
     pointer-events: none;
 }
-/* Outer ring layer that simulates the refraction halo just outside the
-   lens — like the way light bends around a glass dome's edge. Very subtle
-   but it sells the thickness. */
+/* Refraction halo just outside the rim — the way light bends around a
+   water-drop's edge. */
 .nav-hover-pill::after {
     content: '';
     position: absolute;
     inset: -1px;
     border-radius: inherit;
-    border: 0.5px solid rgba(255,255,255,0.2);
+    border: 0.5px solid rgba(255,255,255,0.25);
     pointer-events: none;
 }
 .nav-hover-pill.active { opacity: 1; }
@@ -2182,10 +2179,10 @@ body.dark .theme-toggle .icon-moon { display: block; }
          under every card don't have to repaint continuously
        - hide touch ripples (desktop-mouse interaction) */
     body {
-        --glass-blur: 28px;
-        --glass-filter: blur(28px) saturate(180%);
-        --glass-filter-md: blur(20px) saturate(160%);
-        --glass-filter-sm: blur(12px) saturate(160%);
+        --glass-blur: 16px;
+        --glass-filter: blur(16px) saturate(170%) contrast(1.05);
+        --glass-filter-md: blur(10px) saturate(150%) contrast(1.05);
+        --glass-filter-sm: blur(6px)  saturate(150%) contrast(1.05);
     }
     .blob { animation: none; filter: blur(80px); }
     .ripple-container { display: none; }
