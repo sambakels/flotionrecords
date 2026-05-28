@@ -261,15 +261,34 @@ body.dark .card::before {
     transition: all 0.3s var(--ease);
 }
 
+/* Gradient submit buttons keep their bold gradient body and current
+   size — user wants them to feel like the same material as the glass
+   pills elsewhere on the site, so the pill rim chain is added on top:
+   white border, bright top-edge inner highlight, dark bottom-edge
+   inset, multi-layer outer drop shadow. The top-half sheen sits in
+   the stacked background (not a ::before) so it can't interfere with
+   text rendering on plain-text submit buttons. */
 .btn-color {
-    background: var(--gradient);
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0) 50%),
+        var(--gradient);
     color: #fff;
-    box-shadow: 0 4px 20px rgba(41,151,255,0.25);
+    border: 1px solid rgba(255,255,255,0.55);
+    box-shadow:
+        inset 0 1px 0.5px rgba(255,255,255,0.6),
+        inset 0 -1px 0.5px rgba(0,0,0,0.10),
+        0 4px 18px rgba(41,151,255,0.30),
+        0 10px 28px rgba(139,92,246,0.18);
 }
 
 .btn-color:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(41,151,255,0.35);
+    border-color: rgba(255,255,255,0.75);
+    box-shadow:
+        inset 0 1px 0.5px rgba(255,255,255,0.75),
+        inset 0 -1px 0.5px rgba(0,0,0,0.10),
+        0 8px 24px rgba(41,151,255,0.40),
+        0 16px 40px rgba(139,92,246,0.28);
 }
 
 .btn-color:active { transform: scale(0.96); }
