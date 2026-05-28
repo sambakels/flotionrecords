@@ -2126,13 +2126,20 @@ body.dark .pill-badge {
 
 .pricing-features li {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.6rem;
     font-size: 0.85rem;
     color: var(--text-60);
+    line-height: 1.5;
 }
 
-.pricing-features svg { color: var(--green); flex-shrink: 0; }
+.pricing-features svg { color: var(--green); flex-shrink: 0; margin-top: 0.2rem; }
+
+/* Wrap all text after the SVG in a single span so the whole sentence is
+   one flex item — otherwise <strong> and the trailing text become
+   separate flex items with a gap between them, creating ugly column
+   breaks when the strong wraps to a new line. */
+.pricing-features li > span { flex: 1; min-width: 0; }
 
 .pricing-btn { width: 100%; }
 
