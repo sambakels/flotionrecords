@@ -1863,25 +1863,88 @@ body.dark .theme-toggle .icon-moon { display: block; }
 
 .pricing-period { font-size: 0.8rem; color: var(--text-30); margin-bottom: 1.5rem; }
 
+/* Genre pills get the same liquid-glass language as the nav hover pill:
+   tinted body so they have colour identity even on a quiet backdrop,
+   backdrop-filter with blur + saturate + contrast so colours behind get
+   pumped through the "lens", multi-layer rim shadow chain for the
+   curved-surface read, plus a soft top sheen via ::before. */
 .genre-pill {
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    padding: 0.45rem 0.85rem;
+    padding: 0.5rem 1rem;
     border-radius: 999px;
-    background: var(--glass);
-    border: 1px solid rgba(139, 92, 246, 0.25);
+    background: linear-gradient(135deg,
+        rgba(59,130,246,0.16) 0%,
+        rgba(168,85,247,0.12) 100%);
+    backdrop-filter: blur(8px) saturate(220%) contrast(1.10) brightness(1.04);
+    -webkit-backdrop-filter: blur(8px) saturate(220%) contrast(1.10) brightness(1.04);
+    border: 1px solid rgba(255,255,255,0.55);
+    box-shadow:
+        0 0 0 0.5px rgba(255,255,255,0.25),
+        inset 0 1px 0.5px rgba(255,255,255,0.55),
+        inset 0 0 0 1px rgba(255,255,255,0.10),
+        inset 0 -1px 0.5px rgba(0,0,0,0.06),
+        0 2px 8px rgba(0,0,0,0.08),
+        0 5px 16px rgba(0,0,0,0.04);
     font-size: 0.78rem;
     font-weight: 600;
     color: var(--text-90);
     letter-spacing: 0.02em;
     text-decoration: none;
-    transition: background .2s, border-color .2s, transform .15s;
+    overflow: hidden;
+    transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), background 0.25s, border-color 0.25s;
 }
+.genre-pill::before {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    background: linear-gradient(180deg,
+        rgba(255,255,255,0.12) 0%,
+        rgba(255,255,255,0) 50%);
+    pointer-events: none;
+}
+.genre-pill > * { position: relative; z-index: 1; }
 .genre-pill:hover {
-    background: rgba(139, 92, 246, 0.1);
-    border-color: rgba(139, 92, 246, 0.55);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.75);
+    background: linear-gradient(135deg,
+        rgba(59,130,246,0.22) 0%,
+        rgba(168,85,247,0.18) 100%);
+    box-shadow:
+        0 0 0 0.5px rgba(255,255,255,0.4),
+        inset 0 1px 0.5px rgba(255,255,255,0.75),
+        inset 0 0 0 1px rgba(255,255,255,0.15),
+        inset 0 -1px 0.5px rgba(0,0,0,0.08),
+        0 6px 16px rgba(0,0,0,0.10),
+        0 12px 28px rgba(139,92,246,0.18);
+}
+body.dark .genre-pill {
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow:
+        0 0 0 0.5px rgba(255,255,255,0.06),
+        inset 0 1px 0.5px rgba(255,255,255,0.15),
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        inset 0 -1px 0.5px rgba(0,0,0,0.25),
+        0 2px 8px rgba(0,0,0,0.25),
+        0 5px 16px rgba(0,0,0,0.18);
+}
+body.dark .genre-pill::before {
+    background: linear-gradient(180deg,
+        rgba(255,255,255,0.05) 0%,
+        rgba(255,255,255,0) 50%);
+}
+body.dark .genre-pill:hover {
+    border-color: rgba(255,255,255,0.30);
+    box-shadow:
+        0 0 0 0.5px rgba(255,255,255,0.12),
+        inset 0 1px 0.5px rgba(255,255,255,0.20),
+        inset 0 0 0 1px rgba(255,255,255,0.06),
+        inset 0 -1px 0.5px rgba(0,0,0,0.30),
+        0 6px 16px rgba(0,0,0,0.35),
+        0 12px 28px rgba(139,92,246,0.30);
 }
 
 .pricing-features {
