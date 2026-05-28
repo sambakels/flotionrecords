@@ -111,6 +111,47 @@ if (window.matchMedia('(pointer: fine)').matches) {
     navLinks.addEventListener('mouseleave', () => pill.classList.remove('active'));
 }
 
+// Glass pill option groups — replaces native <select> elements with
+// clickable pill chips. Each .pill-options group has a data-pill-input
+// pointing at a hidden input that stores the selected value, so the
+// form submits normally as if a <select> had been used. Pill .selected
+// state is also cleared when the parent form is reset, so the visual
+// matches what the input actually holds.
+document.querySelectorAll('.pill-options[data-pill-input]').forEach(group => {
+    const inputId = group.dataset.pillInput;
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const clearAll = () => group.querySelectorAll('.pill-option').forEach(p => p.classList.remove('selected'));
+    group.querySelectorAll('.pill-option').forEach(pill => {
+        pill.addEventListener('click', () => {
+            clearAll();
+            pill.classList.add('selected');
+            input.value = pill.dataset.value;
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+    });
+    const form = input.closest('form');
+    if (form) form.addEventListener('reset', () => setTimeout(clearAll, 0));
+});
+
+// Blog category filter — clicking a filter pill hides cards that don't
+// match the selected category. data-category on each .blog-card matches
+// the data-category on the active pill ("all" shows everything).
+const blogFilter = document.querySelector('.pill-options[data-blog-filter]');
+if (blogFilter) {
+    const cards = document.querySelectorAll('.blog-card[data-category]');
+    blogFilter.querySelectorAll('.pill-option').forEach(pill => {
+        pill.addEventListener('click', () => {
+            blogFilter.querySelectorAll('.pill-option').forEach(p => p.classList.remove('selected'));
+            pill.classList.add('selected');
+            const cat = pill.dataset.category;
+            cards.forEach(card => {
+                card.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
+            });
+        });
+    });
+}
+
 // Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => { e.preventDefault(); const t = document.querySelector(a.getAttribute('href')); if (t) t.scrollIntoView({ behavior: 'smooth' }); });
