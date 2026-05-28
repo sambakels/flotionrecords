@@ -2332,11 +2332,12 @@ body.dark .pill-badge {
     .nav-toggle { display: flex; }
     .theme-toggle { width: 32px; height: 32px; }
 
-    /* Sections */
-    .section { padding: 2.5rem 0; }
-    .container { padding: 0 1rem; }
-    .section-head { margin-bottom: 1.2rem; }
-    .section-head h2 { font-size: 1.6rem; }
+    /* Sections — tighter rhythm so content reads as cohesive on a
+       narrow viewport, not as a tall string of widely-spaced blocks */
+    .section { padding: 2rem 0; }
+    .container { padding: 0 0.9rem; }
+    .section-head { margin-bottom: 1rem; }
+    .section-head h2 { font-size: 1.55rem; }
 
     /* Hero */
     .hero { min-height: auto; padding: 5.5rem 1rem 2.5rem; }
@@ -2346,9 +2347,22 @@ body.dark .pill-badge {
     .hero-tag { font-size: 0.65rem; letter-spacing: 3px; margin-bottom: 1rem; }
     .hero-sub { font-size: 0.95rem; margin-bottom: 1.5rem; }
 
-    /* Cards */
-    .card { padding: 1.5rem; border-radius: 18px; }
-    .card-lg { padding: 1.3rem; border-radius: 18px; }
+    /* Cards — tighter padding so they're not wasteful of horizontal
+       space on a 360-400px viewport */
+    .card { padding: 1.4rem 1.2rem; border-radius: 18px; }
+    .card-lg { padding: 1.4rem 1.2rem; border-radius: 18px; }
+
+    /* Pill options grids — 13 pills wrap into multiple rows on phones;
+       tighter padding + smaller font keeps them readable without
+       dominating the form */
+    .pill-options { gap: 0.35rem; }
+    .pill-option { padding: 0.42rem 0.85rem; font-size: 0.76rem; }
+
+    /* Playlist card genre overlay pill — smaller + tighter to corner */
+    .playlist-card-genre { top: 0.5rem; left: 0.5rem; padding: 0.25rem 0.55rem; font-size: 0.55rem; }
+
+    /* Tracklist mobile breathing */
+    .tracklist { padding: 0.3rem; }
 
     /* Stats */
     .stats-row { grid-template-columns: repeat(2, 1fr); gap: 0.5rem; }
