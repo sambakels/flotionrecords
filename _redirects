@@ -1,0 +1,16 @@
+# Cloudflare Pages redirect rules
+#
+# Why this file exists:
+# Cloudflare Pages by default strips .html and trailing slashes via 308s,
+# but DOES NOT redirect the www subdomain to the apex. That left
+# www.flotionrecords.com/* serving 200 alongside flotionrecords.com/*,
+# which Google Search Console flagged as "Fout met omleiding" because a
+# request like http://www.flotionrecords.com/services.html had to chain
+# through http→https, www→apex, and .html→extensionless — three hops in
+# the worst case.
+#
+# Rule: every www request goes straight to the canonical apex in ONE
+# 301 (permanent) hop, preserving the rest of the URL via :splat.
+# The trailing ! makes it a forced rewrite (overrides the default 200
+# that Pages would have served for the same path).
+https://www.flotionrecords.com/* https://flotionrecords.com/:splat 301!
