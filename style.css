@@ -1,37 +1,6 @@
 /* ========================================
    FLOTION RECORDS - Liquid Glass Light
    ======================================== */
-
-/* Smooth cross-document page transitions (Chrome 126+, Safari 18+).
-   Falls back to default instant nav on browsers without support, so it
-   is a pure progressive enhancement. Kills the white-flash glitch
-   between page loads by letting the browser crossfade the old page
-   into the new one. */
-@view-transition {
-    navigation: auto;
-}
-::view-transition-old(root),
-::view-transition-new(root) {
-    animation-duration: 0.28s;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-::view-transition-old(root) {
-    animation-name: vt-fade-out;
-}
-::view-transition-new(root) {
-    animation-name: vt-fade-in;
-}
-@keyframes vt-fade-out {
-    to { opacity: 0; }
-}
-@keyframes vt-fade-in {
-    from { opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-    ::view-transition-old(root),
-    ::view-transition-new(root) { animation-duration: 0.01ms; }
-}
-
 :root {
     --bg: #d2d5de;
     --surface: rgba(255,255,255,0.50);
