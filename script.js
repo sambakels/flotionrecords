@@ -50,14 +50,15 @@ document.addEventListener('submit', function (e) {
     }
 })();
 
-// Dark mode
+// Dark mode — the initial class is set by an inline pre-render script
+// in each page's <head> so we never get a flash-of-light-theme between
+// navigations. This handler only owns the toggle click + persistence.
 const themeToggle = document.getElementById('themeToggle');
-if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark');
 
 themeToggle.addEventListener('click', e => {
     e.stopPropagation();
-    document.body.classList.toggle('dark');
-    localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 });
 
 // Nav
