@@ -1,0 +1,23 @@
+# Files NOT to upload to Cloudflare Pages as static assets.
+# The new Workers + Assets runtime serves everything at root unless
+# excluded here, so we explicitly hide internals and source.
+
+# VCS + dev internals
+.git/
+.gitignore
+.wrangler/
+
+# Worker source is bundled, not served as a file
+src/
+wrangler.jsonc
+wrangler.toml
+
+# Local env / secrets
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+
+# Repo metadata
+README.md
+.assetsignore

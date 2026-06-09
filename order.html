@@ -170,7 +170,7 @@
 
                     <div class="track-type-toggle">
                         <button class="track-type-btn active" data-type="link" type="button">Streaming link</button>
-                        <button class="track-type-btn" data-type="upload" type="button">Upload track (MP3/WAV)</button>
+                        <button class="track-type-btn" data-type="upload" type="button">Unreleased / no link</button>
                     </div>
 
                     <div class="track-input-area" id="linkArea">
@@ -182,15 +182,15 @@
 
                     <div class="track-input-area" id="uploadArea" style="display: none;">
                         <div class="form-field">
-                            <label for="order-file">Upload your track (max 50MB)</label>
-                            <div class="file-upload" id="orderFileUpload">
-                                <input type="file" id="order-file" accept=".mp3,.wav,audio/mpeg,audio/wav">
-                                <div class="file-upload-label">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                                    <span id="orderFileName">Drag and drop or click to upload</span>
-                                </div>
+                            <label>Unreleased track</label>
+                            <div style="padding:1.1rem 1.2rem;border-radius:14px;background:var(--glass);border:1px solid var(--glass-border);font-size:.86rem;line-height:1.55;color:var(--text-80)">
+                                <strong style="color:var(--text)">After payment</strong>, send your track to
+                                <a href="mailto:contact@flotionrecords.com" style="color:var(--blue);font-weight:600">contact@flotionrecords.com</a>
+                                via WeTransfer (or any link). Put your <strong>submission ID</strong>
+                                (shown on the confirmation page) in the subject line so we can match it.
+                                Review window starts as soon as the file lands in our inbox.
                             </div>
-                            <p style="font-size:0.7rem;color:var(--text-50);margin-top:.5rem;line-height:1.4">For files larger than 50MB or unreleased material, you can also email us a WeTransfer link to <a href="mailto:contact@flotionrecords.com" style="color:var(--blue)">contact@flotionrecords.com</a> with your submission ID after checkout.</p>
+                            <input type="hidden" id="order-file">
                         </div>
                     </div>
 
@@ -357,25 +357,10 @@
         });
     });
 
-    // File upload feedback
-    const orderFile = document.getElementById('order-file');
-    const orderFileUpload = document.getElementById('orderFileUpload');
-    const orderFileName = document.getElementById('orderFileName');
-    if (orderFile) {
-        orderFile.addEventListener('change', () => {
-            if (orderFile.files.length > 0) {
-                const f = orderFile.files[0];
-                orderFileName.textContent = f.name + ' (' + (f.size / 1024 / 1024).toFixed(1) + ' MB)';
-                orderFileUpload.classList.add('has-file');
-            } else {
-                orderFileName.textContent = 'Drag and drop or click to upload';
-                orderFileUpload.classList.remove('has-file');
-            }
-        });
-        orderFileUpload.addEventListener('dragover', e => { e.preventDefault(); orderFileUpload.classList.add('dragover'); });
-        orderFileUpload.addEventListener('dragleave', () => { orderFileUpload.classList.remove('dragover'); });
-        orderFileUpload.addEventListener('drop', () => { orderFileUpload.classList.remove('dragover'); });
-    }
+    // File-upload UI was removed when the order flow moved to the
+    // Stripe-webhook architecture: file bytes cannot travel through the
+    // webhook path, so unreleased material is now collected via WeTransfer
+    // after payment instead.
 
     // Pre-select package from URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -395,21 +380,16 @@
         return 'FLOT-' + ts + '-' + rnd;
     }
 
-    async function sendSubmission(submission) {
-        if (!formspreeEndpoint || formspreeEndpoint.includes('FORMSPREE_')) return false;
-        const fd = new FormData();
-        fd.append('_subject', '[Flotion] ' + submission.tier + ' submission: ' + submission.artist);
-        fd.append('_replyto', submission.email);
-        for (const [k, v] of Object.entries(submission)) {
-            if (k === '_file') continue;
-            fd.append(k, String(v ?? ''));
-        }
-        if (submission._file) fd.append('attachment', submission._file);
+    // Pre-payment: stash order details server-side under submission_id.
+    // Stripe webhook will read this back and email us ONLY after the
+    // customer's payment is confirmed by Stripe. Blocks the "fake order
+    // notification, no payment" spam vector that older versions had.
+    async function stashOrder(submission) {
         try {
-            const r = await fetch(formspreeEndpoint, {
+            const r = await fetch('/api/order', {
                 method: 'POST',
-                body: fd,
-                headers: { 'Accept': 'application/json' },
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(submission),
             });
             return r.ok;
         } catch (e) { return false; }
@@ -422,55 +402,58 @@
         const link = document.getElementById('order-link').value.trim();
         const genre = document.getElementById('order-genre').value;
         const notes = document.getElementById('order-notes').value.trim();
-        const fileInput = document.getElementById('order-file');
-        const file = fileInput && fileInput.files[0] ? fileInput.files[0] : null;
         const submissionId = generateSubmissionId();
 
         // Basic validation
         if (!name || !email) { alert('Please fill in your name and email.'); return; }
         const trackTypeBtn = document.querySelector('.track-type-btn.active');
         const isLink = trackTypeBtn && trackTypeBtn.dataset.type === 'link';
-        if (isLink && !link) { alert('Please paste a streaming link or switch to Upload.'); return; }
-        if (!isLink && !file) { alert('Please upload your track or switch to Streaming Link.'); return; }
+        if (isLink && !link) { alert('Please paste a streaming link or switch to Unreleased track.'); return; }
         if (!genre) { alert('Please select a genre.'); return; }
-        if (file && file.size > 50 * 1024 * 1024) {
-            alert('File is larger than 50MB. Please upload a smaller file or send a WeTransfer link to ' + submissionEmail + ' after checkout.');
-            return;
-        }
         const consent = document.getElementById('order-consent');
         if (consent && !consent.checked) { alert('Please accept the Terms and Privacy Statement to continue.'); return; }
 
+        // Streaming link path covers ~95% of submissions and is fully
+        // secured by the Stripe-webhook flow. Unreleased / no-link path
+        // tells the customer to send via WeTransfer after payment.
+        const trackForRecord = isLink
+            ? link
+            : '(unreleased — customer will send file via WeTransfer to ' + submissionEmail + ' after payment)';
+
         const submission = {
             submission_id: submissionId,
-            tier: packageNames[pkg.value],
-            price_eur: pkg.dataset.price,
-            review_window: windowText[pkg.value],
+            tier: pkg.value, // server validates against allow-list
             artist: name,
             email: email,
-            track_link: isLink ? link : '(uploaded file)',
+            track_link: trackForRecord,
             genre: genre,
             notes: notes || '(none)',
-            timestamp: new Date().toISOString(),
-            _file: file,
         };
 
         payBtn.disabled = true;
         payBtn.textContent = 'Submitting...';
 
-        // POST submission details to Formspree (so we receive the data)
-        const sent = await sendSubmission(submission);
+        // Stash order data server-side. The Stripe webhook will read it
+        // back and notify us — but only AFTER Stripe confirms payment.
+        const stashed = await stashOrder(submission);
+        if (!stashed) {
+            alert('Could not start your order. Please try again, or email ' + submissionEmail + ' directly.');
+            payBtn.disabled = false;
+            payBtn.textContent = 'Pay €' + pkg.dataset.price + ' and Submit';
+            return;
+        }
 
-        // Paid tier: redirect to Stripe Payment Link
+        // Redirect to Stripe. client_reference_id ties the Stripe session
+        // back to the KV entry, which is how the webhook finds the order.
         const stripeLink = stripeLinks[pkg.value];
         if (stripeLink && !stripeLink.startsWith('STRIPE_')) {
-            // Save submission locally so success page can show the ID
             try { localStorage.setItem('flotion_last_submission', JSON.stringify({ id: submissionId, tier: pkg.value })); } catch (e) {}
             const sep = stripeLink.includes('?') ? '&' : '?';
             window.location.href = stripeLink + sep + 'prefilled_email=' + encodeURIComponent(email) + '&client_reference_id=' + encodeURIComponent(submissionId);
         } else {
             // Fallback if Stripe link not configured: mailto
             const subject = '[Flotion ' + packageNames[pkg.value] + '] ' + name + ' / needs invoice';
-            const body = ['Submission ID: ' + submissionId, 'Tier: ' + packageNames[pkg.value] + ' (€' + pkg.dataset.price + ')', 'Artist: ' + name, 'Email: ' + email, 'Genre: ' + genre, 'Track: ' + (isLink ? link : '(unreleased)'), 'Notes: ' + (notes || 'none')].join('\n');
+            const body = ['Submission ID: ' + submissionId, 'Tier: ' + packageNames[pkg.value] + ' (€' + pkg.dataset.price + ')', 'Artist: ' + name, 'Email: ' + email, 'Genre: ' + genre, 'Track: ' + trackForRecord, 'Notes: ' + (notes || 'none')].join('\n');
             window.location.href = 'mailto:' + submissionEmail + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         }
     });
