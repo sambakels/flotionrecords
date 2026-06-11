@@ -3,7 +3,27 @@
 // same as the previous Workers entry point — it just needs to live under
 // functions/ for Cloudflare Pages to actually deploy it.
 
-import disposableEmails from '../../disposable-emails.json' assert { type: 'json' };
+// Disposable email domains (inlined so we don't depend on import assertions
+// or a runtime fetch). Extend as needed.
+const disposableEmails = [
+    'tempmail.com','10minutemail.com','mailinator.com','guerrillamail.com',
+    'throwaway.email','trashmail.com','yopmail.com','getnada.com','tempmailo.com',
+    'emailondeck.com','dispostable.com','fakeinbox.com','sharklasers.com',
+    'burnermail.io','mintemail.com','mohmal.com','temp-mail.org','tempinbox.com',
+    'mailcatch.com','spamgourmet.com','mytemp.email','throwawaymail.com',
+    'anonymbox.com','tempr.email','mailnesia.com','jetable.org','instant-mail.de',
+    'boun.cr','binkmail.com','12minutemail.com','20minutemail.com','30minutemail.com',
+    'minute10mail.com','temporarymail.com','mailtemp.info','trashinbox.com',
+    'tempemail.net','filzmail.com','emailtemporanea.net','emailtemporario.com.br',
+    'mt2014.com','spam.la','spamday.com','tempemail.biz','tempymail.com',
+    'wickmail.net','yopmail.fr','yopmail.net','spambox.us','grr.la',
+    'wegwerfmail.org','incognitomail.net','explodemail.com','kasmail.com',
+    'mailbiz.biz','tafmail.com','quickinbox.com','spam.su','shitmail.me',
+    'spam4.me','mailto.de','trashymail.com','tempmail2.com','tempmaildemo.com',
+    'tempmail.io','tempmail.cn','tempmail.net','tempmail.us','mail.tm',
+    'disposable.com','disposablemail.com','disposeamail.com','fivedayinbox.com',
+    'discardmail.com','discardmail.de','wegwerfemail.de','squizzy.de'
+];
 
 const DEFAULT_FORMSPREE = 'https://formspree.io/f/xeenlknb';
 const SESSION_DAYS = 30;
