@@ -1,114 +1,66 @@
-// Flotion Records — Cloudflare Worker
-//
-// Routes:
-//   /api/order              (existing curator review order flow)
-//   /api/stripe-webhook     (existing)
-//   /api/account/signup     create user + magic link
-//   /api/account/verify     magic link callback
-//   /api/account/me         current user info
-//   /api/account/signout    clear session
-//   /api/mastering/upload-init      create job + return signed R2 PUT URL
-//   /api/mastering/upload-complete  mark job ready for worker
-//   /api/mastering/jobs/:id         job status
-//   /api/mastering/download/:id     signed R2 GET URL
-//   /api/mastering/unlock-wav       Stripe checkout for WAV unlock
-//   /api/mastering/buy-credits      Stripe checkout for credit pack
-//   /api/worker/poll                queue worker pulls next job
-//   /api/worker/complete            queue worker reports done
-//
-// Required env vars:
-//   STRIPE_SECRET_KEY          sk_live_...
-//   STRIPE_WEBHOOK_SECRET      whsec_...
-//   STRIPE_PRICE_SINGLE        price_... (€7, 1 credit)
-//   STRIPE_PRICE_PACK          price_... (€25, 5 credits)
-//   STRIPE_PRICE_WAV_UNLOCK    price_... (€7, unlock single WAV)
-//   TURNSTILE_SECRET           Cloudflare Turnstile secret
-//   RESEND_API_KEY             re_... (email delivery)
-//   RESEND_FROM                e.g. "Flotion Records <hello@flotionrecords.com>"
-//   SITE_URL                   https://flotionrecords.com
-//   FORMSPREE_ENDPOINT         (existing) https://formspree.io/f/xeenlknb
-//   WORKER_SHARED_SECRET       shared secret for Oracle worker auth
-//   SESSION_SECRET             HMAC secret for session cookies
-//
-// Bindings:
-//   ORDERS  (KV)   existing
-//   DB      (D1)   schema in /schema.sql
-//   AUDIO   (R2)   bucket "flotion-mastering-audio"
+// Pages Functions catch-all: /api/*
+// Routes are dispatched here based on (pathname, method). Logic is the
+// same as the previous Workers entry point — it just needs to live under
+// functions/ for Cloudflare Pages to actually deploy it.
+
+import disposableEmails from '../../disposable-emails.json' assert { type: 'json' };
 
 const DEFAULT_FORMSPREE = 'https://formspree.io/f/xeenlknb';
 const SESSION_DAYS = 30;
-const FREE_TIER = 'free';
 
-export default {
-    async fetch(request, env, ctx) {
-        const url = new URL(request.url);
-        const p = url.pathname;
-        const method = request.method;
+export async function onRequest(context) {
+    const { request, env } = context;
+    const url = new URL(request.url);
+    const p = url.pathname;
+    const method = request.method;
 
-        try {
-            // -------- existing routes --------
-            if (p === '/api/order' && method === 'POST') return handleOrder(request, env);
-            if (p === '/api/stripe-webhook' && method === 'POST') return handleStripeWebhook(request, env);
+    try {
+        if (p === '/api/order' && method === 'POST') return handleOrder(request, env);
+        if (p === '/api/stripe-webhook' && method === 'POST') return handleStripeWebhook(request, env);
 
-            // -------- account --------
-            if (p === '/api/account/signup' && method === 'POST') return acctSignup(request, env);
-            if (p === '/api/account/verify' && method === 'GET') return acctVerify(request, env);
-            if (p === '/api/account/me' && method === 'GET') return acctMe(request, env);
-            if (p === '/api/account/signout' && method === 'POST') return acctSignout(request, env);
+        if (p === '/api/account/signup' && method === 'POST') return acctSignup(request, env);
+        if (p === '/api/account/verify' && method === 'GET') return acctVerify(request, env);
+        if (p === '/api/account/me' && method === 'GET') return acctMe(request, env);
+        if (p === '/api/account/signout' && method === 'POST') return acctSignout(request, env);
 
-            // -------- mastering --------
-            if (p === '/api/mastering/upload-init' && method === 'POST') return masteringUploadInit(request, env);
-            if (p === '/api/mastering/upload-complete' && method === 'POST') return masteringUploadComplete(request, env);
-            if (p.startsWith('/api/mastering/jobs/') && method === 'GET') {
-                const id = p.split('/').pop();
-                return masteringJobStatus(request, env, id);
-            }
-            if (p.startsWith('/api/mastering/download/') && method === 'GET') {
-                const id = p.split('/').pop();
-                return masteringDownload(request, env, id, url);
-            }
-            if (p === '/api/mastering/unlock-wav' && method === 'POST') return masteringUnlockWav(request, env);
-            if (p === '/api/mastering/buy-credits' && method === 'POST') return masteringBuyCredits(request, env);
-
-            // PUT upload payload (frontend → worker → R2)
-            if (p.startsWith('/api/mastering/upload/') && method === 'PUT') {
-                const id = p.split('/').pop();
-                return masteringUploadPut(request, env, id);
-            }
-
-            // -------- Oracle worker queue endpoints --------
-            if (p === '/api/worker/poll' && method === 'POST') return workerPoll(request, env);
-            if (p === '/api/worker/complete' && method === 'POST') return workerComplete(request, env);
-            if (p.startsWith('/api/worker/fetch-source/') && method === 'GET') {
-                const id = p.split('/').pop();
-                return workerFetchSource(request, env, id);
-            }
-            if (p.startsWith('/api/worker/upload-result/') && method === 'PUT') {
-                // /api/worker/upload-result/{jobId}/{kind}
-                const parts = p.split('/');
-                return workerUploadResult(request, env, parts[parts.length - 2], parts[parts.length - 1]);
-            }
-
-            // 405 for API paths
-            if (p.startsWith('/api/')) return new Response('Method not allowed', { status: 405 });
-
-            return env.ASSETS.fetch(request);
-        } catch (err) {
-            console.error('Worker error', err);
-            return jsonError('Server error: ' + (err.message || 'unknown'), 500);
+        if (p === '/api/mastering/upload-init' && method === 'POST') return masteringUploadInit(request, env);
+        if (p === '/api/mastering/upload-complete' && method === 'POST') return masteringUploadComplete(request, env);
+        if (p.startsWith('/api/mastering/jobs/') && method === 'GET') {
+            return masteringJobStatus(request, env, p.split('/').pop());
         }
-    },
-};
+        if (p.startsWith('/api/mastering/download/') && method === 'GET') {
+            return masteringDownload(request, env, p.split('/').pop(), url);
+        }
+        if (p === '/api/mastering/unlock-wav' && method === 'POST') return masteringUnlockWav(request, env);
+        if (p === '/api/mastering/buy-credits' && method === 'POST') return masteringBuyCredits(request, env);
+        if (p.startsWith('/api/mastering/upload/') && method === 'PUT') {
+            return masteringUploadPut(request, env, p.split('/').pop());
+        }
+
+        if (p === '/api/worker/poll' && method === 'POST') return workerPoll(request, env);
+        if (p === '/api/worker/complete' && method === 'POST') return workerComplete(request, env);
+        if (p.startsWith('/api/worker/fetch-source/') && method === 'GET') {
+            return workerFetchSource(request, env, p.split('/').pop());
+        }
+        if (p.startsWith('/api/worker/upload-result/') && method === 'PUT') {
+            const parts = p.split('/');
+            return workerUploadResult(request, env, parts[parts.length - 2], parts[parts.length - 1]);
+        }
+
+        return new Response('Method not allowed', { status: 405 });
+    } catch (err) {
+        return jsonError('Server error: ' + (err.message || 'unknown'), 500);
+    }
+}
 
 // =============================================================================
-// existing /api/order + stripe webhook
+// existing /api/order
 // =============================================================================
 
 async function handleOrder(request, env) {
     try {
         const formData = await request.formData();
         if (formData.get('_gotcha')) return jsonOk();
-
         const formspreeRes = await fetch(env.FORMSPREE_ENDPOINT || DEFAULT_FORMSPREE, {
             method: 'POST', body: formData, headers: { 'Accept': 'application/json' },
         });
@@ -123,31 +75,23 @@ async function handleStripeWebhook(request, env) {
     const sig = request.headers.get('stripe-signature');
     if (!sig) return new Response('Missing signature', { status: 400 });
     const body = await request.text();
-    const ok = await verifyStripeSignature(body, sig, env.STRIPE_WEBHOOK_SECRET);
-    if (!ok) return new Response('Invalid signature', { status: 400 });
-
+    if (!await verifyStripeSignature(body, sig, env.STRIPE_WEBHOOK_SECRET)) {
+        return new Response('Invalid signature', { status: 400 });
+    }
     let event;
     try { event = JSON.parse(body); } catch (e) { return new Response('Bad JSON', { status: 400 }); }
     if (event.type !== 'checkout.session.completed') return new Response('Ignored', { status: 200 });
-
     const session = event.data?.object;
     if (!session || session.payment_status !== 'paid') return new Response('Not paid', { status: 200 });
 
     const meta = session.metadata || {};
-    // Mastering payments: credit pack or wav unlock
-    if (meta.purpose === 'mastering_credits') {
-        const credits = parseInt(meta.credits || '0', 10);
-        if (meta.user_id && credits > 0) {
-            await env.DB.prepare('UPDATE users SET credits_balance = credits_balance + ? WHERE id = ?')
-                .bind(credits, meta.user_id).run();
-        }
-    } else if (meta.purpose === 'mastering_wav_unlock') {
-        if (meta.job_id) {
-            await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?')
-                .bind(meta.job_id).run();
-        }
+    if (meta.purpose === 'mastering_credits' && meta.user_id && meta.credits) {
+        const credits = parseInt(meta.credits, 10);
+        await env.DB.prepare('UPDATE users SET credits_balance = credits_balance + ? WHERE id = ?')
+            .bind(credits, meta.user_id).run();
+    } else if (meta.purpose === 'mastering_wav_unlock' && meta.job_id) {
+        await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(meta.job_id).run();
     } else {
-        // Original curator-review order flow
         const submission_id = session.client_reference_id;
         if (submission_id) {
             const stored = await env.ORDERS.get(submission_id);
@@ -164,12 +108,11 @@ async function handleStripeWebhook(request, env) {
             }
         }
     }
-
     return new Response('OK', { status: 200 });
 }
 
 // =============================================================================
-// Account / Auth
+// Account
 // =============================================================================
 
 async function acctSignup(request, env) {
@@ -178,32 +121,28 @@ async function acctSignup(request, env) {
     const token = String(data.turnstile_token || '');
 
     if (!isValidEmail(email)) return jsonError('Invalid email', 400);
-    if (await isDisposableEmail(email, env)) {
+    if (isDisposableEmail(email)) {
         return jsonError('Please use a non-disposable email address.', 400);
     }
     if (env.TURNSTILE_SECRET && !await verifyTurnstile(token, env.TURNSTILE_SECRET, request)) {
         return jsonError('Verification challenge failed. Please try again.', 400);
     }
 
-    // Find or create user
-    let user = await env.DB.prepare('SELECT id, email, free_used, credits_balance FROM users WHERE email = ?')
-        .bind(email).first();
+    let user = await env.DB.prepare('SELECT id, email FROM users WHERE email = ?').bind(email).first();
     if (!user) {
         const id = randomId('usr');
         await env.DB.prepare(
             'INSERT INTO users (id, email, email_verified, free_used, credits_balance, created_at) VALUES (?, ?, 0, 0, 0, ?)'
         ).bind(id, email, new Date().toISOString()).run();
-        user = { id, email, free_used: 0, credits_balance: 0 };
+        user = { id, email };
     }
 
-    // Create verify token (15 min expiry)
     const vtok = randomId('vt') + randomId('').slice(0, 12);
     const expires = new Date(Date.now() + 15 * 60 * 1000).toISOString();
     await env.DB.prepare(
         'INSERT INTO verify_tokens (token, user_id, purpose, expires_at, used, created_at) VALUES (?, ?, ?, ?, 0, ?)'
     ).bind(vtok, user.id, 'signin', expires, new Date().toISOString()).run();
 
-    // Send email via Resend
     const verifyUrl = `${env.SITE_URL || 'https://flotionrecords.com'}/api/account/verify?token=${encodeURIComponent(vtok)}`;
     await sendMagicLinkEmail(env, email, verifyUrl);
 
@@ -222,13 +161,11 @@ async function acctVerify(request, env) {
     if (row.used) return redirectTo('/account?error=used');
     if (new Date(row.expires_at).getTime() < Date.now()) return redirectTo('/account?error=expired');
 
-    // Mark used + verify user
     await env.DB.prepare('UPDATE verify_tokens SET used = 1 WHERE token = ?').bind(token).run();
     await env.DB.prepare(
         'UPDATE users SET email_verified = 1, last_login_at = ? WHERE id = ?'
     ).bind(new Date().toISOString(), row.user_id).run();
 
-    // Create session
     const sessionId = randomId('sess') + randomId('').slice(0, 16);
     const expires = new Date(Date.now() + SESSION_DAYS * 86400000).toISOString();
     await env.DB.prepare(
@@ -298,7 +235,6 @@ async function masteringUploadInit(request, env) {
     if (size <= 0 || size > MAX_UPLOAD_SIZE) return jsonError('File too large (max 50 MB)', 400);
     if (!ALLOWED_GENRES.has(genre)) return jsonError('Invalid genre', 400);
 
-    // Check available credits
     const hasFree = !user.free_used;
     const hasCredit = user.credits_balance > 0;
     if (!hasFree && !hasCredit) return jsonError('No credits available', 402);
@@ -311,23 +247,17 @@ async function masteringUploadInit(request, env) {
         'INSERT INTO jobs (id, user_id, tier, genre, source_filename, source_r2_key, status, wav_unlocked, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
     ).bind(jobId, user.id, tier, genre, filename, sourceKey, 'awaiting_upload', tier === 'paid' ? 1 : 0, new Date().toISOString()).run();
 
-    // Frontend will PUT to /api/mastering/upload/{jobId}
-    return jsonOk({
-        job_id: jobId,
-        upload_url: `/api/mastering/upload/${jobId}`,
-    });
+    return jsonOk({ job_id: jobId, upload_url: `/api/mastering/upload/${jobId}` });
 }
 
 async function masteringUploadPut(request, env, jobId) {
     const user = await currentUser(request, env);
     if (!user) return jsonError('Not signed in', 401);
-
     const job = await env.DB.prepare('SELECT id, user_id, source_r2_key, status FROM jobs WHERE id = ?')
         .bind(jobId).first();
     if (!job || job.user_id !== user.id) return jsonError('Job not found', 404);
     if (job.status !== 'awaiting_upload') return jsonError('Job in wrong state', 409);
 
-    // Stream the body straight into R2.
     await env.AUDIO.put(job.source_r2_key, request.body, {
         httpMetadata: { contentType: request.headers.get('content-type') || 'audio/wav' },
     });
@@ -337,7 +267,6 @@ async function masteringUploadPut(request, env, jobId) {
 async function masteringUploadComplete(request, env) {
     const user = await currentUser(request, env);
     if (!user) return jsonError('Not signed in', 401);
-
     const data = await request.json().catch(() => ({}));
     const jobId = String(data.job_id || '');
     const job = await env.DB.prepare('SELECT id, user_id, tier, status FROM jobs WHERE id = ?')
@@ -345,7 +274,6 @@ async function masteringUploadComplete(request, env) {
     if (!job || job.user_id !== user.id) return jsonError('Job not found', 404);
     if (job.status !== 'awaiting_upload') return jsonError('Job in wrong state', 409);
 
-    // Charge the credit (or free use) here, so abandoned uploads don't consume credits.
     if (job.tier === 'free') {
         await env.DB.prepare('UPDATE users SET free_used = 1 WHERE id = ?').bind(user.id).run();
     } else {
@@ -366,13 +294,8 @@ async function masteringJobStatus(request, env, jobId) {
     let report = null;
     try { report = job.report_json ? JSON.parse(job.report_json) : null; } catch (e) {}
     return jsonOk({
-        id: job.id,
-        status: job.status,
-        tier: job.tier,
-        genre: job.genre,
-        wav_unlocked: !!job.wav_unlocked,
-        error_message: job.error_message,
-        report,
+        id: job.id, status: job.status, tier: job.tier, genre: job.genre,
+        wav_unlocked: !!job.wav_unlocked, error_message: job.error_message, report,
     });
 }
 
@@ -381,20 +304,16 @@ async function masteringDownload(request, env, jobId, url) {
     if (!user) return jsonError('Not signed in', 401);
     const kind = url.searchParams.get('kind') || 'mp3';
     if (kind !== 'mp3' && kind !== 'wav') return jsonError('Invalid kind', 400);
-
     const job = await env.DB.prepare(
         'SELECT id, user_id, status, wav_unlocked, result_mp3_key, result_wav_key, source_filename FROM jobs WHERE id = ?'
     ).bind(jobId).first();
     if (!job || job.user_id !== user.id) return jsonError('Not found', 404);
     if (job.status !== 'done') return jsonError('Not ready', 409);
     if (kind === 'wav' && !job.wav_unlocked) return jsonError('WAV not unlocked', 402);
-
     const key = kind === 'wav' ? job.result_wav_key : job.result_mp3_key;
     if (!key) return jsonError('File missing', 404);
-
     const obj = await env.AUDIO.get(key);
     if (!obj) return jsonError('File missing', 404);
-
     const headers = new Headers();
     obj.writeHttpMetadata(headers);
     headers.set('Content-Disposition', `attachment; filename="${stripExt(job.source_filename)}_mastered.${kind}"`);
@@ -433,8 +352,7 @@ async function masteringBuyCredits(request, env) {
     else return jsonError('Invalid tier', 400);
 
     const url = await createStripeCheckout(env, {
-        price,
-        customer_email: user.email,
+        price, customer_email: user.email,
         metadata: { purpose: 'mastering_credits', user_id: user.id, credits: String(credits) },
         success_url: `${env.SITE_URL}/mastering?credits=${credits}`,
         cancel_url: `${env.SITE_URL}/services#mastering`,
@@ -477,8 +395,7 @@ async function workerFetchSource(request, env, jobId) {
 async function workerUploadResult(request, env, jobId, kind) {
     if (!workerAuthOk(request, env)) return new Response('Unauthorized', { status: 401 });
     if (kind !== 'mp3' && kind !== 'wav') return new Response('Invalid kind', { status: 400 });
-    const ext = kind;
-    const key = `results/${jobId}/master.${ext}`;
+    const key = `results/${jobId}/master.${kind}`;
     await env.AUDIO.put(key, request.body, {
         httpMetadata: { contentType: kind === 'mp3' ? 'audio/mpeg' : 'audio/wav' },
     });
@@ -494,7 +411,6 @@ async function workerComplete(request, env) {
     const ok = !!data.ok;
     const report = data.report || null;
     const error = data.error_message || null;
-
     if (!jobId) return jsonError('Missing job_id', 400);
 
     if (ok) {
@@ -507,13 +423,10 @@ async function workerComplete(request, env) {
         ).bind(new Date().toISOString(), error, jobId).run();
     }
 
-    // Email the user
     const row = await env.DB.prepare(
         'SELECT u.email, j.source_filename FROM jobs j JOIN users u ON u.id = j.user_id WHERE j.id = ?'
     ).bind(jobId).first();
-    if (row && ok) {
-        await sendResultEmail(env, row.email, row.source_filename, jobId);
-    }
+    if (row && ok) await sendResultEmail(env, row.email, row.source_filename, jobId);
 
     return jsonOk();
 }
@@ -526,15 +439,9 @@ function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254;
 }
 
-async function isDisposableEmail(email, env) {
-    const domain = email.split('@')[1] || '';
-    try {
-        const list = await env.ASSETS.fetch('https://flotionrecords.com/disposable-emails.json');
-        const json = await list.json();
-        return Array.isArray(json) && json.some(d => domain.endsWith(d));
-    } catch (e) {
-        return false; // fail open
-    }
+function isDisposableEmail(email) {
+    const domain = (email.split('@')[1] || '').toLowerCase();
+    return Array.isArray(disposableEmails) && disposableEmails.some(d => domain === d || domain.endsWith('.' + d));
 }
 
 async function verifyTurnstile(token, secret, request) {
@@ -554,11 +461,7 @@ async function verifyTurnstile(token, secret, request) {
 }
 
 async function sendMagicLinkEmail(env, email, verifyUrl) {
-    if (!env.RESEND_API_KEY) {
-        console.log('RESEND_API_KEY not set, would email', email, 'with', verifyUrl);
-        return;
-    }
-    const subject = 'Your Flotion sign-in link';
+    if (!env.RESEND_API_KEY) { console.log('RESEND_API_KEY not set, would email', email); return; }
     const html = `
 <div style="font-family:Inter,sans-serif;max-width:520px;margin:0 auto;padding:20px;color:#1a1a2e">
   <h2 style="margin:0 0 16px">Sign in to Flotion Records</h2>
@@ -568,15 +471,10 @@ async function sendMagicLinkEmail(env, email, verifyUrl) {
 </div>`;
     await fetch('https://api.resend.com/emails', {
         method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${env.RESEND_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
+        headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
             from: env.RESEND_FROM || 'Flotion Records <hello@flotionrecords.com>',
-            to: [email],
-            subject,
-            html,
+            to: [email], subject: 'Your Flotion sign-in link', html,
         }),
     });
 }
@@ -584,7 +482,6 @@ async function sendMagicLinkEmail(env, email, verifyUrl) {
 async function sendResultEmail(env, email, sourceFilename, jobId) {
     if (!env.RESEND_API_KEY) return;
     const url = `${env.SITE_URL || 'https://flotionrecords.com'}/mastering?completed=${jobId}`;
-    const subject = `Your master of ${stripExt(sourceFilename)} is ready`;
     const html = `
 <div style="font-family:Inter,sans-serif;max-width:520px;margin:0 auto;padding:20px;color:#1a1a2e">
   <h2 style="margin:0 0 16px">Your master is ready</h2>
@@ -596,7 +493,7 @@ async function sendResultEmail(env, email, sourceFilename, jobId) {
         headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
             from: env.RESEND_FROM || 'Flotion Records <hello@flotionrecords.com>',
-            to: [email], subject, html,
+            to: [email], subject: `Your master of ${stripExt(sourceFilename)} is ready`, html,
         }),
     });
 }
@@ -609,9 +506,7 @@ async function createStripeCheckout(env, opts) {
     fd.append('success_url', opts.success_url);
     fd.append('cancel_url', opts.cancel_url);
     if (opts.customer_email) fd.append('customer_email', opts.customer_email);
-    for (const [k, v] of Object.entries(opts.metadata || {})) {
-        fd.append(`metadata[${k}]`, v);
-    }
+    for (const [k, v] of Object.entries(opts.metadata || {})) fd.append(`metadata[${k}]`, v);
     const r = await fetch('https://api.stripe.com/v1/checkout/sessions', {
         method: 'POST',
         headers: {
@@ -692,8 +587,6 @@ function constantTimeEqual(a, b) {
 
 function safeFilename(name) { return String(name).replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 100); }
 function stripExt(name) { return String(name).replace(/\.[^.]+$/, ''); }
-
-// ----- response helpers -----
 
 function jsonOk(obj = { ok: true }) {
     return new Response(JSON.stringify(obj), { status: 200, headers: { 'Content-Type': 'application/json' } });

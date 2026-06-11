@@ -1,16 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "flotionrecords",
-  "main": "src/worker.js",
   "compatibility_date": "2026-06-09",
   "compatibility_flags": ["nodejs_compat"],
-  "observability": {
-    "enabled": true
-  },
-  "assets": {
-    "directory": ".",
-    "binding": "ASSETS"
-  },
+  "pages_build_output_dir": "./",
   "kv_namespaces": [
     {
       "binding": "ORDERS",
