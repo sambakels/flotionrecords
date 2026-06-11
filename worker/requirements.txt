@@ -1,0 +1,3 @@
+requests>=2.31
+# The rest comes from the lofi-studio repo at LOFI_STUDIO_PATH:
+#   numpy, scipy, soundfile, pyloudnorm, pedalboard, etc.

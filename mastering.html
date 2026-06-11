@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(){try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark");}catch(e){}})();</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KPTFEQ4TWK"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});if(localStorage.getItem('flotion_cookie_consent')==='granted')gtag('consent','update',{analytics_storage:'granted'});gtag('js',new Date());gtag('config','G-KPTFEQ4TWK',{anonymize_ip:true});</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Mix &amp; Master | Flotion Records</title>
+    <meta name="description" content="Upload your track for a full mix and master. Streaming-ready 24-bit WAV within minutes.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="https://flotionrecords.com/mastering">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="ambient">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Flotion Records&trade;</a>
+            <div class="nav-links" id="navLinks">
+                <a href="/services">Services</a>
+                <a href="/curators">Curators</a>
+                <a href="/blog/">Blog</a>
+                <a href="/#contact" class="nav-cta">Contact</a>
+            </div>
+            <a href="/account" class="nav-signin">Account</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            </button>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <main style="padding:7rem 1.5rem 4rem;position:relative;z-index:1">
+        <div class="container" style="max-width:720px">
+
+            <div class="section-head" style="margin-bottom:2rem">
+                <span class="tag">Studio Mix &amp; Master</span>
+                <h1 style="font-size:clamp(1.8rem,4vw,2.4rem);font-weight:800;letter-spacing:-.02em;margin:.6rem 0">Upload a track to <span class="gradient-text">get started</span></h1>
+                <p id="balanceText" style="font-size:.95rem;color:var(--text-60);margin-top:.4rem">Loading your account...</p>
+            </div>
+
+            <!-- Upload form -->
+            <form id="uploadForm" class="card" style="background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--glass-filter);padding:1.8rem;display:none">
+
+                <label style="display:block;font-size:.78rem;font-weight:600;color:var(--text-60);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem">Source track</label>
+                <div id="dropArea" style="border:2px dashed var(--glass-border);border-radius:14px;padding:2.4rem 1.4rem;text-align:center;cursor:pointer;transition:border-color .25s,background .25s;background:rgba(255,255,255,.03)">
+                    <input type="file" id="fileInput" accept=".wav,.mp3,.flac,.m4a,audio/*" style="display:none">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.6;margin-bottom:.6rem"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <div id="dropLabel" style="font-size:.95rem;color:var(--text);font-weight:600">Drag and drop your file, or click to browse</div>
+                    <div style="font-size:.78rem;color:var(--text-50);margin-top:.35rem">WAV, MP3, FLAC or M4A, up to 50 MB</div>
+                </div>
+
+                <label for="genre" style="display:block;font-size:.78rem;font-weight:600;color:var(--text-60);text-transform:uppercase;letter-spacing:.08em;margin:1.4rem 0 .6rem">Genre</label>
+                <select id="genre" name="genre" required style="width:100%;padding:.85rem 1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;font:inherit;color:var(--text);font-size:.95rem;outline:none;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22><path fill=%22%23999%22 d=%22M6 8.5 1.5 4h9z%22/></svg>');background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem">
+                    <option value="auto">Auto detect</option>
+                    <option value="ibiza_house">Ibiza House</option>
+                    <option value="uk_garage">UK Garage</option>
+                    <option value="edm_bigroom">EDM / Big Room</option>
+                    <option value="hardstyle">Hardstyle</option>
+                    <option value="deep_house">Deep House</option>
+                    <option value="techno_peaktime">Techno (Peaktime)</option>
+                    <option value="drum_and_bass">Drum &amp; Bass</option>
+                    <option value="lofi_hiphop">Lo-fi / Hip-hop</option>
+                    <option value="pop">Pop</option>
+                    <option value="rock_indie">Rock / Indie</option>
+                    <option value="solo_piano">Solo Piano</option>
+                    <option value="ambient_cinematic">Ambient / Cinematic</option>
+                </select>
+
+                <button type="submit" id="submitBtn" class="btn btn-color" style="width:100%;margin-top:1.4rem" disabled>Master my track</button>
+                <p id="submitNote" style="font-size:.72rem;color:var(--text-50);margin-top:.6rem;text-align:center;line-height:1.5"></p>
+            </form>
+
+            <!-- Need to buy credits -->
+            <div id="needCredits" class="card" style="background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--glass-filter);padding:1.8rem;display:none;text-align:center">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="url(#lockIcon)" stroke-width="1.6" style="margin-bottom:.8rem"><defs><linearGradient id="lockIcon" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:.4rem">Your free preview is used</h2>
+                <p style="color:var(--text-60);font-size:.95rem;line-height:1.6;margin-bottom:1.4rem">Pick a credit pack to keep mastering tracks. Credits never expire.</p>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem">
+                    <button id="buySingleBtn" class="btn btn-glass" style="flex-direction:column;padding:1.1rem 1rem;gap:.2rem">
+                        <span style="font-weight:800;font-size:1.1rem;color:var(--text)">&euro;7</span>
+                        <span style="font-size:.7rem;color:var(--text-60);letter-spacing:.04em">1 credit</span>
+                    </button>
+                    <button id="buyPackBtn" class="btn btn-color" style="flex-direction:column;padding:1.1rem 1rem;gap:.2rem">
+                        <span style="font-weight:800;font-size:1.1rem;color:#fff">&euro;25</span>
+                        <span style="font-size:.7rem;color:rgba(255,255,255,.85);letter-spacing:.04em">5 credits (save &euro;10)</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Processing state -->
+            <div id="processing" class="card" style="background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--glass-filter);padding:2rem;display:none;text-align:center">
+                <div class="processing-spinner" style="width:42px;height:42px;border:3px solid var(--glass-border);border-top-color:#a78bfa;border-radius:50%;margin:0 auto 1.2rem;animation:spin 1s linear infinite"></div>
+                <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:.4rem">Mastering in progress</h2>
+                <p id="processingStatus" style="color:var(--text-60);font-size:.92rem;line-height:1.55">This usually takes about a minute. You can leave this page open. We will also email the result.</p>
+            </div>
+
+            <!-- Done state -->
+            <div id="done" class="card" style="background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--glass-filter);padding:2rem;display:none">
+                <div style="text-align:center;margin-bottom:1.6rem">
+                    <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:inline-flex;align-items:center;justify-content:center;margin-bottom:.7rem">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:.3rem">Your master is ready</h2>
+                    <p style="color:var(--text-60);font-size:.9rem">We also emailed you the download links.</p>
+                </div>
+
+                <div id="reportSummary" style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;display:none">
+                    <div style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-50);font-weight:600;margin-bottom:.6rem">Before / After</div>
+                    <div id="reportRows" style="display:grid;grid-template-columns:auto auto auto;gap:.5rem .9rem;font-size:.82rem;align-items:baseline"></div>
+                </div>
+
+                <a id="downloadMp3" href="#" class="btn btn-glass" style="width:100%;margin-bottom:.6rem">Download MP3 preview</a>
+                <a id="downloadWav" href="#" class="btn btn-color" style="width:100%;display:none">Download 24-bit WAV master</a>
+                <button id="unlockWavBtn" class="btn btn-color" style="width:100%;display:none">Unlock 24-bit WAV for &euro;7</button>
+
+                <button id="newJobBtn" class="btn btn-glass" style="width:100%;margin-top:1.2rem;background:transparent">Master another track</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-copy">&copy; 2026 Flotion Records &middot; KvK 92478875 &middot; BTW NL866065994B01</p>
+                <div class="footer-legal">
+                    <a href="/blog/">Blog</a>
+                    <a href="/terms">Terms</a>
+                    <a href="/privacy">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #dropArea.drag-over { border-color: #a78bfa; background: rgba(167,139,250,.08); }
+        #dropArea.has-file { border-style: solid; border-color: rgba(16,185,129,.5); background: rgba(16,185,129,.05); }
+        #genre option { background: var(--bg); color: var(--text); }
+    </style>
+
+    <script src="script.js"></script>
+    <script>
+    const STATES = ['uploadForm','needCredits','processing','done'];
+    function showState(id) {
+        STATES.forEach(s => {
+            document.getElementById(s).style.display = (s === id) ? '' : 'none';
+        });
+    }
+
+    const balanceText = document.getElementById('balanceText');
+    const fileInput = document.getElementById('fileInput');
+    const dropArea = document.getElementById('dropArea');
+    const dropLabel = document.getElementById('dropLabel');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitNote = document.getElementById('submitNote');
+
+    let me = null;
+    let selectedFile = null;
+    let currentJobId = null;
+
+    // Bootstrap: check auth, then route
+    async function bootstrap() {
+        try {
+            const r = await fetch('/api/account/me');
+            if (!r.ok || (r.status === 401)) {
+                location.href = '/account?intent=' + (new URLSearchParams(location.search).get('tier') || 'trial');
+                return;
+            }
+            me = await r.json();
+        } catch (e) {
+            location.href = '/account';
+            return;
+        }
+        renderBalance();
+        // If there is a tier=single|pack query, start checkout flow
+        const tier = new URLSearchParams(location.search).get('tier');
+        if (tier === 'single' || tier === 'pack') {
+            // Skip upload form, start checkout
+            return startCheckout(tier);
+        }
+        decideInitialState();
+    }
+
+    function renderBalance() {
+        const remaining = (me.free_used ? 0 : 1) + me.credits_balance;
+        if (remaining === 0) {
+            balanceText.innerHTML = 'No credits available. Pick a pack below to keep mastering.';
+        } else if (!me.free_used && me.credits_balance === 0) {
+            balanceText.innerHTML = 'You have <strong style="color:var(--text)">1 free preview</strong> available. The result is an MP3 preview, upgrade to WAV when you are ready to release.';
+        } else {
+            const c = me.credits_balance + (me.free_used ? 0 : 1);
+            balanceText.innerHTML = 'You have <strong style="color:var(--text)">' + c + ' master credit' + (c === 1 ? '' : 's') + '</strong> available.';
+        }
+    }
+
+    function decideInitialState() {
+        const remaining = (me.free_used ? 0 : 1) + me.credits_balance;
+        if (remaining > 0) {
+            showState('uploadForm');
+            submitNote.textContent = me.free_used
+                ? 'Uses 1 credit. You will receive MP3 preview and 24-bit WAV master.'
+                : 'Your free preview. You will receive an MP3, with the option to unlock the 24-bit WAV for €7.';
+        } else {
+            showState('needCredits');
+        }
+    }
+
+    // Drag & drop
+    dropArea.addEventListener('click', () => fileInput.click());
+    dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('drag-over'); });
+    dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over'));
+    dropArea.addEventListener('drop', e => {
+        e.preventDefault();
+        dropArea.classList.remove('drag-over');
+        if (e.dataTransfer.files[0]) selectFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files[0]) selectFile(fileInput.files[0]);
+    });
+
+    function selectFile(file) {
+        if (file.size > 50 * 1024 * 1024) {
+            alert('File is larger than 50 MB. Please pick a smaller file.');
+            return;
+        }
+        selectedFile = file;
+        dropArea.classList.add('has-file');
+        dropLabel.textContent = file.name + '  (' + (file.size / 1024 / 1024).toFixed(1) + ' MB)';
+        submitBtn.disabled = false;
+    }
+
+    // Submit upload
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!selectedFile) return;
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Uploading...';
+        try {
+            // Step 1: ask the server to create a job and a signed PUT URL
+            const initRes = await fetch('/api/mastering/upload-init', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    filename: selectedFile.name,
+                    size: selectedFile.size,
+                    content_type: selectedFile.type || 'audio/wav',
+                    genre: document.getElementById('genre').value,
+                }),
+            });
+            if (!initRes.ok) {
+                const err = await initRes.json().catch(() => ({}));
+                throw new Error(err.error || 'Could not start upload');
+            }
+            const { job_id, upload_url } = await initRes.json();
+            currentJobId = job_id;
+
+            // Step 2: PUT the file directly to the signed URL (R2)
+            submitBtn.textContent = 'Sending track...';
+            const putRes = await fetch(upload_url, {
+                method: 'PUT',
+                body: selectedFile,
+                headers: { 'Content-Type': selectedFile.type || 'audio/wav' },
+            });
+            if (!putRes.ok) throw new Error('Upload to storage failed');
+
+            // Step 3: tell the server to enqueue the job
+            const completeRes = await fetch('/api/mastering/upload-complete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ job_id }),
+            });
+            if (!completeRes.ok) throw new Error('Could not enqueue job');
+
+            // Step 4: poll for status
+            showState('processing');
+            pollJob(job_id);
+        } catch (err) {
+            alert('Upload failed: ' + err.message);
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Master my track';
+        }
+    });
+
+    async function pollJob(jobId) {
+        const status = document.getElementById('processingStatus');
+        const tries = 60; // 5 minutes max
+        for (let i = 0; i < tries; i++) {
+            await new Promise(r => setTimeout(r, 5000));
+            try {
+                const res = await fetch('/api/mastering/jobs/' + jobId);
+                if (!res.ok) continue;
+                const job = await res.json();
+                if (job.status === 'processing') {
+                    status.textContent = 'Mastering in progress, this usually takes about a minute...';
+                } else if (job.status === 'done') {
+                    return renderDone(job);
+                } else if (job.status === 'failed') {
+                    alert('Something went wrong with the mastering. ' + (job.error_message || ''));
+                    showState('uploadForm');
+                    return;
+                }
+            } catch (e) {}
+        }
+        alert('Mastering is taking longer than expected. Check your email in a few minutes.');
+    }
+
+    function renderDone(job) {
+        document.getElementById('downloadMp3').href = '/api/mastering/download/' + job.id + '?kind=mp3';
+        if (job.wav_unlocked) {
+            const wav = document.getElementById('downloadWav');
+            wav.style.display = '';
+            wav.href = '/api/mastering/download/' + job.id + '?kind=wav';
+            document.getElementById('unlockWavBtn').style.display = 'none';
+        } else {
+            document.getElementById('downloadWav').style.display = 'none';
+            const u = document.getElementById('unlockWavBtn');
+            u.style.display = '';
+            u.onclick = () => unlockWav(job.id);
+        }
+        if (job.report && Object.keys(job.report).length) {
+            renderReport(job.report);
+        }
+        showState('done');
+    }
+
+    function renderReport(report) {
+        const wrap = document.getElementById('reportSummary');
+        const rows = document.getElementById('reportRows');
+        rows.innerHTML = '';
+        const fields = [
+            ['LUFS',       report.before_lufs,   report.after_lufs,   '+0.0', v => (v >= 0 ? '+' : '') + v.toFixed(1)],
+            ['True peak',  report.before_peak,   report.after_peak,   '+0.0', v => v.toFixed(2) + ' dBFS'],
+            ['Crest',      report.before_crest,  report.after_crest,  '+0.0', v => v.toFixed(2) + ' dB'],
+        ];
+        fields.forEach(([label, b, a, _, fmt]) => {
+            if (b == null || a == null) return;
+            rows.insertAdjacentHTML('beforeend', `
+                <div style="color:var(--text-60)">${label}</div>
+                <div style="color:rgba(244,63,94,.95);font-family:monospace;font-weight:700">${fmt(b)}</div>
+                <div style="color:rgba(16,185,129,.95);font-family:monospace;font-weight:700">${fmt(a)}</div>
+            `);
+        });
+        wrap.style.display = '';
+    }
+
+    async function unlockWav(jobId) {
+        const u = document.getElementById('unlockWavBtn');
+        u.disabled = true;
+        u.textContent = 'Opening checkout...';
+        try {
+            const res = await fetch('/api/mastering/unlock-wav', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ job_id: jobId }),
+            });
+            if (!res.ok) throw new Error('Could not open checkout');
+            const { url } = await res.json();
+            location.href = url;
+        } catch (e) {
+            alert(e.message);
+            u.disabled = false;
+            u.textContent = 'Unlock 24-bit WAV for €7';
+        }
+    }
+
+    async function startCheckout(tier) {
+        const r = await fetch('/api/mastering/buy-credits', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tier }),
+        });
+        if (r.ok) {
+            const { url } = await r.json();
+            location.href = url;
+            return;
+        }
+        decideInitialState();
+    }
+
+    document.getElementById('buySingleBtn').addEventListener('click', () => startCheckout('single'));
+    document.getElementById('buyPackBtn').addEventListener('click', () => startCheckout('pack'));
+    document.getElementById('newJobBtn').addEventListener('click', () => location.href = '/mastering');
+
+    bootstrap();
+    </script>
+</body>
+</html>

@@ -492,6 +492,26 @@ html.dark .nav-hover-pill::before {
     font-weight: 700 !important;
 }
 
+/* Sign in link sits right of the nav links, before Contact. Pill-shaped
+   glass button so it reads as a clear account affordance without
+   competing with the Contact CTA's gradient text. */
+.nav-signin {
+    padding: 0.42rem 0.95rem;
+    background: var(--glass);
+    backdrop-filter: var(--glass-filter-sm);
+    -webkit-backdrop-filter: var(--glass-filter-sm);
+    border: 1px solid var(--glass-border);
+    border-radius: 100px;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    color: var(--text) !important;
+    transition: background 0.25s, border-color 0.25s, transform 0.2s;
+}
+.nav-signin:hover {
+    background: var(--glass-border);
+    transform: translateY(-1px);
+}
+
 /* Theme toggle */
 .theme-toggle {
     width: 36px; height: 36px; border-radius: 50%;

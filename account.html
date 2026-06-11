@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>(function(){try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark");}catch(e){}})();</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KPTFEQ4TWK"></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});if(localStorage.getItem('flotion_cookie_consent')==='granted')gtag('consent','update',{analytics_storage:'granted'});gtag('js',new Date());gtag('config','G-KPTFEQ4TWK',{anonymize_ip:true});</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in | Flotion Records</title>
+    <meta name="description" content="Sign in or create a free Flotion Records account to access Studio Mix and Master.">
+    <meta name="robots" content="noindex, follow">
+    <link rel="canonical" href="https://flotionrecords.com/account">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+    <div class="ambient">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Flotion Records&trade;</a>
+            <div class="nav-links" id="navLinks">
+                <a href="/services">Services</a>
+                <a href="/curators">Curators</a>
+                <a href="/blog/">Blog</a>
+                <a href="/#contact" class="nav-cta">Contact</a>
+            </div>
+            <a href="/account" class="nav-signin nav-active">Sign in</a>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            </button>
+            <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <main class="hero" style="min-height:calc(100vh - 80px);padding-top:8rem">
+        <div class="hero-inner" style="max-width:440px;width:100%">
+
+            <div id="state-form">
+                <p class="hero-tag">Account</p>
+                <h1 class="hero-title" style="font-size:clamp(1.8rem,4vw,2.6rem)">Sign in or <span class="gradient-text">create account</span></h1>
+                <p class="hero-sub">One email, no password. We send you a secure sign-in link that expires in 15 minutes.</p>
+
+                <form id="emailForm" class="card" style="background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--glass-filter);padding:1.6rem;text-align:left">
+                    <label for="email" style="display:block;font-size:.75rem;font-weight:600;color:var(--text-60);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem">Email address</label>
+                    <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@example.com" style="width:100%;padding:.85rem 1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;font:inherit;color:var(--text);font-size:1rem;outline:none;transition:border-color .2s">
+
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAAA_REPLACE_WITH_TURNSTILE_KEY" data-callback="onTurnstileVerified" style="margin:1rem 0 0"></div>
+
+                    <button type="submit" id="submitBtn" class="btn btn-color" style="width:100%;margin-top:1rem">Send sign-in link</button>
+
+                    <p style="font-size:.72rem;color:var(--text-50);margin-top:1rem;line-height:1.55;text-align:center">By continuing you agree to our <a href="/terms" style="color:var(--text-60);text-decoration:underline">Terms</a> and <a href="/privacy" style="color:var(--text-60);text-decoration:underline">Privacy Policy</a>.</p>
+                </form>
+            </div>
+
+            <div id="state-sent" style="display:none">
+                <p class="hero-tag">Check your inbox</p>
+                <h1 class="hero-title" style="font-size:clamp(1.8rem,4vw,2.6rem)">Sign-in link <span class="gradient-text">sent</span></h1>
+                <p class="hero-sub">We sent a secure link to <strong id="sentEmail" style="color:var(--text)">your email</strong>. Click the link in the email to finish signing in. The link expires in 15 minutes.</p>
+
+                <div class="card" style="background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--glass-filter);padding:1.4rem;text-align:left">
+                    <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.6rem">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="url(#mailIcon)" stroke-width="1.8"><defs><linearGradient id="mailIcon" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="22 6 12 13 2 6"/></svg>
+                        <strong style="font-size:.92rem;color:var(--text)">Can't find the email?</strong>
+                    </div>
+                    <ul style="list-style:none;padding:0;font-size:.85rem;color:var(--text-60);line-height:1.7">
+                        <li>Check your spam or promotions folder</li>
+                        <li>Make sure you typed the email correctly</li>
+                        <li>Wait up to 60 seconds for it to arrive</li>
+                    </ul>
+                    <button id="resendBtn" class="btn btn-glass" style="width:100%;margin-top:1.1rem;font-size:.85rem;padding:.7rem 1.4rem">Use a different email</button>
+                </div>
+            </div>
+
+            <div id="state-error" style="display:none">
+                <p class="hero-tag" style="color:rgba(244,63,94,.95)">Something went wrong</p>
+                <h1 class="hero-title" style="font-size:clamp(1.8rem,4vw,2.6rem)">Sign-in <span class="gradient-text">failed</span></h1>
+                <p class="hero-sub" id="errorMsg">Please try again.</p>
+                <button id="retryBtn" class="btn btn-color" style="margin-top:.6rem">Try again</button>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p class="footer-copy">&copy; 2026 Flotion Records &middot; KvK 92478875 &middot; BTW NL866065994B01</p>
+                <div class="footer-legal">
+                    <a href="/blog/">Blog</a>
+                    <a href="/terms">Terms</a>
+                    <a href="/privacy">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+    let turnstileToken = null;
+    function onTurnstileVerified(token) { turnstileToken = token; }
+
+    const form = document.getElementById('emailForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const sentEmail = document.getElementById('sentEmail');
+    const errorMsg = document.getElementById('errorMsg');
+
+    function showState(id) {
+        ['state-form','state-sent','state-error'].forEach(s => {
+            document.getElementById(s).style.display = (s === id) ? '' : 'none';
+        });
+    }
+
+    // If signed-in already, redirect to mastering
+    fetch('/api/account/me').then(r => r.ok ? r.json() : null).then(d => {
+        if (d && d.signed_in) {
+            const params = new URLSearchParams(location.search);
+            const intent = params.get('intent') || 'trial';
+            location.href = '/mastering?tier=' + (intent === 'pack' ? 'pack' : intent === 'single' ? 'single' : 'free');
+        }
+    });
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim().toLowerCase();
+        if (!email) return;
+        if (!turnstileToken) {
+            errorMsg.textContent = 'Please complete the verification challenge.';
+            showState('state-error');
+            return;
+        }
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        try {
+            const params = new URLSearchParams(location.search);
+            const intent = params.get('intent') || 'trial';
+            const res = await fetch('/api/account/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, turnstile_token: turnstileToken, intent }),
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                errorMsg.textContent = data.error || 'Could not send sign-in link. Please try again.';
+                showState('state-error');
+            } else {
+                sentEmail.textContent = email;
+                showState('state-sent');
+            }
+        } catch (err) {
+            errorMsg.textContent = 'Network error. Please try again.';
+            showState('state-error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send sign-in link';
+        }
+    });
+
+    document.getElementById('resendBtn').addEventListener('click', () => {
+        turnstileToken = null;
+        showState('state-form');
+        try { if (window.turnstile) window.turnstile.reset(); } catch(e) {}
+    });
+    document.getElementById('retryBtn').addEventListener('click', () => {
+        turnstileToken = null;
+        showState('state-form');
+        try { if (window.turnstile) window.turnstile.reset(); } catch(e) {}
+    });
+    </script>
+</body>
+</html>
