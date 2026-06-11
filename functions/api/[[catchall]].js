@@ -163,7 +163,11 @@ async function acctSignup(request, env) {
         'INSERT INTO verify_tokens (token, user_id, purpose, expires_at, used, created_at) VALUES (?, ?, ?, ?, 0, ?)'
     ).bind(vtok, user.id, 'signin', expires, new Date().toISOString()).run();
 
-    const verifyUrl = `${env.SITE_URL || 'https://flotionrecords.com'}/api/account/verify?token=${encodeURIComponent(vtok)}`;
+    // Send to /signin (HTML confirm page) instead of /api/account/verify
+    // directly. Gmail and similar pre-fetch links in incoming mail for
+    // security scanning; a direct verify URL would be "used" before the
+    // real human can click it.
+    const verifyUrl = `${env.SITE_URL || 'https://flotionrecords.com'}/signin?token=${encodeURIComponent(vtok)}`;
     await sendMagicLinkEmail(env, email, verifyUrl);
 
     return jsonOk({ sent: true });
