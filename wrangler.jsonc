@@ -21,13 +21,11 @@
     {
       "binding": "DB",
       "database_name": "flotion-mastering",
-      "database_id": "REPLACE_WITH_D1_DATABASE_ID"
-    }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "AUDIO",
-      "bucket_name": "flotion-mastering-audio"
+      "database_id": "80accce9-d1d1-401c-a0ee-22696cbf0838"
     }
   ]
+  // R2 binding will be added once R2 subscription is activated:
+  // "r2_buckets": [
+  //   { "binding": "AUDIO", "bucket_name": "flotion-mastering-audio" }
+  // ]
 }
