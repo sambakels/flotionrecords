@@ -23,9 +23,7 @@ Run:
 import os
 import sys
 import time
-import json
 import math
-import shutil
 import tempfile
 import traceback
 from pathlib import Path
@@ -142,7 +140,7 @@ def process_one(job, workdir):
 
     after = measure(master_wav)
 
-    # Render MP3 preview from the 24-bit WAV using ffmpeg
+    # Render MP3 preview of the master using ffmpeg
     mp3_path = workdir / "master.mp3"
     rc = os.system(
         f'ffmpeg -y -v error -i "{master_wav}" -codec:a libmp3lame -q:a 1 -map_metadata -1 '
@@ -150,6 +148,17 @@ def process_one(job, workdir):
     )
     if rc != 0 or not mp3_path.exists():
         raise RuntimeError("MP3 encode failed")
+
+    # Also render an MP3 preview of the ORIGINAL source so the A/B
+    # player on the result page can stream both sides quickly without
+    # downloading the (possibly 50 MB) raw WAV.
+    source_mp3 = workdir / "source.mp3"
+    os.system(
+        f'ffmpeg -y -v error -i "{src_path}" -codec:a libmp3lame -q:a 2 -map_metadata -1 '
+        f'-metadata title="Flotion Source Preview" "{source_mp3}"'
+    )
+    if source_mp3.exists():
+        upload_result(job_id, "source-mp3", source_mp3)
 
     upload_result(job_id, "mp3", mp3_path)
     upload_result(job_id, "wav", master_wav)

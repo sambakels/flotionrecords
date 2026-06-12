@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS jobs (
     status          TEXT NOT NULL,        -- 'pending', 'processing', 'done', 'failed'
     result_mp3_key  TEXT,
     result_wav_key  TEXT,
+    result_source_mp3_key TEXT,
     wav_unlocked    INTEGER NOT NULL DEFAULT 0,
     report_json     TEXT,                 -- analysis report
     error_message   TEXT,

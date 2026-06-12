@@ -109,26 +109,69 @@
                 <p id="processingStatus" style="color:var(--text-60);font-size:.92rem;line-height:1.55">This usually takes about a minute. You can leave this page open. We will also email the result.</p>
             </div>
 
-            <!-- Done state -->
-            <div id="done" class="card" style="background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--glass-filter);padding:2rem;display:none">
-                <div style="text-align:center;margin-bottom:1.6rem">
-                    <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:inline-flex;align-items:center;justify-content:center;margin-bottom:.7rem">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            <!-- Done state with A/B player -->
+            <div id="done" style="display:none">
+
+                <div class="card" style="background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--glass-filter);padding:1.4rem 1.6rem 1.6rem;text-align:center;margin-bottom:1.1rem">
+                    <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);display:inline-flex;align-items:center;justify-content:center;margin-bottom:.55rem">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
-                    <h2 style="font-size:1.3rem;font-weight:700;margin-bottom:.3rem">Your master is ready</h2>
-                    <p style="color:var(--text-60);font-size:.9rem">We also emailed you the download links.</p>
+                    <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:.2rem">Your master is ready</h2>
+                    <p id="doneTrackName" style="color:var(--text-60);font-size:.85rem"></p>
                 </div>
 
-                <div id="reportSummary" style="background:rgba(255,255,255,.04);border:1px solid var(--glass-border);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;display:none">
-                    <div style="font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-50);font-weight:600;margin-bottom:.6rem">Before / After</div>
-                    <div id="reportRows" style="display:grid;grid-template-columns:auto auto auto;gap:.5rem .9rem;font-size:.82rem;align-items:baseline"></div>
+                <!-- A/B player -->
+                <div class="card" style="background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--glass-filter);padding:1.6rem;margin-bottom:1.1rem">
+
+                    <!-- A/B toggle (segmented control) -->
+                    <div class="ab-toggle" role="tablist" aria-label="A/B compare" style="display:grid;grid-template-columns:1fr 1fr;background:rgba(0,0,0,.18);border-radius:999px;padding:.28rem;position:relative;margin-bottom:1.4rem">
+                        <button id="abBtnA" role="tab" aria-selected="false" class="ab-btn" data-side="A" style="background:transparent;border:0;padding:.7rem 1rem;border-radius:999px;font:inherit;font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-60);cursor:pointer;position:relative;z-index:1;transition:color .25s">Source</button>
+                        <button id="abBtnB" role="tab" aria-selected="true"  class="ab-btn" data-side="B" style="background:transparent;border:0;padding:.7rem 1rem;border-radius:999px;font:inherit;font-size:.82rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text);cursor:pointer;position:relative;z-index:1;transition:color .25s">Master</button>
+                        <div id="abIndicator" style="position:absolute;top:.28rem;left:.28rem;width:calc(50% - .28rem);height:calc(100% - .56rem);background:var(--gradient);border-radius:999px;box-shadow:0 4px 20px rgba(41,151,255,.28);transition:transform .35s var(--ease,cubic-bezier(.25,.46,.45,.94));transform:translateX(100%)"></div>
+                    </div>
+
+                    <!-- Transport -->
+                    <div style="display:flex;align-items:center;gap:.9rem;margin-bottom:1rem">
+                        <button id="playBtn" aria-label="Play/Pause" style="width:46px;height:46px;border-radius:50%;background:var(--gradient);border:0;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 20px rgba(41,151,255,.28)">
+                            <svg id="playIcon" width="18" height="18" viewBox="0 0 24 24" fill="#fff"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                            <svg id="pauseIcon" width="16" height="16" viewBox="0 0 24 24" fill="#fff" style="display:none"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                        </button>
+
+                        <div style="flex:1;min-width:0">
+                            <div id="progressTrack" style="height:8px;background:rgba(0,0,0,.18);border-radius:999px;position:relative;cursor:pointer;overflow:hidden">
+                                <div id="progressFill" style="position:absolute;top:0;left:0;bottom:0;background:var(--gradient);border-radius:999px;width:0%;transition:width .05s linear"></div>
+                                <div id="progressDot" style="position:absolute;top:50%;left:0%;width:14px;height:14px;background:#fff;border:2px solid #a78bfa;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 2px 8px rgba(0,0,0,.18)"></div>
+                            </div>
+                            <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-50);font-family:monospace;margin-top:.4rem">
+                                <span id="timeNow">0:00</span>
+                                <span id="timeTotal">0:00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Match loudness toggle -->
+                    <label style="display:flex;align-items:center;gap:.7rem;padding:.65rem .8rem;background:rgba(0,0,0,.10);border-radius:12px;cursor:pointer;user-select:none">
+                        <input type="checkbox" id="matchLoudness" checked style="width:18px;height:18px;accent-color:#a78bfa;cursor:pointer">
+                        <span style="flex:1;font-size:.84rem;color:var(--text)">Match loudness for honest A/B</span>
+                        <span title="Source and master are matched in perceived loudness so you hear the EQ and dynamics changes, not just the volume bump." style="width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.18);color:var(--text-60);font-size:.7rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;cursor:help">?</span>
+                    </label>
+
+                    <p id="abHint" style="font-size:.7rem;color:var(--text-50);text-align:center;margin-top:.9rem">Shortcuts: <kbd style="background:rgba(0,0,0,.18);padding:.1rem .4rem;border-radius:6px;font-family:monospace;font-size:.7rem">A</kbd> Source / <kbd style="background:rgba(0,0,0,.18);padding:.1rem .4rem;border-radius:6px;font-family:monospace;font-size:.7rem">B</kbd> Master / <kbd style="background:rgba(0,0,0,.18);padding:.1rem .4rem;border-radius:6px;font-family:monospace;font-size:.7rem">Space</kbd> Play</p>
+
                 </div>
 
+                <!-- Metrics card -->
+                <div id="reportSummary" class="card" style="background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--glass-filter);padding:1.2rem 1.4rem;margin-bottom:1.1rem;display:none">
+                    <div style="font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-50);font-weight:700;margin-bottom:.8rem">Before vs After</div>
+                    <div id="reportRows" style="display:grid;grid-template-columns:auto 1fr 1fr;gap:.5rem 1rem;font-size:.85rem;align-items:baseline"></div>
+                </div>
+
+                <!-- Downloads -->
                 <a id="downloadMp3" href="#" class="btn btn-glass" style="width:100%;margin-bottom:.6rem">Download MP3 preview</a>
-                <a id="downloadWav" href="#" class="btn btn-color" style="width:100%;display:none">Download 24-bit WAV master</a>
-                <button id="unlockWavBtn" class="btn btn-color" style="width:100%;display:none">Unlock 24-bit WAV for &euro;7</button>
+                <a id="downloadWav" href="#" class="btn btn-color" style="width:100%;display:none;margin-bottom:.6rem">Download 24-bit WAV master</a>
+                <button id="unlockWavBtn" class="btn btn-color" style="width:100%;display:none;margin-bottom:.6rem">Unlock 24-bit WAV master, &euro;7</button>
 
-                <button id="newJobBtn" class="btn btn-glass" style="width:100%;margin-top:1.2rem;background:transparent">Master another track</button>
+                <button id="newJobBtn" class="btn btn-glass" style="width:100%;margin-top:.4rem;background:transparent;border:1px solid var(--glass-border)">Master another track</button>
             </div>
 
         </div>
@@ -321,6 +364,11 @@
     }
 
     function renderDone(job) {
+        // Track label
+        const trackEl = document.getElementById('doneTrackName');
+        if (trackEl) trackEl.textContent = job.source_filename || '';
+
+        // Download links
         document.getElementById('downloadMp3').href = '/api/mastering/download/' + job.id + '?kind=mp3';
         if (job.wav_unlocked) {
             const wav = document.getElementById('downloadWav');
@@ -333,9 +381,19 @@
             u.style.display = '';
             u.onclick = () => unlockWav(job.id);
         }
+
         if (job.report && Object.keys(job.report).length) {
             renderReport(job.report);
         }
+
+        // Wire up the A/B player
+        setupABPlayer({
+            sourceUrl: '/api/mastering/download/' + job.id + '?kind=source-mp3',
+            masterUrl: '/api/mastering/download/' + job.id + '?kind=mp3',
+            sourceLufs: job.report?.before_lufs,
+            masterLufs: job.report?.after_lufs,
+        });
+
         showState('done');
     }
 
@@ -344,11 +402,17 @@
         const rows = document.getElementById('reportRows');
         rows.innerHTML = '';
         const fields = [
-            ['LUFS',       report.before_lufs,   report.after_lufs,   '+0.0', v => (v >= 0 ? '+' : '') + v.toFixed(1)],
-            ['True peak',  report.before_peak,   report.after_peak,   '+0.0', v => v.toFixed(2) + ' dBFS'],
-            ['Crest',      report.before_crest,  report.after_crest,  '+0.0', v => v.toFixed(2) + ' dB'],
+            ['LUFS',       report.before_lufs,   report.after_lufs,   v => (v >= 0 ? '+' : '') + v.toFixed(1)],
+            ['True peak',  report.before_peak,   report.after_peak,   v => v.toFixed(2) + ' dBFS'],
+            ['Crest',      report.before_crest,  report.after_crest,  v => v.toFixed(2) + ' dB'],
         ];
-        fields.forEach(([label, b, a, _, fmt]) => {
+        // Header row
+        rows.insertAdjacentHTML('beforeend', `
+            <div></div>
+            <div style="color:rgba(244,63,94,.95);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700">Source</div>
+            <div style="color:rgba(16,185,129,.95);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700">Master</div>
+        `);
+        fields.forEach(([label, b, a, fmt]) => {
             if (b == null || a == null) return;
             rows.insertAdjacentHTML('beforeend', `
                 <div style="color:var(--text-60)">${label}</div>
@@ -357,6 +421,162 @@
             `);
         });
         wrap.style.display = '';
+    }
+
+    // ----- A/B player -----
+    let ab = null;
+    function setupABPlayer(opts) {
+        if (ab) { try { ab.destroy(); } catch (e) {} }
+        ab = createABPlayer(opts);
+    }
+
+    function createABPlayer({ sourceUrl, masterUrl, sourceLufs, masterLufs }) {
+        const playBtn       = document.getElementById('playBtn');
+        const playIcon      = document.getElementById('playIcon');
+        const pauseIcon     = document.getElementById('pauseIcon');
+        const btnA          = document.getElementById('abBtnA');
+        const btnB          = document.getElementById('abBtnB');
+        const indicator     = document.getElementById('abIndicator');
+        const progressTrack = document.getElementById('progressTrack');
+        const progressFill  = document.getElementById('progressFill');
+        const progressDot   = document.getElementById('progressDot');
+        const timeNow       = document.getElementById('timeNow');
+        const timeTotal     = document.getElementById('timeTotal');
+        const matchEl       = document.getElementById('matchLoudness');
+
+        const srcEl = new Audio();
+        const mstEl = new Audio();
+        srcEl.crossOrigin = mstEl.crossOrigin = 'anonymous';
+        srcEl.preload = mstEl.preload = 'auto';
+        srcEl.src = sourceUrl;
+        mstEl.src = masterUrl;
+
+        let ac, srcNode, mstNode, srcGain, mstGain;
+        function ensureAudioContext() {
+            if (ac) return;
+            ac = new (window.AudioContext || window.webkitAudioContext)();
+            srcNode = ac.createMediaElementSource(srcEl);
+            mstNode = ac.createMediaElementSource(mstEl);
+            srcGain = ac.createGain();
+            mstGain = ac.createGain();
+            srcNode.connect(srcGain).connect(ac.destination);
+            mstNode.connect(mstGain).connect(ac.destination);
+            srcGain.gain.value = 0;
+            mstGain.gain.value = 1;
+        }
+
+        // Loudness-match gains: bring both perceptually to the louder one's
+        // level so users hear EQ/dynamics changes, not the loudness bump.
+        function computeGains() {
+            const matchOn = matchEl.checked;
+            const haveLufs = typeof sourceLufs === 'number' && typeof masterLufs === 'number';
+            if (!matchOn || !haveLufs) return { src: 1, mst: 1 };
+            // Pin master at 1.0, scale source up to match its LUFS (capped
+            // to +12 dB so we never blow eardrums on very quiet sources).
+            const diffDb = Math.min(12, masterLufs - sourceLufs);
+            return { src: Math.pow(10, diffDb / 20), mst: 1 };
+        }
+
+        let side = 'B';
+        function setSide(next, immediate = false) {
+            side = next;
+            ensureAudioContext();
+            const g = computeGains();
+            const t = ac.currentTime + (immediate ? 0 : 0.025);
+            if (next === 'A') {
+                srcGain.gain.linearRampToValueAtTime(g.src, t);
+                mstGain.gain.linearRampToValueAtTime(0, t);
+            } else {
+                srcGain.gain.linearRampToValueAtTime(0, t);
+                mstGain.gain.linearRampToValueAtTime(g.mst, t);
+            }
+            btnA.style.color = next === 'A' ? '#fff' : 'var(--text-60)';
+            btnB.style.color = next === 'B' ? '#fff' : 'var(--text-60)';
+            btnA.setAttribute('aria-selected', next === 'A');
+            btnB.setAttribute('aria-selected', next === 'B');
+            indicator.style.transform = next === 'A' ? 'translateX(0%)' : 'translateX(100%)';
+        }
+
+        matchEl.addEventListener('change', () => {
+            // Re-apply current gains right away.
+            setSide(side, true);
+        });
+
+        // Keep both audio elements in sync. When the active one plays, the
+        // muted one follows. We use master as the timing source.
+        function syncTimes() {
+            if (Math.abs(srcEl.currentTime - mstEl.currentTime) > 0.06) {
+                srcEl.currentTime = mstEl.currentTime;
+            }
+        }
+
+        let playing = false;
+        async function togglePlay() {
+            ensureAudioContext();
+            if (ac.state === 'suspended') await ac.resume();
+            if (playing) {
+                srcEl.pause(); mstEl.pause();
+                playing = false;
+                playIcon.style.display = ''; pauseIcon.style.display = 'none';
+            } else {
+                try {
+                    await Promise.all([srcEl.play(), mstEl.play()]);
+                    playing = true;
+                    playIcon.style.display = 'none'; pauseIcon.style.display = '';
+                } catch (e) { console.error(e); }
+            }
+        }
+
+        playBtn.addEventListener('click', togglePlay);
+        btnA.addEventListener('click', () => setSide('A'));
+        btnB.addEventListener('click', () => setSide('B'));
+
+        function fmt(t) {
+            if (!isFinite(t)) return '0:00';
+            const m = Math.floor(t / 60); const s = Math.floor(t % 60);
+            return m + ':' + (s < 10 ? '0' : '') + s;
+        }
+        function onTime() {
+            const d = mstEl.duration || srcEl.duration || 0;
+            const c = mstEl.currentTime || 0;
+            const pct = d > 0 ? (c / d) * 100 : 0;
+            progressFill.style.width = pct + '%';
+            progressDot.style.left = pct + '%';
+            timeNow.textContent = fmt(c);
+            timeTotal.textContent = fmt(d);
+            syncTimes();
+        }
+        mstEl.addEventListener('timeupdate', onTime);
+        mstEl.addEventListener('loadedmetadata', onTime);
+        mstEl.addEventListener('ended', () => { playing = false; playIcon.style.display = ''; pauseIcon.style.display = 'none'; });
+
+        progressTrack.addEventListener('click', (e) => {
+            const rect = progressTrack.getBoundingClientRect();
+            const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+            const d = mstEl.duration || 0;
+            if (d > 0) {
+                mstEl.currentTime = ratio * d;
+                srcEl.currentTime = ratio * d;
+            }
+        });
+
+        // Keyboard
+        function onKey(e) {
+            if (e.target && /(INPUT|TEXTAREA|SELECT)/.test(e.target.tagName)) return;
+            if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+            else if (e.key === 'a' || e.key === 'A') setSide('A');
+            else if (e.key === 'b' || e.key === 'B') setSide('B');
+            else if (e.key === 'm' || e.key === 'M') { matchEl.checked = !matchEl.checked; setSide(side, true); }
+        }
+        document.addEventListener('keydown', onKey);
+
+        return {
+            destroy() {
+                document.removeEventListener('keydown', onKey);
+                try { srcEl.pause(); mstEl.pause(); } catch (e) {}
+                if (ac) try { ac.close(); } catch (e) {}
+            }
+        };
     }
 
     async function unlockWav(jobId) {

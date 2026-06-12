@@ -311,14 +311,15 @@ async function masteringJobStatus(request, env, jobId) {
     const user = await currentUser(request, env);
     if (!user) return jsonError('Not signed in', 401);
     const job = await env.DB.prepare(
-        'SELECT id, status, tier, genre, wav_unlocked, error_message, report_json FROM jobs WHERE id = ? AND user_id = ?'
+        'SELECT id, status, tier, genre, wav_unlocked, source_filename, error_message, report_json FROM jobs WHERE id = ? AND user_id = ?'
     ).bind(jobId, user.id).first();
     if (!job) return jsonError('Not found', 404);
     let report = null;
     try { report = job.report_json ? JSON.parse(job.report_json) : null; } catch (e) {}
     return jsonOk({
         id: job.id, status: job.status, tier: job.tier, genre: job.genre,
-        wav_unlocked: !!job.wav_unlocked, error_message: job.error_message, report,
+        wav_unlocked: !!job.wav_unlocked, source_filename: job.source_filename,
+        error_message: job.error_message, report,
     });
 }
 
@@ -326,14 +327,17 @@ async function masteringDownload(request, env, jobId, url) {
     const user = await currentUser(request, env);
     if (!user) return jsonError('Not signed in', 401);
     const kind = url.searchParams.get('kind') || 'mp3';
-    if (kind !== 'mp3' && kind !== 'wav') return jsonError('Invalid kind', 400);
+    if (!['mp3', 'wav', 'source-mp3'].includes(kind)) return jsonError('Invalid kind', 400);
     const job = await env.DB.prepare(
-        'SELECT id, user_id, status, wav_unlocked, result_mp3_key, result_wav_key, source_filename FROM jobs WHERE id = ?'
+        'SELECT id, user_id, status, wav_unlocked, result_mp3_key, result_wav_key, result_source_mp3_key, source_filename FROM jobs WHERE id = ?'
     ).bind(jobId).first();
     if (!job || job.user_id !== user.id) return jsonError('Not found', 404);
     if (job.status !== 'done') return jsonError('Not ready', 409);
     if (kind === 'wav' && !job.wav_unlocked) return jsonError('WAV not unlocked', 402);
-    const key = kind === 'wav' ? job.result_wav_key : job.result_mp3_key;
+    let key;
+    if (kind === 'wav') key = job.result_wav_key;
+    else if (kind === 'source-mp3') key = job.result_source_mp3_key;
+    else key = job.result_mp3_key;
     if (!key) return jsonError('File missing', 404);
     const obj = await env.AUDIO.get(key);
     if (!obj) return jsonError('File missing', 404);
@@ -417,12 +421,20 @@ async function workerFetchSource(request, env, jobId) {
 
 async function workerUploadResult(request, env, jobId, kind) {
     if (!workerAuthOk(request, env)) return new Response('Unauthorized', { status: 401 });
-    if (kind !== 'mp3' && kind !== 'wav') return new Response('Invalid kind', { status: 400 });
-    const key = `results/${jobId}/master.${kind}`;
+    const knownKinds = { mp3: 'audio/mpeg', wav: 'audio/wav', 'source-mp3': 'audio/mpeg' };
+    if (!(kind in knownKinds)) return new Response('Invalid kind', { status: 400 });
+
+    const filename = kind === 'source-mp3' ? 'source.mp3' : `master.${kind}`;
+    const key = `results/${jobId}/${filename}`;
     await env.AUDIO.put(key, request.body, {
-        httpMetadata: { contentType: kind === 'mp3' ? 'audio/mpeg' : 'audio/wav' },
+        httpMetadata: { contentType: knownKinds[kind] },
     });
-    const col = kind === 'mp3' ? 'result_mp3_key' : 'result_wav_key';
+
+    let col;
+    if (kind === 'mp3') col = 'result_mp3_key';
+    else if (kind === 'wav') col = 'result_wav_key';
+    else col = 'result_source_mp3_key';
+
     await env.DB.prepare(`UPDATE jobs SET ${col} = ? WHERE id = ?`).bind(key, jobId).run();
     return jsonOk({ stored: key });
 }
