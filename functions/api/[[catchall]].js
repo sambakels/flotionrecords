@@ -259,11 +259,11 @@ async function masteringUploadInit(request, env) {
     if (size <= 0 || size > MAX_UPLOAD_SIZE) return jsonError('File too large (max 50 MB)', 400);
     if (!ALLOWED_GENRES.has(genre)) return jsonError('Invalid genre', 400);
 
-    const hasFree = !user.free_used;
-    const hasCredit = user.credits_balance > 0;
-    if (!hasFree && !hasCredit) return jsonError('No credits available', 402);
-
-    const tier = hasFree ? 'free' : 'paid';
+    // Unlimited free MP3 previews after signup. Paid credits unlock the
+    // WAV master automatically at upload time; without credits the user
+    // still gets the MP3 result and can later pay €7 to unlock that
+    // specific job's WAV.
+    const tier = user.credits_balance > 0 ? 'paid' : 'free';
     const jobId = randomId('job');
     const sourceKey = `uploads/${user.id}/${jobId}/${safeFilename(filename)}`;
 
@@ -298,9 +298,8 @@ async function masteringUploadComplete(request, env) {
     if (!job || job.user_id !== user.id) return jsonError('Job not found', 404);
     if (job.status !== 'awaiting_upload') return jsonError('Job in wrong state', 409);
 
-    if (job.tier === 'free') {
-        await env.DB.prepare('UPDATE users SET free_used = 1 WHERE id = ?').bind(user.id).run();
-    } else {
+    // Only paid uploads consume a credit. Free MP3 previews are unlimited.
+    if (job.tier === 'paid') {
         await env.DB.prepare('UPDATE users SET credits_balance = MAX(0, credits_balance - 1) WHERE id = ?')
             .bind(user.id).run();
     }
