@@ -57,6 +57,14 @@ export async function onRequest(context) {
             return masteringUploadPut(request, env, p.split('/').pop());
         }
 
+        // ---- studio (anonymous, no sign-in) ----
+        if (p === '/api/studio/upload-init' && method === 'POST') return studioUploadInit(request, env);
+        if (p.startsWith('/api/studio/upload/') && method === 'PUT') return studioUploadPut(request, env, p.split('/').pop());
+        if (p === '/api/studio/upload-complete' && method === 'POST') return studioUploadComplete(request, env);
+        if (p.startsWith('/api/studio/jobs/') && method === 'GET') return studioJobStatus(request, env, p.split('/').pop());
+        if (p.startsWith('/api/studio/download/') && method === 'GET') return studioDownload(request, env, p.split('/').pop(), url);
+        if (p === '/api/studio/buy' && method === 'POST') return studioBuy(request, env);
+
         if (p === '/api/worker/poll' && method === 'POST') return workerPoll(request, env);
         if (p === '/api/worker/complete' && method === 'POST') return workerComplete(request, env);
         if (p.startsWith('/api/worker/fetch-source/') && method === 'GET') {
@@ -111,6 +119,19 @@ async function handleStripeWebhook(request, env) {
             .bind(credits, meta.user_id).run();
     } else if (meta.purpose === 'mastering_wav_unlock' && meta.job_id) {
         await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(meta.job_id).run();
+    } else if (meta.purpose === 'studio_single' && meta.job_id) {
+        // Unlock the WAV for this single track.
+        await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(meta.job_id).run();
+    } else if (meta.purpose === 'studio_album' && meta.anon_id) {
+        // Grant 10 WAV download credits to this anonymous browser, and
+        // unlock the track they bought from right away.
+        await env.DB.prepare(
+            'INSERT INTO anon_grants (anon_id, credits_total, credits_used, created_at) VALUES (?, 10, 0, ?) ' +
+            'ON CONFLICT(anon_id) DO UPDATE SET credits_total = credits_total + 10'
+        ).bind(meta.anon_id, new Date().toISOString()).run();
+        if (meta.job_id) {
+            await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(meta.job_id).run();
+        }
     } else {
         const submission_id = session.client_reference_id;
         if (submission_id) {
@@ -464,6 +485,183 @@ async function workerComplete(request, env) {
     if (row && ok) await sendResultEmail(env, row.email, row.source_filename, jobId);
 
     return jsonOk();
+}
+
+// =============================================================================
+// Studio (anonymous, no sign-in)
+// =============================================================================
+
+const STUDIO_GENRES = new Set([
+    'auto', 'ibiza_house', 'uk_garage', 'edm_bigroom', 'hardstyle', 'deep_house',
+    'techno_peaktime', 'drum_and_bass', 'lofi_hiphop', 'pop', 'rock_indie',
+    'solo_piano', 'ambient_cinematic',
+]);
+const STUDIO_MAX_SIZE = 30 * 1024 * 1024;
+
+function getCookie(request, name) {
+    const raw = request.headers.get('cookie') || '';
+    const m = raw.match(new RegExp('(?:^|;\\s*)' + name + '=([^;]+)'));
+    return m ? decodeURIComponent(m[1]) : null;
+}
+
+// Returns { id, setCookie }. setCookie is non-null only when a new anon id
+// was minted and must be attached to the response.
+function anonIdentity(request) {
+    let id = getCookie(request, 'flotion_anon');
+    let setCookie = null;
+    if (!id || !/^anon_[a-f0-9]{24}$/.test(id)) {
+        id = randomId('anon');
+        setCookie = `flotion_anon=${id}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${365 * 86400}`;
+    }
+    return { id, setCookie };
+}
+
+function withCookie(resp, setCookie) {
+    if (!setCookie) return resp;
+    const headers = new Headers(resp.headers);
+    headers.append('Set-Cookie', setCookie);
+    return new Response(resp.body, { status: resp.status, headers });
+}
+
+async function studioUploadInit(request, env) {
+    const { id: anon, setCookie } = anonIdentity(request);
+    const data = await request.json().catch(() => ({}));
+    const filename = String(data.filename || '').slice(0, 200);
+    const size = parseInt(data.size || 0, 10);
+    const genre = String(data.genre || 'auto');
+    const token = String(data.turnstile_token || '');
+
+    if (!/\.mp3$/i.test(filename)) return withCookie(jsonError('Please upload an MP3 file.', 400), setCookie);
+    if (size <= 0 || size > STUDIO_MAX_SIZE) return withCookie(jsonError('File too large (max 30 MB).', 400), setCookie);
+    if (!STUDIO_GENRES.has(genre)) return withCookie(jsonError('Invalid genre', 400), setCookie);
+    if (env.TURNSTILE_SECRET && !await verifyTurnstile(token, env.TURNSTILE_SECRET, request)) {
+        return withCookie(jsonError('Verification failed. Please try again.', 400), setCookie);
+    }
+
+    // Rate limit: max 12 jobs per anon per rolling hour.
+    const since = new Date(Date.now() - 3600 * 1000).toISOString();
+    const recent = await env.DB.prepare(
+        'SELECT COUNT(*) AS n FROM jobs WHERE user_id = ? AND created_at > ?'
+    ).bind(anon, since).first();
+    if (recent && recent.n >= 12) {
+        return withCookie(jsonError('Too many uploads in the last hour. Please try again later.', 429), setCookie);
+    }
+
+    const jobId = randomId('job');
+    const sourceKey = `studio/${anon}/${jobId}/${safeFilename(filename)}`;
+    await env.DB.prepare(
+        'INSERT INTO jobs (id, user_id, tier, genre, source_filename, source_r2_key, status, wav_unlocked, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?)'
+    ).bind(jobId, anon, 'studio', genre, filename, sourceKey, 'awaiting_upload', new Date().toISOString()).run();
+
+    return withCookie(jsonOk({ job_id: jobId, upload_url: `/api/studio/upload/${jobId}` }), setCookie);
+}
+
+async function studioUploadPut(request, env, jobId) {
+    const { id: anon } = anonIdentity(request);
+    const job = await env.DB.prepare('SELECT id, user_id, source_r2_key, status FROM jobs WHERE id = ?').bind(jobId).first();
+    if (!job || job.user_id !== anon) return jsonError('Job not found', 404);
+    if (job.status !== 'awaiting_upload') return jsonError('Job in wrong state', 409);
+    await env.AUDIO.put(job.source_r2_key, request.body, {
+        httpMetadata: { contentType: 'audio/mpeg' },
+    });
+    return jsonOk({ uploaded: true });
+}
+
+async function studioUploadComplete(request, env) {
+    const { id: anon } = anonIdentity(request);
+    const data = await request.json().catch(() => ({}));
+    const jobId = String(data.job_id || '');
+    const job = await env.DB.prepare('SELECT id, user_id, status FROM jobs WHERE id = ?').bind(jobId).first();
+    if (!job || job.user_id !== anon) return jsonError('Job not found', 404);
+    if (job.status !== 'awaiting_upload') return jsonError('Job in wrong state', 409);
+    await env.DB.prepare('UPDATE jobs SET status = ? WHERE id = ?').bind('pending', jobId).run();
+    return jsonOk({ enqueued: true });
+}
+
+async function studioJobStatus(request, env, jobId) {
+    const { id: anon } = anonIdentity(request);
+    const job = await env.DB.prepare(
+        'SELECT id, status, genre, wav_unlocked, source_filename, error_message, report_json, user_id FROM jobs WHERE id = ?'
+    ).bind(jobId).first();
+    if (!job || job.user_id !== anon) return jsonError('Not found', 404);
+    let report = null;
+    try { report = job.report_json ? JSON.parse(job.report_json) : null; } catch (e) {}
+    return jsonOk({
+        id: job.id, status: job.status, genre: job.genre,
+        wav_unlocked: !!job.wav_unlocked, source_filename: job.source_filename,
+        error_message: job.error_message, report,
+    });
+}
+
+async function studioDownload(request, env, jobId, url) {
+    const { id: anon } = anonIdentity(request);
+    const kind = url.searchParams.get('kind') || 'master-mp3';
+    const map = {
+        'source-mp3': 'result_source_mp3_key',
+        'master-mp3': 'result_mp3_key',
+        'master-wav': 'result_wav_key',
+    };
+    if (!(kind in map)) return jsonError('Invalid kind', 400);
+
+    const job = await env.DB.prepare(
+        'SELECT id, user_id, status, wav_unlocked, result_source_mp3_key, result_mp3_key, result_wav_key, source_filename FROM jobs WHERE id = ?'
+    ).bind(jobId).first();
+    if (!job || job.user_id !== anon) return jsonError('Not found', 404);
+    if (job.status !== 'done') return jsonError('Not ready', 409);
+
+    // The WAV is the paid product. Free for streaming are the two MP3s.
+    if (kind === 'master-wav' && !job.wav_unlocked) {
+        const consumed = await tryConsumeAlbumCredit(env, anon, jobId);
+        if (!consumed) return jsonError('WAV not unlocked', 402);
+        job.wav_unlocked = 1;
+    }
+
+    const key = job[map[kind]];
+    if (!key) return jsonError('File missing', 404);
+    const obj = await env.AUDIO.get(key);
+    if (!obj) return jsonError('File missing', 404);
+
+    const headers = new Headers();
+    obj.writeHttpMetadata(headers);
+    if (kind === 'master-wav') {
+        headers.set('Content-Disposition', `attachment; filename="${stripExt(job.source_filename)}_mastered.wav"`);
+    }
+    return new Response(obj.body, { headers });
+}
+
+async function tryConsumeAlbumCredit(env, anon, jobId) {
+    const grant = await env.DB.prepare(
+        'SELECT credits_total, credits_used FROM anon_grants WHERE anon_id = ?'
+    ).bind(anon).first();
+    if (!grant) return false;
+    if (grant.credits_used >= grant.credits_total) return false;
+    await env.DB.prepare('UPDATE anon_grants SET credits_used = credits_used + 1 WHERE anon_id = ?').bind(anon).run();
+    await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(jobId).run();
+    return true;
+}
+
+async function studioBuy(request, env) {
+    const { id: anon, setCookie } = anonIdentity(request);
+    const data = await request.json().catch(() => ({}));
+    const kind = String(data.kind || '');
+    const jobId = String(data.job_id || '');
+
+    const job = await env.DB.prepare('SELECT id, user_id, status FROM jobs WHERE id = ?').bind(jobId).first();
+    if (!job || job.user_id !== anon) return withCookie(jsonError('Job not found', 404), setCookie);
+    if (job.status !== 'done') return withCookie(jsonError('Job not ready', 409), setCookie);
+
+    let price, purpose;
+    if (kind === 'single') { price = env.STRIPE_PRICE_WAV_UNLOCK; purpose = 'studio_single'; }
+    else if (kind === 'album') { price = env.STRIPE_PRICE_PACK; purpose = 'studio_album'; }
+    else return withCookie(jsonError('Invalid kind', 400), setCookie);
+
+    const checkoutUrl = await createStripeCheckout(env, {
+        price,
+        metadata: { purpose, anon_id: anon, job_id: jobId },
+        success_url: `${env.SITE_URL}/studio?paid=${jobId}`,
+        cancel_url: `${env.SITE_URL}/studio?paid=${jobId}`,
+    });
+    return withCookie(jsonOk({ url: checkoutUrl }), setCookie);
 }
 
 // =============================================================================
