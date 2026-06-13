@@ -153,7 +153,25 @@
 
                 <!-- Download / pay -->
                 <button id="downloadBtn" class="btn btn-color" style="width:100%;font-size:1rem;padding:1.05rem">Download the WAV master</button>
-                <a id="haveWav" href="#" class="btn btn-color" style="width:100%;display:none">Download your WAV</a>
+
+                <!-- Format picker, shown once unlocked -->
+                <div id="dlPicker" style="display:none">
+                    <div style="display:flex;gap:.6rem;margin-bottom:.7rem">
+                        <select id="dlFormat" style="flex:1;padding:.8rem 1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;font:inherit;color:var(--text);font-size:.92rem;outline:none;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22><path fill=%22%23999%22 d=%22M6 8.5 1.5 4h9z%22/></svg>');background-repeat:no-repeat;background-position:right .9rem center;padding-right:2.2rem">
+                            <option value="wav24">WAV 24-bit</option>
+                            <option value="wav16">WAV 16-bit</option>
+                            <option value="flac">FLAC</option>
+                            <option value="mp3">MP3 320 kbps</option>
+                        </select>
+                        <select id="dlRate" style="width:38%;padding:.8rem 1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;font:inherit;color:var(--text);font-size:.92rem;outline:none;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22><path fill=%22%23999%22 d=%22M6 8.5 1.5 4h9z%22/></svg>');background-repeat:no-repeat;background-position:right .9rem center;padding-right:2.2rem">
+                            <option value="44100">44.1 kHz</option>
+                            <option value="48000">48 kHz</option>
+                        </select>
+                    </div>
+                    <button id="dlVariantBtn" class="btn btn-color" style="width:100%;font-size:1rem;padding:1.05rem">Download</button>
+                    <div id="dlMsg" style="font-size:.78rem;color:var(--text-50);text-align:center;margin-top:.55rem;min-height:1rem"></div>
+                </div>
+
                 <button id="againBtn" class="btn btn-glass" style="width:100%;margin-top:.7rem">Mix &amp; master another track</button>
             </div>
 
@@ -226,7 +244,7 @@
         #dropArea.drag-over { border-color:#a78bfa; background:rgba(167,139,250,.08); }
         #dropArea.has-file { border-style:solid; border-color:rgba(16,185,129,.55); background:rgba(16,185,129,.05); }
         .ab-ch.active { border-color:#a78bfa !important; box-shadow:0 6px 22px rgba(167,139,250,.22); }
-        #genre option { background: var(--bg); color: var(--text); }
+        #genre option, #dlFormat option, #dlRate option, #bundleQty option { background: var(--bg); color: var(--text); }
         kbd { font-size:.7rem; }
     </style>
 
@@ -317,17 +335,18 @@
     // ---------------- result + waveform A/B ----------------
     let player = null;
     function renderResult(job) {
+        currentJob = job.id;
         document.getElementById('trackName').textContent = job.source_filename || 'Your track';
         if (job.report?.preset) document.getElementById('presetTag').textContent = job.report.preset.replace(/_/g,' ');
         if (job.report) renderMetrics(job.report);
 
         // download / pay state
         const dl = document.getElementById('downloadBtn');
-        const have = document.getElementById('haveWav');
+        const picker = document.getElementById('dlPicker');
         if (job.wav_unlocked) {
-            dl.style.display='none'; have.style.display=''; have.href='/api/studio/download/'+job.id+'?kind=master-wav';
+            dl.style.display='none'; picker.style.display='';
         } else {
-            dl.style.display=''; have.style.display='none';
+            dl.style.display=''; picker.style.display='none';
             dl.onclick = () => openPay(job.id);
         }
 
@@ -524,16 +543,41 @@
             const r=await fetch('/api/studio/redeem',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,job_id:payJobId})});
             const j=await r.json().catch(()=>({}));
             if(r.ok && j.unlocked){
-                codeMsg.style.color='rgba(16,185,129,.95)'; codeMsg.textContent='Unlocked! Starting your download...';
-                const have=document.getElementById('haveWav'); const dl=document.getElementById('downloadBtn');
-                dl.style.display='none'; have.style.display=''; have.href='/api/studio/download/'+payJobId+'?kind=master-wav';
-                setTimeout(()=>{ payModal.style.display='none'; window.location.href=have.href; }, 800);
+                codeMsg.style.color='rgba(16,185,129,.95)'; codeMsg.textContent='Unlocked! Pick a format below.';
+                const dl=document.getElementById('downloadBtn'); const picker=document.getElementById('dlPicker');
+                currentJob=payJobId; dl.style.display='none'; picker.style.display='';
+                setTimeout(()=>{ payModal.style.display='none'; }, 700);
             } else {
                 codeMsg.style.color='rgba(244,63,94,.95)'; codeMsg.textContent=j.error||'Could not redeem that code.';
             }
         }catch(e){ codeMsg.style.color='rgba(244,63,94,.95)'; codeMsg.textContent='Something went wrong.'; }
         redeemBtn.disabled=false;
     });
+
+    // ---- download in chosen format (on-demand transcode) ----
+    const dlVariantBtn=document.getElementById('dlVariantBtn'), dlMsg=document.getElementById('dlMsg');
+    let dlBusy=false;
+    dlVariantBtn.addEventListener('click', startVariantDownload);
+    async function startVariantDownload(){
+        if(dlBusy || !currentJob) return;
+        const fmt=document.getElementById('dlFormat').value;
+        const sr=parseInt(document.getElementById('dlRate').value,10);
+        const label=document.getElementById('dlFormat').selectedOptions[0].text;
+        dlBusy=true; dlVariantBtn.disabled=true;
+        dlMsg.style.color='var(--text-50)'; dlMsg.textContent='Preparing your '+label+'...';
+        try{
+            let done=false;
+            for(let i=0;i<30 && !done;i++){
+                const r=await fetch('/api/studio/prepare-variant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({job_id:currentJob,fmt,sr})});
+                if(!r.ok){ const j=await r.json().catch(()=>({})); throw new Error(j.error||'Could not prepare that file.'); }
+                const j=await r.json();
+                if(j.ready){ dlMsg.textContent=''; window.location.href=j.url; done=true; break; }
+                await new Promise(res=>setTimeout(res, i===0?900:2500));
+            }
+            if(!done){ dlMsg.style.color='var(--text-60)'; dlMsg.textContent='Still rendering, tap Download again in a moment.'; }
+        }catch(e){ dlMsg.style.color='rgba(244,63,94,.95)'; dlMsg.textContent=e.message; }
+        dlBusy=false; dlVariantBtn.disabled=false;
+    }
 
     document.getElementById('againBtn').addEventListener('click', ()=>location.href='/studio?new=1');
 

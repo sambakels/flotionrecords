@@ -320,6 +320,69 @@ def run_cleanup():
         print(f"  cleanup error: {e}")
 
 
+# --- On-demand download formats -------------------------------------------
+# The customer can pick a format/rate on the result screen. The worker
+# renders it once from the stored 24-bit master and caches it in R2.
+TRANSCODE_FFARGS = {
+    "wav24": ["-c:a", "pcm_s24le"],
+    "wav16": ["-c:a", "pcm_s16le"],   # ffmpeg auto-dithers on bit-depth reduction
+    "flac":  ["-c:a", "flac"],
+    "mp3":   ["-c:a", "libmp3lame", "-b:a", "320k"],
+}
+TRANSCODE_EXT = {"wav24": "wav", "wav16": "wav", "flac": "flac", "mp3": "mp3"}
+TRANSCODE_CT = {"wav24": "audio/wav", "wav16": "audio/wav", "flac": "audio/flac", "mp3": "audio/mpeg"}
+
+
+def poll_transcode():
+    r = requests.post(f"{API_URL}/api/worker/poll-transcode", headers=HEADERS, timeout=30)
+    r.raise_for_status()
+    return r.json().get("transcode")
+
+
+def fetch_master(job_id, dest):
+    with requests.get(f"{API_URL}/api/worker/fetch-master/{job_id}", headers=HEADERS, stream=True, timeout=120) as r:
+        r.raise_for_status()
+        with open(dest, "wb") as f:
+            for chunk in r.iter_content(chunk_size=64 * 1024):
+                if chunk:
+                    f.write(chunk)
+
+
+def upload_variant(transcode_id, path, content_type):
+    with open(path, "rb") as f:
+        r = requests.put(
+            f"{API_URL}/api/worker/upload-variant/{transcode_id}",
+            headers={**HEADERS, "Content-Type": content_type},
+            data=f, timeout=300,
+        )
+    r.raise_for_status()
+
+
+def report_transcode_failed(transcode_id):
+    try:
+        requests.put(f"{API_URL}/api/worker/upload-variant/{transcode_id}?ok=0", headers=HEADERS, timeout=30)
+    except Exception:
+        pass
+
+
+def process_transcode(t, workdir):
+    tid, fmt, sr = t["id"], t["fmt"], int(t["sr"])
+    args = TRANSCODE_FFARGS.get(fmt)
+    if not args:
+        report_transcode_failed(tid); return
+    master = workdir / "master_src.wav"
+    fetch_master(t["job_id"], master)
+    out = workdir / f"variant.{TRANSCODE_EXT[fmt]}"
+    cmd = (
+        f'ffmpeg -y -v error -i "{master}" -map_metadata -1 -ar {sr} '
+        + " ".join(args) + f' "{out}"'
+    )
+    rc = os.system(cmd)
+    if rc != 0 or not out.exists():
+        report_transcode_failed(tid); return
+    upload_variant(tid, out, TRANSCODE_CT[fmt])
+
+
 def main():
     print(f"Flotion worker started. API: {API_URL}  studio: {LOFI}")
     last_cleanup = 0.0
@@ -331,16 +394,31 @@ def main():
                 last_cleanup = time.time()
 
             job = poll_job()
-            if not job:
-                time.sleep(POLL); continue
-            print(f"Processing job {job['id']} (genre={job['genre']})")
-            with tempfile.TemporaryDirectory(prefix="flotion_") as td:
-                try:
-                    process_one(job, Path(td))
-                    print(f"  done {job['id']}")
-                except Exception as e:
-                    traceback.print_exc()
-                    report_done(job["id"], ok=False, error=str(e)[:500])
+            if job:
+                print(f"Processing job {job['id']} (genre={job['genre']})")
+                with tempfile.TemporaryDirectory(prefix="flotion_") as td:
+                    try:
+                        process_one(job, Path(td))
+                        print(f"  done {job['id']}")
+                    except Exception as e:
+                        traceback.print_exc()
+                        report_done(job["id"], ok=False, error=str(e)[:500])
+                continue
+
+            # No mastering job pending — render a download format if requested.
+            t = poll_transcode()
+            if t:
+                print(f"Transcoding {t['fmt']} @ {t['sr']}Hz for job {t['job_id']}")
+                with tempfile.TemporaryDirectory(prefix="flotion_tc_") as td:
+                    try:
+                        process_transcode(t, Path(td))
+                        print(f"  variant done {t['id']}")
+                    except Exception as e:
+                        traceback.print_exc()
+                        report_transcode_failed(t["id"])
+                continue
+
+            time.sleep(POLL)
         except Exception as e:
             print(f"poll error: {e}")
             time.sleep(POLL)

@@ -65,8 +65,16 @@ export async function onRequest(context) {
         if (p.startsWith('/api/studio/download/') && method === 'GET') return studioDownload(request, env, p.split('/').pop(), url);
         if (p === '/api/studio/buy' && method === 'POST') return studioBuy(request, env);
         if (p === '/api/studio/redeem' && method === 'POST') return studioRedeem(request, env);
+        if (p === '/api/studio/prepare-variant' && method === 'POST') return studioPrepareVariant(request, env);
 
         if (p === '/api/worker/poll' && method === 'POST') return workerPoll(request, env);
+        if (p === '/api/worker/poll-transcode' && method === 'POST') return workerPollTranscode(request, env);
+        if (p.startsWith('/api/worker/fetch-master/') && method === 'GET') {
+            return workerFetchMaster(request, env, p.split('/').pop());
+        }
+        if (p.startsWith('/api/worker/upload-variant/') && method === 'PUT') {
+            return workerUploadVariant(request, env, p.split('/').pop());
+        }
         if (p === '/api/worker/complete' && method === 'POST') return workerComplete(request, env);
         if (p === '/api/worker/cleanup' && method === 'POST') return workerCleanup(request, env);
         if (p.startsWith('/api/worker/fetch-source/') && method === 'GET') {
@@ -531,6 +539,57 @@ async function workerCleanup(request, env) {
     return jsonOk({ deleted });
 }
 
+// Worker pulls one pending transcode (or a stale one whose worker died
+// mid-render) for an unlocked, finished job.
+async function workerPollTranscode(request, env) {
+    if (!workerAuthOk(request, env)) return new Response('Unauthorized', { status: 401 });
+    await ensureTranscodeTable(env);
+    const stale = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+    const t = await env.DB.prepare(
+        "SELECT t.id, t.job_id, t.fmt, t.sr FROM transcodes t JOIN jobs j ON j.id = t.job_id " +
+        "WHERE j.wav_unlocked = 1 AND j.result_wav_key IS NOT NULL " +
+        "AND (t.status = 'pending' OR (t.status = 'processing' AND (t.started_at IS NULL OR t.started_at < ?))) " +
+        "ORDER BY t.created_at ASC LIMIT 1"
+    ).bind(stale).first();
+    if (!t) return jsonOk({ transcode: null });
+    await env.DB.prepare("UPDATE transcodes SET status = 'processing', started_at = ? WHERE id = ?")
+        .bind(new Date().toISOString(), t.id).run();
+    return jsonOk({ transcode: t });
+}
+
+// Stream the 24-bit master WAV to the worker so it can transcode it.
+async function workerFetchMaster(request, env, jobId) {
+    if (!workerAuthOk(request, env)) return new Response('Unauthorized', { status: 401 });
+    const job = await env.DB.prepare('SELECT result_wav_key FROM jobs WHERE id = ?').bind(jobId).first();
+    if (!job || !job.result_wav_key) return new Response('Not found', { status: 404 });
+    const obj = await env.AUDIO.get(job.result_wav_key);
+    if (!obj) return new Response('Master missing', { status: 404 });
+    const headers = new Headers();
+    obj.writeHttpMetadata(headers);
+    return new Response(obj.body, { headers });
+}
+
+// Worker uploads the rendered variant; we store it and mark the row done.
+async function workerUploadVariant(request, env, transcodeId) {
+    if (!workerAuthOk(request, env)) return new Response('Unauthorized', { status: 401 });
+    await ensureTranscodeTable(env);
+    const ok = String(new URL(request.url).searchParams.get('ok') || '1') === '1';
+    const t = await env.DB.prepare('SELECT id, job_id, fmt, sr FROM transcodes WHERE id = ?').bind(transcodeId).first();
+    if (!t) return new Response('Not found', { status: 404 });
+    if (!ok) {
+        await env.DB.prepare("UPDATE transcodes SET status = 'failed', finished_at = ? WHERE id = ?")
+            .bind(new Date().toISOString(), transcodeId).run();
+        return jsonOk({ failed: true });
+    }
+    const f = VARIANT_FMTS[t.fmt];
+    if (!f) return new Response('Invalid', { status: 400 });
+    const key = variantKey(t.job_id, t.fmt, t.sr);
+    await env.AUDIO.put(key, request.body, { httpMetadata: { contentType: f.ct } });
+    await env.DB.prepare("UPDATE transcodes SET status = 'done', finished_at = ? WHERE id = ?")
+        .bind(new Date().toISOString(), transcodeId).run();
+    return jsonOk({ stored: key });
+}
+
 // =============================================================================
 // Studio (anonymous, no sign-in)
 // =============================================================================
@@ -641,12 +700,6 @@ async function studioJobStatus(request, env, jobId) {
 async function studioDownload(request, env, jobId, url) {
     const { id: anon } = anonIdentity(request);
     const kind = url.searchParams.get('kind') || 'master-mp3';
-    const map = {
-        'source-mp3': 'result_source_mp3_key',
-        'master-mp3': 'result_mp3_key',
-        'master-wav': 'result_wav_key',
-    };
-    if (!(kind in map)) return jsonError('Invalid kind', 400);
 
     const job = await env.DB.prepare(
         'SELECT id, user_id, status, wav_unlocked, result_source_mp3_key, result_mp3_key, result_wav_key, source_filename FROM jobs WHERE id = ?'
@@ -654,14 +707,27 @@ async function studioDownload(request, env, jobId, url) {
     if (!job || job.user_id !== anon) return jsonError('Not found', 404);
     if (job.status !== 'done') return jsonError('Not ready', 409);
 
-    // The WAV is the paid product. Free for streaming are the two MP3s.
-    // The WAV unlocks via a single purchase or a redeemed code (both set
-    // wav_unlocked = 1); we just check the flag here.
-    if (kind === 'master-wav' && !job.wav_unlocked) {
-        return jsonError('WAV not unlocked', 402);
+    // Resolve which R2 object to serve and the download filename.
+    // The WAV (and any transcoded variant) is the paid product, gated on
+    // wav_unlocked. The two MP3 previews are free for the A/B player.
+    let key, downloadName = null;
+    if (kind === 'variant') {
+        if (!job.wav_unlocked) return jsonError('WAV not unlocked', 402);
+        const spec = parseVariant(url.searchParams.get('v') || '');
+        if (!spec) return jsonError('Invalid format', 400);
+        key = variantKey(jobId, spec.fmt, spec.sr);
+        downloadName = `${stripExt(job.source_filename)}_mastered_${spec.label}.${spec.ext}`;
+    } else {
+        const map = {
+            'source-mp3': 'result_source_mp3_key',
+            'master-mp3': 'result_mp3_key',
+            'master-wav': 'result_wav_key',
+        };
+        if (!(kind in map)) return jsonError('Invalid kind', 400);
+        if (kind === 'master-wav' && !job.wav_unlocked) return jsonError('WAV not unlocked', 402);
+        key = job[map[kind]];
+        if (kind === 'master-wav') downloadName = `${stripExt(job.source_filename)}_mastered.wav`;
     }
-
-    const key = job[map[kind]];
     if (!key) return jsonError('File missing', 404);
 
     // Support HTTP range requests so the A/B player can seek to any point.
@@ -692,10 +758,88 @@ async function studioDownload(request, env, jobId, url) {
     obj.writeHttpMetadata(headers);
     headers.set('Accept-Ranges', 'bytes');
     headers.set('Content-Length', String(obj.size));
-    if (kind === 'master-wav') {
-        headers.set('Content-Disposition', `attachment; filename="${stripExt(job.source_filename)}_mastered.wav"`);
+    if (downloadName) {
+        headers.set('Content-Disposition', `attachment; filename="${downloadName}"`);
     }
     return new Response(obj.body, { headers });
+}
+
+// ---- Download formats (on-demand transcode) -------------------------------
+// The worker only ever stores ONE master (24-bit / 44.1 kHz WAV). Any other
+// format/rate the customer picks is rendered on demand by the worker and
+// cached in R2, so we never pre-store eight variants per track.
+const VARIANT_FMTS = {
+    wav24: { ext: 'wav',  ct: 'audio/wav',  label: 'WAV24' },
+    wav16: { ext: 'wav',  ct: 'audio/wav',  label: 'WAV16' },
+    flac:  { ext: 'flac', ct: 'audio/flac', label: 'FLAC' },
+    mp3:   { ext: 'mp3',  ct: 'audio/mpeg', label: 'MP3-320' },
+};
+const VARIANT_SRS = new Set([44100, 48000]);
+
+function parseVariant(v) {
+    const m = String(v || '').match(/^([a-z0-9]+)_(\d+)$/i);
+    if (!m) return null;
+    const fmt = m[1].toLowerCase();
+    const sr = parseInt(m[2], 10);
+    const f = VARIANT_FMTS[fmt];
+    if (!f || !VARIANT_SRS.has(sr)) return null;
+    return { fmt, sr, ext: f.ext, ct: f.ct, label: `${f.label}_${sr === 48000 ? '48k' : '44k'}` };
+}
+
+function variantKey(jobId, fmt, sr) {
+    return `results/${jobId}/variant_${fmt}_${sr}.${VARIANT_FMTS[fmt].ext}`;
+}
+
+async function ensureTranscodeTable(env) {
+    await env.DB.prepare(
+        "CREATE TABLE IF NOT EXISTS transcodes (id TEXT PRIMARY KEY, job_id TEXT NOT NULL, " +
+        "fmt TEXT NOT NULL, sr INTEGER NOT NULL, status TEXT NOT NULL DEFAULT 'pending', " +
+        "created_at TEXT NOT NULL, started_at TEXT, finished_at TEXT)"
+    ).run();
+}
+
+// Ask for a specific format. Returns { ready, url } when the file already
+// exists (or is the master itself), or { ready: false } after queueing a
+// transcode for the worker to render. The browser then polls this endpoint.
+async function studioPrepareVariant(request, env) {
+    const { id: anon, setCookie } = anonIdentity(request);
+    const data = await request.json().catch(() => ({}));
+    const jobId = String(data.job_id || '');
+    const spec = parseVariant(`${data.fmt || ''}_${data.sr || ''}`);
+    if (!spec) return withCookie(jsonError('Invalid format', 400), setCookie);
+
+    const job = await env.DB.prepare(
+        'SELECT id, user_id, status, wav_unlocked, result_wav_key FROM jobs WHERE id = ?'
+    ).bind(jobId).first();
+    if (!job || job.user_id !== anon) return withCookie(jsonError('Track not found', 404), setCookie);
+    if (job.status !== 'done') return withCookie(jsonError('Track not ready', 409), setCookie);
+    if (!job.wav_unlocked) return withCookie(jsonError('Not unlocked', 402), setCookie);
+
+    // The stored master already IS 24-bit / 44.1 kHz WAV.
+    if (spec.fmt === 'wav24' && spec.sr === 44100) {
+        return withCookie(jsonOk({ ready: true, url: `/api/studio/download/${jobId}?kind=master-wav` }), setCookie);
+    }
+
+    const dlUrl = `/api/studio/download/${jobId}?kind=variant&v=${spec.fmt}_${spec.sr}`;
+    if (await env.AUDIO.head(variantKey(jobId, spec.fmt, spec.sr))) {
+        return withCookie(jsonOk({ ready: true, url: dlUrl }), setCookie);
+    }
+
+    await ensureTranscodeTable(env);
+    const existing = await env.DB.prepare(
+        'SELECT status FROM transcodes WHERE job_id = ? AND fmt = ? AND sr = ?'
+    ).bind(jobId, spec.fmt, spec.sr).first();
+    if (!existing) {
+        await env.DB.prepare(
+            "INSERT INTO transcodes (id, job_id, fmt, sr, status, created_at) VALUES (?, ?, ?, ?, 'pending', ?)"
+        ).bind(crypto.randomUUID(), jobId, spec.fmt, spec.sr, new Date().toISOString()).run();
+    } else if (existing.status === 'done') {
+        return withCookie(jsonOk({ ready: true, url: dlUrl }), setCookie);
+    } else if (existing.status === 'failed') {
+        await env.DB.prepare("UPDATE transcodes SET status = 'pending' WHERE job_id = ? AND fmt = ? AND sr = ?")
+            .bind(jobId, spec.fmt, spec.sr).run();
+    }
+    return withCookie(jsonOk({ ready: false }), setCookie);
 }
 
 // Pricing (in euro cents). Single WAV = 7.00. Bundle = 40.00 for the
