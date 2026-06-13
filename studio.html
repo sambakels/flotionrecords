@@ -127,7 +127,7 @@
                         </button>
                         <button id="chB" class="ab-ch" data-side="B" style="padding:1rem;border-radius:14px;border:2px solid #a78bfa;background:linear-gradient(135deg,rgba(167,139,250,.14),rgba(59,130,246,.06)),var(--glass);cursor:pointer;font:inherit;text-align:left;transition:all .2s">
                             <div style="font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(167,139,250,.95);font-weight:700;margin-bottom:.2rem">Channel B</div>
-                            <div style="font-size:.98rem;font-weight:700;color:var(--text)">Mastered</div>
+                            <div style="font-size:.98rem;font-weight:700;color:var(--text)">Mixed &amp; mastered</div>
                             <div style="font-size:.72rem;color:var(--text-50)">Flotion WAV</div>
                         </button>
                     </div>
@@ -156,7 +156,7 @@
                 <!-- Download / pay -->
                 <button id="downloadBtn" class="btn btn-color" style="width:100%;font-size:1rem;padding:1.05rem">Download the WAV master</button>
                 <a id="haveWav" href="#" class="btn btn-color" style="width:100%;display:none">Download your WAV</a>
-                <button id="againBtn" class="btn btn-glass" style="width:100%;margin-top:.7rem">Master another track</button>
+                <button id="againBtn" class="btn btn-glass" style="width:100%;margin-top:.7rem">Mix &amp; master another track</button>
             </div>
 
         </div>
@@ -346,7 +346,7 @@
     function renderMetrics(rep) {
         const rows = document.getElementById('metricRows');
         rows.innerHTML = '';
-        rows.insertAdjacentHTML('beforeend', `<div></div><div style="color:rgba(244,63,94,.95);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700">Yours</div><div style="color:rgba(16,185,129,.95);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700">Mastered</div>`);
+        rows.insertAdjacentHTML('beforeend', `<div></div><div style="color:rgba(244,63,94,.95);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700">Yours</div><div style="color:rgba(16,185,129,.95);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700">Mixed &amp; mastered</div>`);
         const f = [
             ['Loudness', rep.before_lufs, rep.after_lufs, v => (v>=0?'+':'')+v.toFixed(1)+' LUFS'],
             ['True peak', rep.before_peak, rep.after_peak, v => v.toFixed(2)+' dB'],
