@@ -282,6 +282,7 @@
             if (!initRes.ok) { const j = await initRes.json().catch(()=>({})); throw new Error(j.error||'Could not start'); }
             const { job_id, upload_url } = await initRes.json();
             currentJob = job_id;
+            rememberJob(job_id);
 
             submitBtn.textContent = 'Sending track...';
             const put = await fetch(upload_url, { method:'PUT', body:selectedFile, headers:{'Content-Type':(selectedFile.type||'application/octet-stream')} });
@@ -496,19 +497,42 @@
         redeemBtn.disabled=false;
     });
 
-    document.getElementById('againBtn').addEventListener('click', ()=>location.href='/studio');
+    document.getElementById('againBtn').addEventListener('click', ()=>location.href='/studio?new=1');
 
-    // returning from successful checkout: ?paid=JOBID. The Stripe webhook
-    // that unlocks the WAV can land a moment after the redirect, so poll a
-    // few times until wav_unlocked flips (or give up gracefully).
-    (async function(){
-        const paid=new URLSearchParams(location.search).get('paid');
-        if(!paid) return;
-        let job=null;
-        for(let i=0;i<6;i++){
-            try{ const r=await fetch('/api/studio/jobs/'+paid); if(r.ok){ job=await r.json(); } }catch(e){}
-            if(job&&job.status==='done'){ renderResult(job); if(job.wav_unlocked) break; }
-            await new Promise(r=>setTimeout(r,2500));
+    // Remember recent jobs in this browser so a refresh restores the
+    // result instead of starting over. The anon ownership cookie persists,
+    // so the server still recognises these jobs as ours.
+    function rememberJob(id){
+        try{ let a=JSON.parse(localStorage.getItem('flotion_jobs')||'[]'); a=a.filter(x=>x!==id); a.unshift(id); localStorage.setItem('flotion_jobs', JSON.stringify(a.slice(0,12))); }catch(e){}
+    }
+    function forgetJob(id){
+        try{ let a=JSON.parse(localStorage.getItem('flotion_jobs')||'[]'); localStorage.setItem('flotion_jobs', JSON.stringify(a.filter(x=>x!==id))); }catch(e){}
+    }
+
+    // On load: restore the most relevant job. Priority: a ?paid=ID return
+    // from Stripe, otherwise the most recent remembered job. Done -> show
+    // the result; still processing -> resume polling; gone (cleaned up or
+    // failed) -> drop it and stay on the upload form.
+    (async function restoreOnLoad(){
+        const params=new URLSearchParams(location.search);
+        if(params.get('new')==='1') return;  // explicit fresh start
+        const paid=params.get('paid');
+        const remembered=(()=>{ try{ return JSON.parse(localStorage.getItem('flotion_jobs')||'[]'); }catch(e){ return []; } })();
+        const id = paid || remembered[0];
+        if(!id) return;
+        currentJob = id;
+        // If we just came back from checkout, the unlock webhook may lag the
+        // redirect, so poll a few times for the wav_unlocked flip.
+        const attempts = paid ? 6 : 1;
+        for(let i=0;i<attempts;i++){
+            let job=null;
+            try{ const r=await fetch('/api/studio/jobs/'+id); if(r.ok){ job=await r.json(); } else if(r.status===404){ forgetJob(id); return; } }catch(e){}
+            if(job){
+                if(job.status==='done'){ rememberJob(id); renderResult(job); if(job.wav_unlocked||!paid) return; }
+                else if(job.status==='processing'||job.status==='pending'){ show('processing'); poll(id); return; }
+                else if(job.status==='failed'){ forgetJob(id); return; }
+            }
+            if(i<attempts-1) await new Promise(r=>setTimeout(r,2500));
         }
     })();
     </script>
