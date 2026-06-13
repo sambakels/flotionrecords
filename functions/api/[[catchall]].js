@@ -64,6 +64,7 @@ export async function onRequest(context) {
         if (p.startsWith('/api/studio/jobs/') && method === 'GET') return studioJobStatus(request, env, p.split('/').pop());
         if (p.startsWith('/api/studio/download/') && method === 'GET') return studioDownload(request, env, p.split('/').pop(), url);
         if (p === '/api/studio/buy' && method === 'POST') return studioBuy(request, env);
+        if (p === '/api/studio/redeem' && method === 'POST') return studioRedeem(request, env);
 
         if (p === '/api/worker/poll' && method === 'POST') return workerPoll(request, env);
         if (p === '/api/worker/complete' && method === 'POST') return workerComplete(request, env);
@@ -120,18 +121,30 @@ async function handleStripeWebhook(request, env) {
     } else if (meta.purpose === 'mastering_wav_unlock' && meta.job_id) {
         await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(meta.job_id).run();
     } else if (meta.purpose === 'studio_single' && meta.job_id) {
-        // Unlock the WAV for this single track.
+        // Unlock the WAV for this single track right away.
         await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(meta.job_id).run();
-    } else if (meta.purpose === 'studio_album' && meta.anon_id) {
-        // Grant 10 WAV download credits to this anonymous browser, and
-        // unlock the track they bought from right away.
-        await env.DB.prepare(
-            'INSERT INTO anon_grants (anon_id, credits_total, credits_used, created_at) VALUES (?, 10, 0, ?) ' +
-            'ON CONFLICT(anon_id) DO UPDATE SET credits_total = credits_total + 10'
-        ).bind(meta.anon_id, new Date().toISOString()).run();
-        if (meta.job_id) {
+    } else if (meta.purpose === 'studio_bundle') {
+        // Generate `qty` single-use unlock codes, store them, and email
+        // them to the buyer. Codes work on any track, any device, forever.
+        const qty = Math.max(1, Math.min(500, parseInt(meta.qty || '0', 10)));
+        const email = session.customer_details?.email || meta.email || '';
+        const now = new Date().toISOString();
+        const codes = [];
+        for (let i = 0; i < qty; i++) codes.push(makeRedeemCode());
+        // Insert all codes
+        for (const c of codes) {
+            await env.DB.prepare(
+                'INSERT INTO codes (code, used, email, created_at) VALUES (?, 0, ?, ?)'
+            ).bind(c, email, now).run();
+        }
+        // If they bought from a specific track, unlock it now using the
+        // first code so they get instant gratification.
+        if (meta.job_id && codes.length) {
+            await env.DB.prepare('UPDATE codes SET used = 1, used_job_id = ?, used_at = ? WHERE code = ?')
+                .bind(meta.job_id, now, codes[0]).run();
             await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(meta.job_id).run();
         }
+        if (email) await sendCodesEmail(env, email, codes, !!meta.job_id);
     } else {
         const submission_id = session.client_reference_id;
         if (submission_id) {
@@ -610,10 +623,10 @@ async function studioDownload(request, env, jobId, url) {
     if (job.status !== 'done') return jsonError('Not ready', 409);
 
     // The WAV is the paid product. Free for streaming are the two MP3s.
+    // The WAV unlocks via a single purchase or a redeemed code (both set
+    // wav_unlocked = 1); we just check the flag here.
     if (kind === 'master-wav' && !job.wav_unlocked) {
-        const consumed = await tryConsumeAlbumCredit(env, anon, jobId);
-        if (!consumed) return jsonError('WAV not unlocked', 402);
-        job.wav_unlocked = 1;
+        return jsonError('WAV not unlocked', 402);
     }
 
     const key = job[map[kind]];
@@ -629,15 +642,12 @@ async function studioDownload(request, env, jobId, url) {
     return new Response(obj.body, { headers });
 }
 
-async function tryConsumeAlbumCredit(env, anon, jobId) {
-    const grant = await env.DB.prepare(
-        'SELECT credits_total, credits_used FROM anon_grants WHERE anon_id = ?'
-    ).bind(anon).first();
-    if (!grant) return false;
-    if (grant.credits_used >= grant.credits_total) return false;
-    await env.DB.prepare('UPDATE anon_grants SET credits_used = credits_used + 1 WHERE anon_id = ?').bind(anon).run();
-    await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(jobId).run();
-    return true;
+// Pricing (in euro cents). Single WAV = 7.00. Bundle = 40.00 for the
+// first 10 tracks, +2.00 for every track beyond 10.
+const STUDIO_SINGLE_CENTS = 700;
+function bundleCents(qty) {
+    const q = Math.max(10, Math.min(500, qty | 0));
+    return 4000 + Math.max(0, q - 10) * 200;
 }
 
 async function studioBuy(request, env) {
@@ -650,18 +660,53 @@ async function studioBuy(request, env) {
     if (!job || job.user_id !== anon) return withCookie(jsonError('Job not found', 404), setCookie);
     if (job.status !== 'done') return withCookie(jsonError('Job not ready', 409), setCookie);
 
-    let price, purpose;
-    if (kind === 'single') { price = env.STRIPE_PRICE_WAV_UNLOCK; purpose = 'studio_single'; }
-    else if (kind === 'album') { price = env.STRIPE_PRICE_PACK; purpose = 'studio_album'; }
-    else return withCookie(jsonError('Invalid kind', 400), setCookie);
+    let amount, productName, metadata;
+    if (kind === 'single') {
+        amount = STUDIO_SINGLE_CENTS;
+        productName = 'Flotion mix & master, 1 WAV download';
+        metadata = { purpose: 'studio_single', anon_id: anon, job_id: jobId };
+    } else if (kind === 'bundle') {
+        const qty = Math.max(10, Math.min(500, parseInt(data.qty || '10', 10)));
+        amount = bundleCents(qty);
+        productName = `Flotion mix & master bundle, ${qty} WAV downloads`;
+        metadata = { purpose: 'studio_bundle', anon_id: anon, job_id: jobId, qty: String(qty) };
+    } else {
+        return withCookie(jsonError('Invalid kind', 400), setCookie);
+    }
 
     const checkoutUrl = await createStripeCheckout(env, {
-        price,
-        metadata: { purpose, anon_id: anon, job_id: jobId },
+        amount_cents: amount,
+        product_name: productName,
+        metadata,
         success_url: `${env.SITE_URL}/studio?paid=${jobId}`,
         cancel_url: `${env.SITE_URL}/studio?paid=${jobId}`,
     });
     return withCookie(jsonOk({ url: checkoutUrl }), setCookie);
+}
+
+async function studioRedeem(request, env) {
+    const { id: anon, setCookie } = anonIdentity(request);
+    const data = await request.json().catch(() => ({}));
+    const code = String(data.code || '').trim().toUpperCase().replace(/\s+/g, '');
+    const jobId = String(data.job_id || '');
+
+    if (!/^FLO-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) {
+        return withCookie(jsonError('That code does not look right.', 400), setCookie);
+    }
+    const job = await env.DB.prepare('SELECT id, user_id, status, wav_unlocked FROM jobs WHERE id = ?').bind(jobId).first();
+    if (!job || job.user_id !== anon) return withCookie(jsonError('Track not found', 404), setCookie);
+    if (job.status !== 'done') return withCookie(jsonError('Track not ready', 409), setCookie);
+    if (job.wav_unlocked) return withCookie(jsonOk({ unlocked: true }), setCookie);
+
+    const row = await env.DB.prepare('SELECT code, used FROM codes WHERE code = ?').bind(code).first();
+    if (!row) return withCookie(jsonError('Unknown code.', 404), setCookie);
+    if (row.used) return withCookie(jsonError('That code has already been used.', 409), setCookie);
+
+    const now = new Date().toISOString();
+    await env.DB.prepare('UPDATE codes SET used = 1, used_job_id = ?, used_at = ? WHERE code = ?')
+        .bind(jobId, now, code).run();
+    await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(jobId).run();
+    return withCookie(jsonOk({ unlocked: true }), setCookie);
 }
 
 // =============================================================================
@@ -731,11 +776,56 @@ async function sendResultEmail(env, email, sourceFilename, jobId) {
     });
 }
 
+// Unambiguous charset (no 0/O/1/I) so codes are easy to read and type.
+const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function makeRedeemCode() {
+    const pick = (n) => {
+        const arr = new Uint8Array(n);
+        crypto.getRandomValues(arr);
+        return [...arr].map(b => CODE_CHARS[b % CODE_CHARS.length]).join('');
+    };
+    return `FLO-${pick(4)}-${pick(4)}`;
+}
+
+async function sendCodesEmail(env, email, codes, firstAlreadyUsed) {
+    if (!env.RESEND_API_KEY) { console.log('No RESEND_API_KEY, codes for', email, codes.join(',')); return; }
+    const rows = codes.map((c, i) => {
+        const used = (firstAlreadyUsed && i === 0);
+        return `<tr><td style="padding:8px 12px;font-family:monospace;font-size:16px;font-weight:700;letter-spacing:1px;border-bottom:1px solid #eee;${used ? 'color:#aaa;text-decoration:line-through' : 'color:#1a1a2e'}">${c}${used ? '  (used on your first track)' : ''}</td></tr>`;
+    }).join('');
+    const html = `
+<div style="font-family:Inter,sans-serif;max-width:540px;margin:0 auto;padding:20px;color:#1a1a2e">
+  <h2 style="margin:0 0 12px">Your mix &amp; master download codes</h2>
+  <p style="margin:0 0 18px;line-height:1.55;color:#444">Thanks for your purchase. Each code unlocks one lossless 24-bit WAV download in the Flotion studio. Codes never expire. Enter a code on the result screen after you master a track.</p>
+  <table style="width:100%;border-collapse:collapse;background:#fafafa;border-radius:10px;overflow:hidden">${rows}</table>
+  <p style="margin:18px 0 0"><a href="${env.SITE_URL || 'https://flotionrecords.com'}/studio" style="display:inline-block;padding:12px 22px;background:linear-gradient(135deg,#1d4ed8,#6d28d9,#a21caf);color:#fff;text-decoration:none;border-radius:100px;font-weight:700">Open the studio</a></p>
+  <p style="margin:16px 0 0;font-size:12px;color:#999">Keep this email. Anyone with a code can redeem it, so don't share them.</p>
+</div>`;
+    await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            from: env.RESEND_FROM || 'Flotion Records <hello@flotionrecords.com>',
+            to: [email], subject: `Your ${codes.length} Flotion download code${codes.length === 1 ? '' : 's'}`, html,
+        }),
+    });
+}
+
 async function createStripeCheckout(env, opts) {
     const fd = new URLSearchParams();
     fd.append('mode', 'payment');
-    fd.append('line_items[0][price]', opts.price);
-    fd.append('line_items[0][quantity]', '1');
+    if (opts.amount_cents) {
+        // Inline price_data: no pre-made Stripe Price ID needed, so the
+        // amount can vary (bundle quantity) and the only required secret
+        // is STRIPE_SECRET_KEY.
+        fd.append('line_items[0][price_data][currency]', 'eur');
+        fd.append('line_items[0][price_data][unit_amount]', String(opts.amount_cents));
+        fd.append('line_items[0][price_data][product_data][name]', opts.product_name || 'Flotion mix & master');
+        fd.append('line_items[0][quantity]', '1');
+    } else {
+        fd.append('line_items[0][price]', opts.price);
+        fd.append('line_items[0][quantity]', '1');
+    }
     fd.append('success_url', opts.success_url);
     fd.append('cancel_url', opts.cancel_url);
     if (opts.customer_email) fd.append('customer_email', opts.customer_email);

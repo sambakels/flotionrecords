@@ -45,9 +45,9 @@
         <div class="container" style="max-width:760px;margin:0 auto">
 
             <div style="text-align:center;margin-bottom:2rem">
-                <span style="font-size:.72rem;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--text-50)">Flotion Studio</span>
-                <h1 style="font-size:clamp(1.9rem,4.5vw,2.6rem);font-weight:800;letter-spacing:-.02em;margin:.6rem 0 .4rem">Master your track <span class="gradient-text">in seconds</span></h1>
-                <p style="font-size:.98rem;color:var(--text-60);max-width:520px;margin:0 auto;line-height:1.6">Drop your MP3, pick the genre, and hear it mastered against your original. Listening is free. No account, no sign up.</p>
+                <span style="font-size:.72rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--text-50)">Flotion Studio</span>
+                <h1 style="font-size:clamp(2.2rem,6vw,3.4rem);font-weight:900;letter-spacing:-.035em;line-height:1.02;margin:.7rem 0 .5rem">Mix &amp; master<br><span class="gradient-text">your track</span></h1>
+                <p style="font-size:1.02rem;color:var(--text-60);max-width:500px;margin:0 auto;line-height:1.6">Drop in your track and hear it mixed and mastered next to your original, side by side. Free to try. No account, no sign up.</p>
             </div>
 
             <!-- UPLOAD -->
@@ -77,13 +77,14 @@
                     <option value="ambient_cinematic">Ambient / Cinematic</option>
                 </select>
 
-                <button type="submit" id="submitBtn" class="btn btn-color" style="width:100%;margin-top:1.2rem" disabled>Master my track</button>
+                <button type="submit" id="submitBtn" class="btn btn-color" style="width:100%;margin-top:1.4rem;font-size:1.05rem;padding:1.1rem" disabled>Try it now, free &rarr;</button>
+                <p style="font-size:.72rem;color:var(--text-50);text-align:center;margin-top:.8rem">Listening and comparing is free. You only pay to download the WAV.</p>
             </form>
 
             <!-- PROCESSING -->
             <div id="processing" class="card" style="padding:2.4rem;text-align:center;display:none">
                 <div style="width:46px;height:46px;border:3px solid var(--glass-border);border-top-color:#a78bfa;border-radius:50%;margin:0 auto 1.2rem;animation:spin 1s linear infinite"></div>
-                <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:.3rem">Mastering your track</h2>
+                <h2 style="font-size:1.2rem;font-weight:700;margin-bottom:.3rem">Mixing &amp; mastering</h2>
                 <p id="procMsg" style="color:var(--text-60);font-size:.92rem">This usually takes under a minute.</p>
             </div>
 
@@ -157,29 +158,56 @@
         <div class="card" style="max-width:440px;width:100%;padding:1.8rem">
             <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:1rem">
                 <div>
-                    <h2 style="font-size:1.35rem;font-weight:800;letter-spacing:-.02em">Download the master</h2>
+                    <h2 style="font-size:1.35rem;font-weight:800;letter-spacing:-.02em">Download the WAV</h2>
                     <p style="color:var(--text-60);font-size:.88rem;margin-top:.2rem">Lossless 24-bit WAV, ready for Spotify, Apple Music and distributors.</p>
                 </div>
                 <button id="payClose" aria-label="Close" style="background:none;border:0;cursor:pointer;color:var(--text-60);font-size:1.6rem;line-height:1;padding:.2rem">&times;</button>
             </div>
 
-            <button id="buySingle" class="card" style="width:100%;text-align:left;padding:1.1rem 1.2rem;margin-bottom:.8rem;cursor:pointer;border:2px solid #a78bfa;display:flex;justify-content:space-between;align-items:center;gap:1rem">
+            <!-- Single -->
+            <button id="buySingle" class="card" style="width:100%;text-align:left;padding:1.1rem 1.2rem;margin-bottom:.7rem;cursor:pointer;border:2px solid #a78bfa;display:flex;justify-content:space-between;align-items:center;gap:1rem">
                 <div>
                     <div style="font-weight:800;font-size:1rem">This track</div>
-                    <div style="font-size:.8rem;color:var(--text-60)">Download this master as 24-bit WAV</div>
+                    <div style="font-size:.8rem;color:var(--text-60)">Download this one as 24-bit WAV</div>
                 </div>
                 <div style="font-weight:800;font-size:1.3rem;flex-shrink:0">&euro;7</div>
             </button>
 
-            <button id="buyAlbum" class="card" style="width:100%;text-align:left;padding:1.1rem 1.2rem;cursor:pointer;border:1px solid var(--glass-border);display:flex;justify-content:space-between;align-items:center;gap:1rem">
-                <div>
-                    <div style="font-weight:800;font-size:1rem">Album, 10 tracks</div>
-                    <div style="font-size:.8rem;color:var(--text-60)">10 WAV downloads. Extra tracks &euro;2 each after that.</div>
+            <!-- Bundle with quantity -->
+            <div class="card" style="padding:1.1rem 1.2rem;margin-bottom:.9rem;border:1px solid var(--glass-border)">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.7rem">
+                    <div>
+                        <div style="font-weight:800;font-size:1rem">Bundle of WAVs</div>
+                        <div style="font-size:.8rem;color:var(--text-60)">Codes by email, redeem on any track, never expire</div>
+                    </div>
+                    <div id="bundlePrice" style="font-weight:800;font-size:1.3rem;flex-shrink:0">&euro;40</div>
                 </div>
-                <div style="font-weight:800;font-size:1.3rem;flex-shrink:0">&euro;40</div>
-            </button>
+                <div style="display:flex;align-items:center;gap:.6rem">
+                    <label for="bundleQty" style="font-size:.82rem;color:var(--text-60)">How many tracks?</label>
+                    <select id="bundleQty" style="flex:1;padding:.6rem .8rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:10px;font:inherit;color:var(--text);font-size:.92rem;outline:none;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22><path fill=%22%23999%22 d=%22M6 8.5 1.5 4h9z%22/></svg>');background-repeat:no-repeat;background-position:right .7rem center;padding-right:2rem">
+                        <option value="10">10 tracks</option>
+                        <option value="15">15 tracks</option>
+                        <option value="20">20 tracks</option>
+                        <option value="30">30 tracks</option>
+                        <option value="50">50 tracks</option>
+                        <option value="100">100 tracks</option>
+                    </select>
+                    <button id="buyBundle" class="btn btn-color" style="padding:.6rem 1.2rem;font-size:.88rem">Buy</button>
+                </div>
+                <div style="font-size:.72rem;color:var(--text-50);margin-top:.6rem">&euro;40 for the first 10, then &euro;2 per extra track.</div>
+            </div>
 
-            <p style="font-size:.72rem;color:var(--text-50);text-align:center;margin-top:1.1rem;line-height:1.5">Secure checkout via Stripe. The preview stays free, you only pay to download the lossless file.</p>
+            <!-- Redeem a code -->
+            <div style="border-top:1px solid var(--glass-border);padding-top:1rem">
+                <div style="font-size:.82rem;color:var(--text-60);margin-bottom:.5rem">Already have a code?</div>
+                <div style="display:flex;gap:.5rem">
+                    <input id="codeInput" type="text" placeholder="FLO-XXXX-XXXX" maxlength="12" autocomplete="off" style="flex:1;padding:.7rem .9rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:10px;font:inherit;font-family:monospace;letter-spacing:1px;text-transform:uppercase;color:var(--text);font-size:.95rem;outline:none">
+                    <button id="redeemBtn" class="btn btn-glass" style="padding:.7rem 1.2rem;font-size:.88rem">Redeem</button>
+                </div>
+                <div id="codeMsg" style="font-size:.76rem;margin-top:.5rem;min-height:1rem"></div>
+            </div>
+
+            <p style="font-size:.72rem;color:var(--text-50);text-align:center;margin-top:1.1rem;line-height:1.5">Secure checkout via Stripe. The preview stays free.</p>
         </div>
     </div>
 
@@ -255,7 +283,7 @@
             poll(job_id);
         } catch (err) {
             alert('Upload failed: ' + err.message);
-            submitBtn.disabled = false; submitBtn.textContent = 'Master my track';
+            submitBtn.disabled = false; submitBtn.textContent = 'Try it now, free';
         }
     });
 
@@ -267,7 +295,7 @@
                 const r = await fetch('/api/studio/jobs/'+jobId);
                 if (!r.ok) continue;
                 const job = await r.json();
-                if (job.status==='processing') msg.textContent = 'Mastering your track, almost there...';
+                if (job.status==='processing') msg.textContent = 'Mixing & mastering, almost there...';
                 else if (job.status==='done') return renderResult(job);
                 else if (job.status==='failed') { alert('Mastering failed. '+(job.error_message||'')); show('uploadForm'); return; }
             } catch(e){}
@@ -422,15 +450,42 @@
     function openPay(jobId){ payJobId=jobId; payModal.style.display='flex'; }
     document.getElementById('payClose').addEventListener('click', ()=>payModal.style.display='none');
     payModal.addEventListener('click', e=>{ if(e.target===payModal) payModal.style.display='none'; });
-    document.getElementById('buySingle').addEventListener('click', ()=>checkout('single'));
-    document.getElementById('buyAlbum').addEventListener('click', ()=>checkout('album'));
-    async function checkout(kind){
+
+    // live bundle price: 40 for first 10, +2 per extra
+    const bundleQty=document.getElementById('bundleQty'), bundlePrice=document.getElementById('bundlePrice');
+    function updateBundlePrice(){ const q=parseInt(bundleQty.value,10); const eur=40+Math.max(0,q-10)*2; bundlePrice.textContent='€'+eur; }
+    bundleQty.addEventListener('change', updateBundlePrice); updateBundlePrice();
+
+    document.getElementById('buySingle').addEventListener('click', ()=>checkout({kind:'single'}));
+    document.getElementById('buyBundle').addEventListener('click', ()=>checkout({kind:'bundle', qty:parseInt(bundleQty.value,10)}));
+    async function checkout(opts){
         try{
-            const r=await fetch('/api/studio/buy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind,job_id:payJobId})});
-            if(!r.ok) throw new Error('Checkout failed');
+            const r=await fetch('/api/studio/buy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...opts,job_id:payJobId})});
+            if(!r.ok){ const j=await r.json().catch(()=>({})); throw new Error(j.error||'Checkout failed'); }
             const {url}=await r.json(); location.href=url;
         }catch(e){ alert(e.message); }
     }
+
+    // redeem a code
+    const codeInput=document.getElementById('codeInput'), codeMsg=document.getElementById('codeMsg'), redeemBtn=document.getElementById('redeemBtn');
+    redeemBtn.addEventListener('click', async ()=>{
+        const code=codeInput.value.trim().toUpperCase();
+        if(!code){ return; }
+        redeemBtn.disabled=true; codeMsg.style.color='var(--text-50)'; codeMsg.textContent='Checking...';
+        try{
+            const r=await fetch('/api/studio/redeem',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code,job_id:payJobId})});
+            const j=await r.json().catch(()=>({}));
+            if(r.ok && j.unlocked){
+                codeMsg.style.color='rgba(16,185,129,.95)'; codeMsg.textContent='Unlocked! Starting your download...';
+                const have=document.getElementById('haveWav'); const dl=document.getElementById('downloadBtn');
+                dl.style.display='none'; have.style.display=''; have.href='/api/studio/download/'+payJobId+'?kind=master-wav';
+                setTimeout(()=>{ payModal.style.display='none'; window.location.href=have.href; }, 800);
+            } else {
+                codeMsg.style.color='rgba(244,63,94,.95)'; codeMsg.textContent=j.error||'Could not redeem that code.';
+            }
+        }catch(e){ codeMsg.style.color='rgba(244,63,94,.95)'; codeMsg.textContent='Something went wrong.'; }
+        redeemBtn.disabled=false;
+    });
 
     document.getElementById('againBtn').addEventListener('click', ()=>location.href='/studio');
 
