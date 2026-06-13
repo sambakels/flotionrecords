@@ -68,6 +68,7 @@ export async function onRequest(context) {
 
         if (p === '/api/worker/poll' && method === 'POST') return workerPoll(request, env);
         if (p === '/api/worker/complete' && method === 'POST') return workerComplete(request, env);
+        if (p === '/api/worker/cleanup' && method === 'POST') return workerCleanup(request, env);
         if (p.startsWith('/api/worker/fetch-source/') && method === 'GET') {
             return workerFetchSource(request, env, p.split('/').pop());
         }
@@ -497,7 +498,37 @@ async function workerComplete(request, env) {
     ).bind(jobId).first();
     if (row && ok) await sendResultEmail(env, row.email, row.source_filename, jobId);
 
+    // Delete the original uploaded source from R2 the moment we are done
+    // with it. It is never served to the browser (the A/B player uses the
+    // separately generated source-mp3 preview), so it is safe to remove
+    // immediately. This is the single biggest file per job.
+    const srcRow = await env.DB.prepare('SELECT source_r2_key FROM jobs WHERE id = ?').bind(jobId).first();
+    if (srcRow?.source_r2_key) {
+        try { await env.AUDIO.delete(srcRow.source_r2_key); } catch (e) {}
+    }
+
     return jsonOk();
+}
+
+// Periodic cleanup: free, unpaid jobs older than 48h are fully removed
+// (R2 objects + DB row). Paid jobs (wav_unlocked = 1) are kept. Called by
+// the worker about once an hour, batched to stay fast.
+async function workerCleanup(request, env) {
+    if (!workerAuthOk(request, env)) return new Response('Unauthorized', { status: 401 });
+    const cutoff = new Date(Date.now() - 48 * 3600 * 1000).toISOString();
+    const rows = await env.DB.prepare(
+        'SELECT id, source_r2_key, result_mp3_key, result_wav_key, result_source_mp3_key ' +
+        'FROM jobs WHERE wav_unlocked = 0 AND created_at < ? LIMIT 200'
+    ).bind(cutoff).all();
+    let deleted = 0;
+    for (const j of (rows.results || [])) {
+        for (const k of [j.source_r2_key, j.result_mp3_key, j.result_wav_key, j.result_source_mp3_key]) {
+            if (k) { try { await env.AUDIO.delete(k); } catch (e) {} }
+        }
+        await env.DB.prepare('DELETE FROM jobs WHERE id = ?').bind(j.id).run();
+        deleted++;
+    }
+    return jsonOk({ deleted });
 }
 
 // =============================================================================

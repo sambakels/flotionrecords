@@ -228,10 +228,28 @@ def pick_preset_auto(src_path):
         return "pop"
 
 
+def run_cleanup():
+    """Ask the API to purge free, unpaid jobs older than 48h (R2 + DB)."""
+    try:
+        r = requests.post(f"{API_URL}/api/worker/cleanup", headers=HEADERS, timeout=60)
+        if r.ok:
+            n = r.json().get("deleted", 0)
+            if n:
+                print(f"  cleanup: removed {n} expired free jobs")
+    except Exception as e:
+        print(f"  cleanup error: {e}")
+
+
 def main():
     print(f"Flotion worker started. API: {API_URL}  studio: {LOFI}")
+    last_cleanup = 0.0
     while True:
         try:
+            # Run cleanup about once an hour.
+            if time.time() - last_cleanup > 3600:
+                run_cleanup()
+                last_cleanup = time.time()
+
             job = poll_job()
             if not job:
                 time.sleep(POLL); continue
