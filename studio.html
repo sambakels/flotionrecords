@@ -48,9 +48,9 @@
                 <span style="font-size:.72rem;font-weight:700;letter-spacing:5px;text-transform:uppercase;color:var(--text-50)">Flotion Studio</span>
                 <h1 style="font-size:clamp(2.2rem,6vw,3.4rem);font-weight:900;letter-spacing:-.035em;line-height:1.02;margin:.7rem 0 .5rem">Mix &amp; master<br><span class="gradient-text">your track</span></h1>
                 <p style="font-size:1.02rem;color:var(--text-60);max-width:500px;margin:0 auto;line-height:1.6">Drop in your track and hear it mixed and mastered next to your original, side by side. Free to try. No account, no sign up.</p>
-                <div style="display:inline-flex;align-items:center;gap:.5rem;margin-top:1rem;padding:.4rem .9rem;background:rgba(167,139,250,.10);border:1px solid rgba(167,139,250,.30);border-radius:999px;font-size:.78rem;color:var(--text-60)">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15l-1.9-4.1L5.5 9l4.6-1.4L12 3z"/></svg>
-                    Made in Suno or another AI tool? Even better, we clean it up and make it sound human.
+                <div style="display:inline-flex;align-items:center;gap:.6rem;margin-top:1.1rem;padding:.55rem 1.1rem;background:var(--glass);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid var(--glass-border);border-radius:999px;box-shadow:0 4px 18px var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,.4);font-size:.82rem;font-weight:500;color:var(--text-60)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" style="opacity:.7"><path d="M3 12h2M7 8v8M11 4v16M15 7v10M19 10v4M21 12h0"/></svg>
+                    <span>Made in Suno, Udio or another AI tool? <strong style="color:var(--text)">Even better.</strong> We clean up the artefacts and give it a human, finished sound.</span>
                 </div>
             </div>
 
@@ -138,9 +138,9 @@
                             <svg id="playIcon" width="20" height="20" viewBox="0 0 24 24" fill="#fff"><polygon points="6 4 20 12 6 20 6 4"/></svg>
                             <svg id="pauseIcon" width="18" height="18" viewBox="0 0 24 24" fill="#fff" style="display:none"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
                         </button>
-                        <label style="display:flex;align-items:center;gap:.6rem;font-size:.84rem;color:var(--text);cursor:pointer;user-select:none">
-                            <input type="checkbox" id="matchLoud" checked style="width:17px;height:17px;accent-color:#a78bfa;cursor:pointer">
-                            Match loudness
+                        <label title="Plays both at the same perceived loudness, so you compare the sound quality, not just the volume." style="display:flex;align-items:center;gap:.6rem;font-size:.84rem;color:var(--text-60);cursor:pointer;user-select:none">
+                            <input type="checkbox" id="matchLoud" style="width:17px;height:17px;accent-color:#a78bfa;cursor:pointer">
+                            Match loudness (fair compare)
                         </label>
                         <span style="flex:1"></span>
                         <span style="font-size:.7rem;color:var(--text-50)">Tap <kbd style="background:rgba(0,0,0,.18);padding:.1rem .4rem;border-radius:6px;font-family:monospace">A</kbd> / <kbd style="background:rgba(0,0,0,.18);padding:.1rem .4rem;border-radius:6px;font-family:monospace">B</kbd></span>
