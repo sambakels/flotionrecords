@@ -663,11 +663,35 @@ async function studioDownload(request, env, jobId, url) {
 
     const key = job[map[kind]];
     if (!key) return jsonError('File missing', 404);
+
+    // Support HTTP range requests so the A/B player can seek to any point.
+    // Without this the browser cannot scrub and restarts from the top.
+    const rangeHeader = request.headers.get('range');
+    const headers = new Headers();
+
+    if (rangeHeader) {
+        const m = rangeHeader.match(/bytes=(\d+)-(\d*)/);
+        if (m) {
+            const start = parseInt(m[1], 10);
+            const reqEnd = m[2] ? parseInt(m[2], 10) : undefined;
+            const length = reqEnd !== undefined ? (reqEnd - start + 1) : undefined;
+            const obj = await env.AUDIO.get(key, { range: length !== undefined ? { offset: start, length } : { offset: start } });
+            if (!obj) return jsonError('File missing', 404);
+            const total = obj.size;
+            const end = reqEnd !== undefined ? Math.min(reqEnd, total - 1) : total - 1;
+            obj.writeHttpMetadata(headers);
+            headers.set('Accept-Ranges', 'bytes');
+            headers.set('Content-Range', `bytes ${start}-${end}/${total}`);
+            headers.set('Content-Length', String(end - start + 1));
+            return new Response(obj.body, { status: 206, headers });
+        }
+    }
+
     const obj = await env.AUDIO.get(key);
     if (!obj) return jsonError('File missing', 404);
-
-    const headers = new Headers();
     obj.writeHttpMetadata(headers);
+    headers.set('Accept-Ranges', 'bytes');
+    headers.set('Content-Length', String(obj.size));
     if (kind === 'master-wav') {
         headers.set('Content-Disposition', `attachment; filename="${stripExt(job.source_filename)}_mastered.wav"`);
     }

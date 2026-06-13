@@ -416,6 +416,7 @@
             } catch(e){ /* waveform optional */ }
         })();
 
+        let seekPreview=null; // ratio shown while dragging, before commit
         function drawWave(){
             const dpr=window.devicePixelRatio||1;
             const w=canvas.clientWidth, h=120;
@@ -425,12 +426,18 @@
             if(!peaks) return;
             const mid=h/2; const bw=w/peaks.length;
             const dur=mstEl.duration||0; const cur=mstEl.currentTime||0;
-            const playedX = dur>0 ? (cur/dur)*w : 0;
+            const ratio = seekPreview!=null ? seekPreview : (dur>0 ? cur/dur : 0);
+            const playedX = ratio*w;
             for(let i=0;i<peaks.length;i++){
                 const x=i*bw; const bh=Math.max(2, peaks[i]*h*0.92);
                 ctx.fillStyle = x<=playedX ? 'rgba(167,139,250,0.95)' : (document.documentElement.classList.contains('dark')?'rgba(238,240,244,0.22)':'rgba(26,26,46,0.20)');
                 ctx.fillRect(x, mid-bh/2, Math.max(1,bw-1), bh);
             }
+            // playhead line + handle
+            ctx.fillStyle = '#a78bfa';
+            ctx.fillRect(playedX-1, 0, 2, h);
+            ctx.beginPath(); ctx.arc(playedX, 9, 6, 0, Math.PI*2); ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.lineWidth=2; ctx.stroke();
         }
 
         let playing=false, raf=null;
@@ -445,16 +452,43 @@
         mstEl.addEventListener('loadedmetadata', ()=>{ tTotal.textContent=fmt(mstEl.duration); drawWave(); });
         mstEl.addEventListener('ended', ()=>{ playing=false; playIcon.style.display=''; pauseIcon.style.display='none'; cancelAnimationFrame(raf); });
 
-        waveWrap.addEventListener('click', (e)=>{
-            const rect=waveWrap.getBoundingClientRect(); const ratio=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
-            const d=mstEl.duration||0; if(d>0){ mstEl.currentTime=ratio*d; srcEl.currentTime=ratio*d; drawWave(); }
-        });
+        // Drag-to-seek anywhere on the bar. Works whether playing or paused;
+        // shows a live preview while dragging, commits the seek on release.
+        function ratioFromEvent(e){
+            const rect=waveWrap.getBoundingClientRect();
+            const cx = (e.touches&&e.touches[0]?e.touches[0].clientX:e.clientX);
+            return Math.max(0, Math.min(1, (cx-rect.left)/rect.width));
+        }
+        function seekTo(ratio){
+            const d=mstEl.duration||0;
+            if(d>0){ mstEl.currentTime=ratio*d; srcEl.currentTime=ratio*d; }
+        }
+        let dragging=false;
+        function dragStart(e){ dragging=true; seekPreview=ratioFromEvent(e); drawWave(); e.preventDefault(); }
+        function dragMove(e){ if(!dragging) return; seekPreview=ratioFromEvent(e); drawWave(); }
+        function dragEnd(e){ if(!dragging) return; const r = seekPreview!=null?seekPreview:ratioFromEvent(e); seekTo(r); seekPreview=null; dragging=false; drawWave(); }
+        function touchMove(e){ if(dragging){ seekPreview=ratioFromEvent(e); drawWave(); e.preventDefault(); } }
+        waveWrap.addEventListener('mousedown', dragStart);
+        window.addEventListener('mousemove', dragMove);
+        window.addEventListener('mouseup', dragEnd);
+        waveWrap.addEventListener('touchstart', dragStart, {passive:false});
+        window.addEventListener('touchmove', touchMove, {passive:false});
+        window.addEventListener('touchend', dragEnd);
+        waveWrap.style.touchAction='none';
 
         function onKey(e){ if(e.target&&/(INPUT|TEXTAREA|SELECT)/.test(e.target.tagName))return; if(e.code==='Space'){e.preventDefault();toggle();} else if(/^a$/i.test(e.key))setSide('A'); else if(/^b$/i.test(e.key))setSide('B'); }
         document.addEventListener('keydown', onKey);
         window.addEventListener('resize', drawWave);
 
-        return { destroy(){ document.removeEventListener('keydown',onKey); window.removeEventListener('resize',drawWave); try{srcEl.pause();mstEl.pause();}catch(e){} if(ac)try{ac.close();}catch(e){} } };
+        return { destroy(){
+            document.removeEventListener('keydown',onKey);
+            window.removeEventListener('resize',drawWave);
+            window.removeEventListener('mousemove',dragMove);
+            window.removeEventListener('mouseup',dragEnd);
+            window.removeEventListener('touchmove',touchMove);
+            window.removeEventListener('touchend',dragEnd);
+            try{srcEl.pause();mstEl.pause();}catch(e){} if(ac)try{ac.close();}catch(e){}
+        } };
     }
 
     // ---------------- pay ----------------
