@@ -509,7 +509,8 @@ const STUDIO_GENRES = new Set([
     'techno_peaktime', 'drum_and_bass', 'lofi_hiphop', 'pop', 'rock_indie',
     'solo_piano', 'ambient_cinematic',
 ]);
-const STUDIO_MAX_SIZE = 30 * 1024 * 1024;
+const STUDIO_MAX_SIZE = 60 * 1024 * 1024;
+const STUDIO_AUDIO_EXT = /\.(wav|mp3|flac|m4a|aif|aiff|ogg|opus|aac|wma)$/i;
 
 function getCookie(request, name) {
     const raw = request.headers.get('cookie') || '';
@@ -544,8 +545,8 @@ async function studioUploadInit(request, env) {
     const genre = String(data.genre || 'auto');
     const token = String(data.turnstile_token || '');
 
-    if (!/\.mp3$/i.test(filename)) return withCookie(jsonError('Please upload an MP3 file.', 400), setCookie);
-    if (size <= 0 || size > STUDIO_MAX_SIZE) return withCookie(jsonError('File too large (max 30 MB).', 400), setCookie);
+    if (!STUDIO_AUDIO_EXT.test(filename)) return withCookie(jsonError('Please upload an audio file (WAV, FLAC, MP3, M4A and more).', 400), setCookie);
+    if (size <= 0 || size > STUDIO_MAX_SIZE) return withCookie(jsonError('File too large (max 60 MB).', 400), setCookie);
     if (!STUDIO_GENRES.has(genre)) return withCookie(jsonError('Invalid genre', 400), setCookie);
     if (env.TURNSTILE_SECRET && !await verifyTurnstile(token, env.TURNSTILE_SECRET, request)) {
         return withCookie(jsonError('Verification failed. Please try again.', 400), setCookie);
@@ -575,7 +576,7 @@ async function studioUploadPut(request, env, jobId) {
     if (!job || job.user_id !== anon) return jsonError('Job not found', 404);
     if (job.status !== 'awaiting_upload') return jsonError('Job in wrong state', 409);
     await env.AUDIO.put(job.source_r2_key, request.body, {
-        httpMetadata: { contentType: 'audio/mpeg' },
+        httpMetadata: { contentType: request.headers.get('content-type') || 'application/octet-stream' },
     });
     return jsonOk({ uploaded: true });
 }

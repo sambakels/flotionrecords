@@ -52,12 +52,12 @@
 
             <!-- UPLOAD -->
             <form id="uploadForm" class="card" style="padding:1.8rem">
-                <label style="display:block;font-size:.74rem;font-weight:700;color:var(--text-60);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem">Your track (MP3)</label>
+                <label style="display:block;font-size:.74rem;font-weight:700;color:var(--text-60);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem">Your track</label>
                 <div id="dropArea" style="border:2px dashed var(--glass-border);border-radius:16px;padding:2.4rem 1.4rem;text-align:center;cursor:pointer;transition:border-color .25s,background .25s">
-                    <input type="file" id="fileInput" accept=".mp3,audio/mpeg" style="display:none">
+                    <input type="file" id="fileInput" accept=".wav,.mp3,.flac,.m4a,.aif,.aiff,.ogg,.opus,.aac,.wma,audio/*" style="display:none">
                     <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.55;margin-bottom:.6rem"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                    <div id="dropLabel" style="font-size:.96rem;color:var(--text);font-weight:600">Drag &amp; drop your MP3, or click to browse</div>
-                    <div style="font-size:.76rem;color:var(--text-50);margin-top:.35rem">MP3 only, up to 30 MB</div>
+                    <div id="dropLabel" style="font-size:.96rem;color:var(--text);font-weight:600">Drag &amp; drop your track, or click to browse</div>
+                    <div style="font-size:.76rem;color:var(--text-50);margin-top:.35rem">WAV, FLAC, MP3, M4A and more, up to 60 MB</div>
                 </div>
 
                 <label for="genre" style="display:block;font-size:.74rem;font-weight:700;color:var(--text-60);text-transform:uppercase;letter-spacing:.1em;margin:1.4rem 0 .6rem">Genre</label>
@@ -79,6 +79,11 @@
 
                 <button type="submit" id="submitBtn" class="btn btn-color" style="width:100%;margin-top:1.4rem;font-size:1.05rem;padding:1.1rem" disabled>Try it now, free &rarr;</button>
                 <p style="font-size:.72rem;color:var(--text-50);text-align:center;margin-top:.8rem">Listening and comparing is free. You only pay to download the WAV.</p>
+
+                <div style="display:flex;align-items:flex-start;gap:.6rem;margin-top:1.2rem;padding:.8rem 1rem;background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.25);border-radius:12px">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(16,185,129,.95)" stroke-width="1.8" style="flex-shrink:0;margin-top:1px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    <div style="font-size:.78rem;color:var(--text-60);line-height:1.5"><strong style="color:var(--text)">Your music stays private.</strong> The whole process is automated, nobody at Flotion listens to your track, and we never share, sell or reuse it. It is only used to build your master.</div>
+                </div>
             </form>
 
             <!-- PROCESSING -->
@@ -251,9 +256,9 @@
     fileInput.addEventListener('change', () => { if (fileInput.files[0]) selectFile(fileInput.files[0]); });
 
     function selectFile(file) {
-        const isMp3 = /\.mp3$/i.test(file.name) || file.type === 'audio/mpeg';
-        if (!isMp3) { alert('Please upload an MP3 file.'); return; }
-        if (file.size > 30 * 1024 * 1024) { alert('File is larger than 30 MB.'); return; }
+        const isAudio = /\.(wav|mp3|flac|m4a|aif|aiff|ogg|opus|aac|wma)$/i.test(file.name) || (file.type || '').startsWith('audio/');
+        if (!isAudio) { alert('Please upload an audio file (WAV, FLAC, MP3, M4A and more).'); return; }
+        if (file.size > 60 * 1024 * 1024) { alert('File is larger than 60 MB. Try a shorter clip or a smaller format.'); return; }
         selectedFile = file;
         dropArea.classList.add('has-file');
         dropLabel.textContent = file.name + '  (' + (file.size/1024/1024).toFixed(1) + ' MB)';
@@ -275,7 +280,7 @@
             currentJob = job_id;
 
             submitBtn.textContent = 'Sending track...';
-            const put = await fetch(upload_url, { method:'PUT', body:selectedFile, headers:{'Content-Type':'audio/mpeg'} });
+            const put = await fetch(upload_url, { method:'PUT', body:selectedFile, headers:{'Content-Type':(selectedFile.type||'application/octet-stream')} });
             if (!put.ok) throw new Error('Upload failed');
 
             await fetch('/api/studio/upload-complete', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ job_id }) });
