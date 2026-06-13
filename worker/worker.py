@@ -121,10 +121,35 @@ def process_one(job, workdir):
     if preset == "auto" or preset not in suno_mixer.GENRE_PRESETS:
         preset = pick_preset_auto(src_path)
 
-    # Process
+    # AI-artefact cleanup BEFORE mastering. Convert any input to WAV, run
+    # the adaptive cleanup (de-harsh, dynamic de-mud, warmth) on the raw
+    # source, then master the cleaned audio. The A/B player still compares
+    # the customer's ORIGINAL (source.mp3) against this cleaned + mastered
+    # result, so the improvement is what they hear.
+    clean_wav = workdir / "source_clean.wav"
+    to_master = src_path
+    try:
+        import suno_aiclean
+        import soundfile as sf
+        conv_wav = workdir / "source_conv.wav"
+        rc = os.system(
+            f'ffmpeg -y -v error -i "{src_path}" -ar 44100 -ac 2 -c:a pcm_s24le "{conv_wav}"'
+        )
+        if rc == 0 and conv_wav.exists():
+            y, sr = sf.read(str(conv_wav), always_2d=True)
+            crep = suno_aiclean.cleanup_report(y.astype("float32"), sr)
+            print(f"  ai-cleanup: harsh {crep['harsh_ratio']}dB -> cut {crep['harsh_cut']}dB")
+            y = suno_aiclean.ai_cleanup(y.astype("float32"), sr, strength=1.0)
+            sf.write(str(clean_wav), y, sr, subtype="PCM_24")
+            if clean_wav.exists():
+                to_master = clean_wav
+    except Exception as e:
+        print(f"  ai-cleanup skipped ({e})")
+
+    # Process (master the cleaned source)
     master_wav = workdir / "master.wav"
     result = suno_mixer.process_track(
-        str(src_path), str(master_wav), preset,
+        str(to_master), str(master_wav), preset,
         log_cb=lambda m: print(f"  {m}"),
         skip_dedup=True,
     )
