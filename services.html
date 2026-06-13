@@ -227,139 +227,58 @@
 
     <!-- Studio Mix & Master -->
     <section class="section" id="mastering" style="padding-top:1.5rem;scroll-margin-top:90px">
-        <div class="container">
+        <div class="container" style="max-width:780px">
 
-            <div class="section-head">
+            <div class="section-head" style="margin-bottom:2.6rem">
                 <span class="tag reveal">Studio Mix &amp; Master</span>
-                <h2 class="reveal">Make your track <span class="gradient-text">release-ready</span></h2>
-                <p class="reveal" style="font-size:1rem;color:var(--text-60);max-width:600px;margin:0.6rem auto 0;line-height:1.6">A full mix and master in one pass. Frequency balance, stereo image, dynamic shaping, streaming loudness and a clean fade. Upload your track, pick the genre, get the finished 24-bit WAV back within minutes.</p>
-                <p class="reveal" style="font-size:.92rem;color:var(--text-60);max-width:580px;margin:0.9rem auto 0;line-height:1.6">Made your track in <strong style="color:var(--text)">Suno, Udio or another AI tool?</strong> This is built for that. It cleans up the digital artefacts AI generators leave behind and adds natural movement and warmth, so your track sounds finished by a human, not generated.</p>
+                <h2 class="reveal" style="font-size:clamp(2.1rem,5.5vw,3.1rem);font-weight:900;letter-spacing:-.035em;line-height:1.04">Your track,<br><span class="gradient-text">release-ready.</span></h2>
+                <p class="reveal" style="font-size:1.05rem;color:var(--text-60);max-width:480px;margin:1.1rem auto 0;line-height:1.6">Upload it, hear it mixed and mastered next to your original, and download the lossless master. Built for AI tracks from Suno and Udio too.</p>
             </div>
 
-            <!-- Before / After showcase -->
-            <div class="mastering-compare reveal" style="display:grid;grid-template-columns:1fr auto 1fr;gap:1.1rem;align-items:stretch;margin-bottom:2.4rem;max-width:920px;margin-left:auto;margin-right:auto">
-
-                <div class="card" style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(244,63,94,.06),rgba(244,63,94,.02)),var(--glass);border:1px solid rgba(244,63,94,.30)">
-                    <div style="font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(244,63,94,.95);font-weight:700;margin-bottom:.9rem">Before</div>
-                    <div style="display:flex;flex-direction:column;gap:.55rem">
-                        <div style="display:flex;justify-content:space-between;align-items:baseline">
-                            <span style="font-size:.78rem;color:var(--text-60)">Loudness</span>
-                            <span style="font-family:var(--mono,monospace);font-weight:700;color:var(--text)">-16 LUFS</span>
+            <!-- Before / After, one calm glass card -->
+            <div class="reveal" style="max-width:500px;margin:0 auto 2.2rem">
+                <div class="card" style="padding:1.7rem 2rem;background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(30px) saturate(160%);-webkit-backdrop-filter:blur(30px) saturate(160%);box-shadow:0 18px 55px var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,.4)">
+                    <div style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1.2rem">
+                        <div>
+                            <div style="font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-50);font-weight:700;margin-bottom:.45rem">Your upload</div>
+                            <div style="font-family:monospace;font-size:1.5rem;font-weight:700;color:var(--text-60);letter-spacing:-.02em">-16 LUFS</div>
+                            <div style="font-size:.74rem;color:rgba(244,63,94,.9);margin-top:.25rem">quiet, no headroom</div>
                         </div>
-                        <div style="display:flex;justify-content:space-between;align-items:baseline">
-                            <span style="font-size:.78rem;color:var(--text-60)">True peak</span>
-                            <span style="font-family:var(--mono,monospace);font-weight:700;color:var(--text)">-0.2 dBFS</span>
-                        </div>
-                        <div style="display:flex;justify-content:space-between;align-items:baseline">
-                            <span style="font-size:.78rem;color:var(--text-60)">Headroom</span>
-                            <span style="font-family:var(--mono,monospace);font-weight:700;color:rgba(244,63,94,.95)">Critical</span>
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="url(#gba)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><defs><linearGradient id="gba" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                        <div>
+                            <div style="font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-50);font-weight:700;margin-bottom:.45rem">Mastered</div>
+                            <div style="font-family:monospace;font-size:1.5rem;font-weight:800;color:var(--text);letter-spacing:-.02em">-10 LUFS</div>
+                            <div style="font-size:.74rem;color:rgba(16,185,129,.95);margin-top:.25rem">loud, safe peaks</div>
                         </div>
                     </div>
-                    <div style="font-size:.72rem;color:var(--text-50);margin-top:1rem;line-height:1.5">Sounds quiet next to other Spotify tracks. Risk of inter-sample clipping on lossy codecs.</div>
                 </div>
-
-                <div style="display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:var(--text-50)" aria-hidden="true">&rarr;</div>
-
-                <div class="card" style="padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(16,185,129,.02)),var(--glass);border:1px solid rgba(16,185,129,.40)">
-                    <div style="font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(16,185,129,.95);font-weight:700;margin-bottom:.9rem">After</div>
-                    <div style="display:flex;flex-direction:column;gap:.55rem">
-                        <div style="display:flex;justify-content:space-between;align-items:baseline">
-                            <span style="font-size:.78rem;color:var(--text-60)">Loudness</span>
-                            <span style="font-family:var(--mono,monospace);font-weight:700;color:var(--text)">-10 LUFS</span>
-                        </div>
-                        <div style="display:flex;justify-content:space-between;align-items:baseline">
-                            <span style="font-size:.78rem;color:var(--text-60)">True peak</span>
-                            <span style="font-family:var(--mono,monospace);font-weight:700;color:var(--text)">-1.5 dBTP</span>
-                        </div>
-                        <div style="display:flex;justify-content:space-between;align-items:baseline">
-                            <span style="font-size:.78rem;color:var(--text-60)">Headroom</span>
-                            <span style="font-family:var(--mono,monospace);font-weight:700;color:rgba(16,185,129,.95)">Safe</span>
-                        </div>
-                    </div>
-                    <div style="font-size:.72rem;color:var(--text-50);margin-top:1rem;line-height:1.5">Matches Spotify, Apple Music and Tidal loudness targets. Zero clipping after lossy encoding.</div>
-                </div>
-
             </div>
 
-            <!-- Open studio CTA -->
-            <div class="reveal" style="text-align:center;max-width:560px;margin:0 auto">
-                <a href="/studio" class="btn btn-color" style="font-size:1.05rem;padding:1.1rem 2.6rem">Open the studio &rarr;</a>
-                <p style="font-size:.82rem;color:var(--text-60);margin-top:1rem;line-height:1.6">Upload your track, hear the mastered result instantly, A/B it against your original. Listening is free. Download the lossless 24-bit WAV from &euro;7.</p>
+            <!-- CTA -->
+            <div class="reveal" style="text-align:center;margin-bottom:3rem">
+                <a href="/studio" class="btn btn-color" style="font-size:1.05rem;padding:1.05rem 2.7rem">Open the studio &rarr;</a>
+                <p style="font-size:.8rem;color:var(--text-50);margin-top:.9rem">Free to try. Lossless 24-bit WAV from &euro;7.</p>
             </div>
 
-            <!-- What's inside the master -->
-            <div class="mastering-features reveal" style="margin-top:2.4rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.7rem;max-width:980px;margin-left:auto;margin-right:auto">
+            <!-- Three calm highlights -->
+            <div class="reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.9rem;max-width:720px;margin:0 auto">
 
-                <div class="card" style="padding:1.1rem 1.2rem;background:linear-gradient(135deg,rgba(167,139,250,.10),rgba(59,130,246,.05)),var(--glass);border:1px solid rgba(167,139,250,.40);grid-column:1 / -1">
-                    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#gai)" stroke-width="1.8"><defs><linearGradient id="gai" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><path d="M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15l-1.9-4.1L5.5 9l4.6-1.4L12 3z"/><circle cx="18" cy="17" r="1.6"/><circle cx="6" cy="16" r="1.2"/></svg>
-                        <strong style="font-size:.92rem;color:var(--text)">Built for AI music</strong>
-                    </div>
-                    <div style="font-size:.82rem;color:var(--text-60);line-height:1.55">Tracks from <strong style="color:var(--text)">Suno, Udio and other AI tools</strong> get cleaned of the digital artefacts that give them away, and gain natural movement, warmth and stereo life. The result sounds finished by a human in a real studio, ready to sit next to commercial releases.</div>
+                <div class="card" style="padding:1.4rem 1.3rem;text-align:center;background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#gh1)" stroke-width="1.7" stroke-linecap="round" style="margin-bottom:.6rem"><defs><linearGradient id="gh1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><path d="M3 12h3M8 8v8M12 5v14M16 8v8M21 12h-3"/></svg>
+                    <div style="font-weight:800;font-size:.95rem;margin-bottom:.3rem">Built for AI music</div>
+                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">Cleans the digital artefacts from Suno and Udio tracks and adds a human, finished feel.</div>
                 </div>
 
-                <div class="card" style="padding:1.1rem 1.2rem;background:var(--glass);border:1px solid var(--glass-border)">
-                    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g1)" stroke-width="1.8"><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><path d="M3 12h2l3-9 4 18 3-9h6"/></svg>
-                        <strong style="font-size:.92rem;color:var(--text)">DSP loudness</strong>
-                    </div>
-                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">-14 LUFS Spotify, -16 LUFS Apple, -14 LUFS YouTube. Per-genre targets so dance tracks land at -8 / -10 LUFS like the commercial mix.</div>
+                <div class="card" style="padding:1.4rem 1.3rem;text-align:center;background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#gh2)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:.6rem"><defs><linearGradient id="gh2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
+                    <div style="font-weight:800;font-size:.95rem;margin-bottom:.3rem">Streaming ready</div>
+                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">Loudness and true-peak tuned per genre for Spotify, Apple Music and beyond.</div>
                 </div>
 
-                <div class="card" style="padding:1.1rem 1.2rem;background:var(--glass);border:1px solid var(--glass-border)">
-                    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g2)" stroke-width="1.8"><defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><path d="M12 2v20M4 12h16M5 5l14 14M19 5L5 19"/></svg>
-                        <strong style="font-size:.92rem;color:var(--text)">True-peak limiter</strong>
-                    </div>
-                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">Inter-sample peak protection so the lossy codec on Spotify / Apple Music doesn't introduce clipping on playback.</div>
-                </div>
-
-                <div class="card" style="padding:1.1rem 1.2rem;background:var(--glass);border:1px solid var(--glass-border)">
-                    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g3)" stroke-width="1.8"><defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-                        <strong style="font-size:.92rem;color:var(--text)">Genre-tuned mastering</strong>
-                    </div>
-                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">12 presets: UK Garage, Ibiza House, EDM, Hardstyle, Solo Piano, Lo-fi, Ambient and more. Each tuned to that genre's commercial mix.</div>
-                </div>
-
-                <div class="card" style="padding:1.1rem 1.2rem;background:var(--glass);border:1px solid var(--glass-border)">
-                    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g4)" stroke-width="1.8"><defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><circle cx="12" cy="12" r="3"/><path d="M2 12h7M15 12h7M12 2v7M12 15v7"/></svg>
-                        <strong style="font-size:.92rem;color:var(--text)">Stereo balance</strong>
-                    </div>
-                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">Mid/side processing tightens mono bass below 120 Hz and widens stereo above. Mix sits centred and wide on every system, from earbuds to club rigs.</div>
-                </div>
-
-                <div class="card" style="padding:1.1rem 1.2rem;background:var(--glass);border:1px solid var(--glass-border)">
-                    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g5)" stroke-width="1.8"><defs><linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><path d="M3 12h2l2-7 3 14 3-11 3 9 2-5h3"/></svg>
-                        <strong style="font-size:.92rem;color:var(--text)">Frequency balance</strong>
-                    </div>
-                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">Mud cleared at 200 to 500 Hz, low-end warmth at 80 to 200 Hz, presence at 3 to 5 kHz. Matched to your genre's commercial reference targets.</div>
-                </div>
-
-                <div class="card" style="padding:1.1rem 1.2rem;background:var(--glass);border:1px solid var(--glass-border)">
-                    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g6)" stroke-width="1.8"><defs><linearGradient id="g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                        <strong style="font-size:.92rem;color:var(--text)">Smooth fade-out</strong>
-                    </div>
-                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">Clean linear fade and silent tail at the end. No fade-out clicks, no leaked harmonics, no runoff energy in the last second.</div>
-                </div>
-
-                <div class="card" style="padding:1.1rem 1.2rem;background:var(--glass);border:1px solid var(--glass-border)">
-                    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g7)" stroke-width="1.8"><defs><linearGradient id="g7" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><path d="M4 4h16v16H4z"/><path d="M9 9h6v6H9z"/></svg>
-                        <strong style="font-size:.92rem;color:var(--text)">Clean metadata</strong>
-                    </div>
-                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">Title, genre, year and label fields filled cleanly. No leftover source metadata in the WAV that could trip up DSP intake or distributors.</div>
-                </div>
-
-                <div class="card" style="padding:1.1rem 1.2rem;background:var(--glass);border:1px solid var(--glass-border)">
-                    <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.45rem">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="url(#g8)" stroke-width="1.8"><defs><linearGradient id="g8" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                        <strong style="font-size:.92rem;color:var(--text)">5 minute turnaround</strong>
-                    </div>
-                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">Upload, pay, listen. The finished WAV, MP3 preview and before/after analysis report land in your inbox within five minutes.</div>
+                <div class="card" style="padding:1.4rem 1.3rem;text-align:center;background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%)">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="url(#gh3)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:.6rem"><defs><linearGradient id="gh3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    <div style="font-weight:800;font-size:.95rem;margin-bottom:.3rem">Lossless master</div>
+                    <div style="font-size:.8rem;color:var(--text-60);line-height:1.5">A clean 24-bit WAV with a smooth fade, ready for any distributor.</div>
                 </div>
 
             </div>
