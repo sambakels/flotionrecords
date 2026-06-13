@@ -390,11 +390,23 @@
             return {src:Math.pow(10,d/20), mst:1};
         }
         let side='B';
+        const XFADE = 0.05; // 50 ms, feels instant but click-free
+        // Click-free gain move: anchor the CURRENT automated value first, then
+        // ramp. Without cancelAndHold, a fast second switch starts its ramp
+        // from the previous ramp's *scheduled end* value, not where the gain
+        // actually is, and that jump is the click/pop you hear.
+        function rampTo(param, target){
+            const t = ac.currentTime;
+            param.cancelScheduledValues(t);
+            if (param.cancelAndHoldAtTime) param.cancelAndHoldAtTime(t);
+            else param.setValueAtTime(param.value, t);
+            param.linearRampToValueAtTime(target, t + XFADE);
+        }
         function setSide(s){
             side=s; initAC();
-            const g=gains(); const t=ac.currentTime+0.02;
-            if(s==='A'){ srcGain.gain.linearRampToValueAtTime(g.src,t); mstGain.gain.linearRampToValueAtTime(0,t); }
-            else { srcGain.gain.linearRampToValueAtTime(0,t); mstGain.gain.linearRampToValueAtTime(g.mst,t); }
+            const g=gains();
+            if(s==='A'){ rampTo(srcGain.gain, g.src); rampTo(mstGain.gain, 0); }
+            else { rampTo(srcGain.gain, 0); rampTo(mstGain.gain, g.mst); }
             chA.classList.toggle('active', s==='A'); chB.classList.toggle('active', s==='B');
         }
         matchEl.addEventListener('change', ()=>setSide(side));
