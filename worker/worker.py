@@ -5,10 +5,18 @@ Cloudflare Worker for pending mastering jobs, downloads the source from
 R2 (via the Cloudflare Worker proxy), runs the mastering pipeline, and
 uploads the MP3 preview + 24-bit WAV master back.
 
-The mastering pipeline is the one in lofi-studio (suno_mixer + the
-multi-pass loop + smooth-gain limiter + final fade-out). The
-anti-detection obscure chain is DISABLED here — that lives only in
-personal renders, never in customer output.
+The mastering pipeline is the one in lofi-studio (adaptive AI-artefact
+cleanup -> multi-pass master -> smooth-gain limiter -> final fade-out).
+
+CUSTOMER-SAFE configuration (see _configure_customer_safe_pipeline below):
+the full anti-detection obscure chain (pitch shift, time warp, resample
+roundtrip, HF noise, phase decorrelation) is NOT applied to customer
+masters. Every one of those stages can add faint grain / shimmer / hiss,
+and the A/B player would expose it. Customer finishing keeps only the
+single genuinely inaudible watermark step: an ultrasonic notch above
+19 kHz. Metadata watermarks are stripped at decode time regardless.
+The personal lofi pipeline (separate Flask app) still runs the full
+obscure stack on our own releases; only this worker is reconfigured.
 
 Environment variables (set in ~/.flotion-worker.env or systemd unit):
     FLOTION_API_URL          e.g. https://flotionrecords.com
@@ -43,11 +51,83 @@ if not LOFI.exists():
 
 sys.path.insert(0, str(LOFI))
 
-# Import the mastering pipeline. Customer masters run the FULL lofi-studio
-# pipeline, including the inaudible finishing chain (humanising / AI-artefact
-# cleanup). No stages are disabled — this is exactly what lofi-studio does.
+# Import the mastering pipeline, then reconfigure it for customer-safe output.
 import suno_mixer
-import suno_multipass  # noqa: F401  (kept for measure() + parity with studio)
+import suno_multipass  # used for measure() + finishing-chain override
+
+
+def _customer_safe_finishing(processed, sr, params, preset_key):
+    """Customer finishing chain: ONLY the inaudible ultrasonic watermark notch.
+
+    The personal lofi pipeline runs the full suno_obscure.obscure() stack to
+    evade AI detectors on our OWN releases. None of that belongs on a track a
+    customer PAID us to master: pitch shift, time warp, resample roundtrip, HF
+    noise floor and phase decorrelation each can add faint grain / shimmer /
+    hiss, and the A/B player would expose it, killing the sale. We keep the one
+    operation that is genuinely inaudible to adults yet still removes a real
+    watermark vector: a zero-phase bandstop in 19-22 kHz. Metadata watermarks
+    are already stripped at decode time and the 24-bit writer stamps a clean
+    INFO chunk, so the master is watermark-clean without touching anything the
+    customer can hear.
+    """
+    try:
+        import suno_obscure
+        return suno_obscure.ultrasonic_notch(processed, sr, low=19000, high=22000)
+    except Exception:
+        return processed
+
+
+def _configure_customer_safe_pipeline():
+    """Monkey-patch the shared lofi modules so the customer path is clean.
+
+    This worker is a SEPARATE process from the personal lofi-studio Flask app,
+    so these patches never affect our own releases. They make four changes:
+
+      1. Finishing chain -> inaudible watermark notch only (no obscure artefacts)
+      2. Quality gate    -> never HARD-reject a paying customer's upload
+      3. Catalog         -> do not write customer tracks into our lofi catalog
+      4. Baseline        -> never train our learned presets on customer audio
+    """
+    import suno_gate
+    import suno_catalog
+    import suno_baseline
+
+    # 1. Inaudible finishing only.
+    suno_multipass._apply_finishing_chain = _customer_safe_finishing
+
+    # 2. Lenient gate. Keep the measured metrics (they seed good starting
+    #    params via baseline.resolve) but force pass=True so every upload gets
+    #    mastered, even quiet / short / unusually bright ones. A customer who
+    #    paid should always get a master back, not a hard "rejected".
+    _orig_evaluate = suno_gate.evaluate
+
+    def _lenient_gate(path, preset_key):
+        try:
+            res = dict(_orig_evaluate(path, preset_key))
+        except Exception:
+            return {"pass": True, "reason": "", "metrics": {}}
+        if not res.get("pass"):
+            res["pass"] = True
+            res["reason"] = ""
+        return res
+
+    suno_gate.evaluate = _lenient_gate
+
+    # 3. No catalog pollution. Return a valid-shaped throwaway assignment so
+    #    master_track keeps working, but write nothing to the personal catalog.
+    def _no_catalog(genre, source_name, master_path, preview_path, score_value):
+        return {
+            "catalog_id": "CUSTOMER", "album_id": "", "album_label": "Customer",
+            "album_volume": 0, "slot_index": 0, "album_full": False, "target_size": 1,
+        }
+
+    suno_catalog.assign = _no_catalog
+
+    # 4. No baseline learning from customer tracks.
+    suno_baseline.update = lambda *a, **k: None
+
+
+_configure_customer_safe_pipeline()
 
 
 HEADERS = {"Authorization": f"Bearer {SECRET}"}
