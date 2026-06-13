@@ -735,7 +735,11 @@ async function studioBuy(request, env) {
         product_name: productName,
         metadata,
         success_url: `${env.SITE_URL}/studio?paid=${jobId}`,
-        cancel_url: `${env.SITE_URL}/studio?paid=${jobId}`,
+        // Cancel returns to the studio without the ?paid flag, so the page
+        // restores the (still locked) result from localStorage instead of
+        // running the post-payment unlock polling for a purchase that did
+        // not happen.
+        cancel_url: `${env.SITE_URL}/studio`,
     });
     return withCookie(jsonOk({ url: checkoutUrl }), setCookie);
 }
@@ -759,8 +763,14 @@ async function studioRedeem(request, env) {
     if (row.used) return withCookie(jsonError('That code has already been used.', 409), setCookie);
 
     const now = new Date().toISOString();
-    await env.DB.prepare('UPDATE codes SET used = 1, used_job_id = ?, used_at = ? WHERE code = ?')
+    // Atomic claim: the WHERE used = 0 guard makes this safe against two
+    // concurrent redeems racing past the check above. Only the first one
+    // changes a row; the loser sees 0 changes and gets the "already used".
+    const claim = await env.DB.prepare('UPDATE codes SET used = 1, used_job_id = ?, used_at = ? WHERE code = ? AND used = 0')
         .bind(jobId, now, code).run();
+    if (!claim.meta || claim.meta.changes < 1) {
+        return withCookie(jsonError('That code has already been used.', 409), setCookie);
+    }
     await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(jobId).run();
     return withCookie(jsonOk({ unlocked: true }), setCookie);
 }
