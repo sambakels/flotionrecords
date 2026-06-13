@@ -174,13 +174,16 @@
             </div>
 
             <!-- Single -->
-            <button id="buySingle" class="card" style="width:100%;text-align:left;padding:1.1rem 1.2rem;margin-bottom:.7rem;cursor:pointer;border:2px solid #a78bfa;display:flex;justify-content:space-between;align-items:center;gap:1rem">
+            <div class="card" style="padding:1.1rem 1.2rem;margin-bottom:.7rem;border:2px solid #a78bfa;display:flex;justify-content:space-between;align-items:center;gap:1rem">
                 <div>
                     <div style="font-weight:800;font-size:1rem">This track</div>
                     <div style="font-size:.8rem;color:var(--text-60)">Download this one as 24-bit WAV</div>
                 </div>
-                <div style="font-weight:800;font-size:1.3rem;flex-shrink:0">&euro;7</div>
-            </button>
+                <div style="display:flex;align-items:center;gap:.8rem;flex-shrink:0">
+                    <span style="font-weight:800;font-size:1.3rem">&euro;7</span>
+                    <button id="buySingle" class="btn btn-color" style="padding:.6rem 1.4rem;font-size:.9rem">Buy</button>
+                </div>
+            </div>
 
             <!-- Bundle with quantity -->
             <div class="card" style="padding:1.1rem 1.2rem;margin-bottom:.9rem;border:1px solid var(--glass-border)">
