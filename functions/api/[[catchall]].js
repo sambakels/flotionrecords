@@ -750,6 +750,18 @@ async function studioRedeem(request, env) {
     const code = String(data.code || '').trim().toUpperCase().replace(/\s+/g, '');
     const jobId = String(data.job_id || '');
 
+    // Permanent master key (testing / owner). Set STUDIO_MASTER_CODE in the
+    // Cloudflare environment. It unlocks any of YOUR OWN finished jobs and is
+    // never consumed, so it works forever. Kept secret in env, not in the DB.
+    const masterCode = String(env.STUDIO_MASTER_CODE || '').trim().toUpperCase();
+    if (masterCode && code === masterCode) {
+        const j = await env.DB.prepare('SELECT id, user_id, status FROM jobs WHERE id = ?').bind(jobId).first();
+        if (!j || j.user_id !== anon) return withCookie(jsonError('Track not found', 404), setCookie);
+        if (j.status !== 'done') return withCookie(jsonError('Track not ready', 409), setCookie);
+        await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(jobId).run();
+        return withCookie(jsonOk({ unlocked: true }), setCookie);
+    }
+
     if (!/^FLO-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code)) {
         return withCookie(jsonError('That code does not look right.', 400), setCookie);
     }
