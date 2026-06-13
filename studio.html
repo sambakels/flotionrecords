@@ -489,11 +489,18 @@
 
     document.getElementById('againBtn').addEventListener('click', ()=>location.href='/studio');
 
-    // returning from successful checkout: ?paid=JOBID
-    (function(){
-        const p=new URLSearchParams(location.search);
-        const paid=p.get('paid');
-        if(paid){ fetch('/api/studio/jobs/'+paid).then(r=>r.ok?r.json():null).then(job=>{ if(job&&job.status==='done') renderResult(job); }); }
+    // returning from successful checkout: ?paid=JOBID. The Stripe webhook
+    // that unlocks the WAV can land a moment after the redirect, so poll a
+    // few times until wav_unlocked flips (or give up gracefully).
+    (async function(){
+        const paid=new URLSearchParams(location.search).get('paid');
+        if(!paid) return;
+        let job=null;
+        for(let i=0;i<6;i++){
+            try{ const r=await fetch('/api/studio/jobs/'+paid); if(r.ok){ job=await r.json(); } }catch(e){}
+            if(job&&job.status==='done'){ renderResult(job); if(job.wav_unlocked) break; }
+            await new Promise(r=>setTimeout(r,2500));
+        }
     })();
     </script>
 </body>
