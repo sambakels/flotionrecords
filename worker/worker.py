@@ -43,18 +43,11 @@ if not LOFI.exists():
 
 sys.path.insert(0, str(LOFI))
 
-# Import the mastering pipeline.
-# We force obscure off by patching the finishing chain to a no-op before
-# any track is processed.
+# Import the mastering pipeline. Customer masters run the FULL lofi-studio
+# pipeline, including the inaudible finishing chain (humanising / AI-artefact
+# cleanup). No stages are disabled — this is exactly what lofi-studio does.
 import suno_mixer
-import suno_multipass
-
-# Replace the finishing chain (which runs the obscure 12-layer anti-
-# detection stack) with a pass-through. Customer masters NEVER receive
-# anti-detection processing.
-def _noop_finishing(processed, sr, params, preset_key):
-    return processed
-suno_multipass._apply_finishing_chain = _noop_finishing
+import suno_multipass  # noqa: F401  (kept for measure() + parity with studio)
 
 
 HEADERS = {"Authorization": f"Bearer {SECRET}"}
