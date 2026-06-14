@@ -1420,15 +1420,16 @@ html.dark .theme-toggle .icon-moon { display: block; }
 .order-card ::placeholder { color: var(--text-30); }
 
 /* Package selector */
-.package-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+.package-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
 
-.package-option { cursor: pointer; }
+.package-option { cursor: pointer; display: flex; }
 .package-option input { display: none; }
 
 .package-card {
-    padding: 1.2rem 1rem;
-    border-radius: 16px;
-    border: 2px solid var(--glass-border);
+    flex: 1;
+    padding: 1.5rem 1.1rem 1.3rem;
+    border-radius: 18px;
+    border: 1.5px solid var(--glass-border);
     background: var(--glass);
     backdrop-filter: var(--glass-filter-sm);
     -webkit-backdrop-filter: var(--glass-filter-sm);
@@ -1449,7 +1450,13 @@ html.dark .theme-toggle .icon-moon { display: block; }
         0 4px 14px rgba(0,0,0,0.06);
 }
 
-/* Selected — clear purple border + tinted glass body + glow halo so
+/* Recommended tier (the one with the Best Value tag) reads as special by default */
+.package-option:has(.package-tag) .package-card {
+    border-color: rgba(139,92,246,0.40);
+    background: linear-gradient(135deg, rgba(139,92,246,0.07), rgba(59,130,246,0.03)), var(--glass);
+}
+
+/* Selected - clear purple border + tinted glass body + glow halo so
    there is zero doubt which tier is active */
 .package-option input:checked + .package-card {
     border-color: #8b5cf6;
@@ -1466,17 +1473,29 @@ html.dark .theme-toggle .icon-moon { display: block; }
 .package-option input:checked + .package-card .package-name {
     color: #8b5cf6;
 }
+.package-option input:checked + .package-card::after {
+    content: "";
+    position: absolute;
+    top: 10px; right: 10px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 12px no-repeat,
+        var(--gradient);
+    box-shadow: 0 3px 8px rgba(139,92,246,0.40);
+}
 
-.package-name { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-30); }
+.package-name { font-size: 0.72rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-30); }
 
 .package-price {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 900;
+    line-height: 1;
     background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin: 0.3rem 0;
+    margin: 0.4rem 0 0.15rem;
 }
 
 .package-desc { font-size: 0.72rem; color: var(--text-30); line-height: 1.4; }
@@ -1492,9 +1511,10 @@ html.dark .theme-toggle .icon-moon { display: block; }
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
-    padding: 0.2rem 0.6rem;
+    padding: 0.25rem 0.7rem;
     border-radius: 100px;
     white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(139,92,246,0.35);
 }
 
 /* Track type toggle */
