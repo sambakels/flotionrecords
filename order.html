@@ -451,7 +451,7 @@
         payBtn.textContent = 'Submitting...';
 
         // Stash order data server-side. The Stripe webhook will read it
-        // back and notify us — but only AFTER Stripe confirms payment.
+        // back and notify us, but only AFTER Stripe confirms payment.
         const stashed = await stashOrder(submission);
         if (!stashed) {
             alert('Could not start your order. Please try again, or email ' + submissionEmail + ' directly.');
