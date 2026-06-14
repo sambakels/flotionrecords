@@ -786,24 +786,25 @@ html.dark .theme-toggle .icon-moon { display: block; }
 }
 
 /* ---- SERVICES ---- */
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; }
-.svc { padding: 2rem 1.5rem; }
-.svc h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
-.svc p { font-size: 0.82rem; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.svc { padding: 2.3rem 1.4rem; text-align: center; transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease); }
+.svc:hover { transform: translateY(-5px); box-shadow: 0 18px 44px var(--glass-shadow); }
+.svc h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+.svc p { font-size: 0.84rem; line-height: 1.55; }
 
 .svc-icon {
-    width: 48px; height: 48px; border-radius: 14px;
+    width: 60px; height: 60px; border-radius: 18px;
     display: flex; align-items: center; justify-content: center;
-    margin-bottom: 1.2rem;
-    backdrop-filter: var(--glass-filter-sm);
-    -webkit-backdrop-filter: var(--glass-filter-sm);
-    border: 1px solid rgba(255,255,255,0.5);
+    margin: 0 auto 1.3rem;
+    color: #fff;
+    border: none;
 }
+.svc-icon svg { width: 28px; height: 28px; }
 
-.icon-blue { background: rgba(41,151,255,0.12); color: var(--blue); }
-.icon-green { background: rgba(48,209,88,0.12); color: var(--green); }
-.icon-pink { background: rgba(255,55,95,0.12); color: var(--pink); }
-.icon-orange { background: rgba(255,159,10,0.12); color: var(--orange); }
+.icon-blue   { background: linear-gradient(135deg, #60a5fa, #2563eb); box-shadow: 0 10px 26px rgba(37,99,235,0.40), inset 0 1px 0 rgba(255,255,255,0.45); }
+.icon-green  { background: linear-gradient(135deg, #34d399, #059669); box-shadow: 0 10px 26px rgba(5,150,105,0.40), inset 0 1px 0 rgba(255,255,255,0.45); }
+.icon-pink   { background: linear-gradient(135deg, #f472b6, #db2777); box-shadow: 0 10px 26px rgba(219,39,119,0.40), inset 0 1px 0 rgba(255,255,255,0.45); }
+.icon-orange { background: linear-gradient(135deg, #fbbf24, #f59e0b); box-shadow: 0 10px 26px rgba(245,158,11,0.40), inset 0 1px 0 rgba(255,255,255,0.45); }
 
 /* ---- TRACKLIST ---- */
 .tracklist { max-width: 700px; margin: 0 auto; padding: 0.5rem; }
