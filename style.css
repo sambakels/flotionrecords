@@ -156,6 +156,22 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     pointer-events: none;
 }
 
+/* Fifth glow: a big soft wash through the centre so the middle is never white */
+.ambient::after {
+    content: "";
+    position: absolute;
+    width: 640px;
+    height: 640px;
+    border-radius: 50%;
+    top: 46%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #6366f1;
+    filter: blur(150px);
+    opacity: var(--blob-opacity);
+    pointer-events: none;
+}
+
 @keyframes blobFloat {
     0% { transform: translate(0, 0) scale(1); }
     33% { transform: translate(40px, -30px) scale(1.1); }
