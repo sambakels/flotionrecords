@@ -61,6 +61,7 @@ CREATE TABLE IF NOT EXISTS codes (
     used         INTEGER NOT NULL DEFAULT 0,
     used_job_id  TEXT,
     email        TEXT,
+    anon_id      TEXT,   -- buyer's anonymous id, so we can show codes on screen
     created_at   TEXT NOT NULL,
     used_at      TEXT
 );

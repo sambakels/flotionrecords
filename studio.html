@@ -171,6 +171,12 @@
                     <div id="dlMsg" style="font-size:.78rem;color:var(--text-50);text-align:center;margin-top:.55rem;min-height:1rem"></div>
                 </div>
 
+                <div id="codesPanel" class="card" style="display:none;margin-top:1rem;padding:1.2rem 1.4rem;text-align:left">
+                    <div style="font-weight:800;margin-bottom:.2rem">Your download codes</div>
+                    <div style="font-size:.8rem;color:var(--text-60);margin-bottom:.9rem">Each code unlocks one WAV on any track, and never expires. We also emailed them, but save these somewhere safe.</div>
+                    <div id="codesList"></div>
+                </div>
+
                 <button id="againBtn" class="btn btn-glass" style="width:100%;margin-top:.7rem">Mix &amp; master another track</button>
             </div>
 
@@ -348,6 +354,7 @@
             dl.style.display=''; picker.style.display='none';
             dl.onclick = () => openPay(job.id);
         }
+        loadMyCodes();
 
         if (player) player.destroy();
         player = createPlayer({
@@ -357,6 +364,31 @@
             masterLufs: job.report?.after_lufs,
         });
         show('result');
+    }
+
+    // Show the buyer's bundle codes on screen (works even if the email never
+    // arrived). Hidden when there are none.
+    async function loadMyCodes(){
+        try{
+            const r = await fetch('/api/studio/my-codes');
+            if(!r.ok) return;
+            const { codes } = await r.json();
+            const panel = document.getElementById('codesPanel'), list = document.getElementById('codesList');
+            if(!codes || !codes.length){ panel.style.display='none'; return; }
+            list.innerHTML = '';
+            codes.forEach(c=>{
+                const row = document.createElement('div');
+                row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:.6rem;padding:.55rem .7rem;border:1px solid var(--glass-border);border-radius:10px;margin-bottom:.45rem;background:var(--glass)'+(c.used?';opacity:.5':'');
+                row.innerHTML = '<span style="font-family:monospace;font-weight:700;letter-spacing:1px'+(c.used?';text-decoration:line-through':'')+'">'+c.code+'</span>'+
+                    (c.used ? '<span style="font-size:.7rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.08em">used</span>'
+                            : '<button type="button" class="btn btn-glass copyCode" data-code="'+c.code+'" style="padding:.35rem .8rem;font-size:.78rem">Copy</button>');
+                list.appendChild(row);
+            });
+            list.querySelectorAll('.copyCode').forEach(b=>b.addEventListener('click',()=>{
+                navigator.clipboard.writeText(b.dataset.code).then(()=>{ b.textContent='Copied'; setTimeout(()=>b.textContent='Copy',1200); }).catch(()=>{});
+            }));
+            panel.style.display='';
+        }catch(e){}
     }
 
     function renderMetrics(rep) {

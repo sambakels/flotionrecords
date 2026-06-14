@@ -65,6 +65,7 @@ export async function onRequest(context) {
         if (p.startsWith('/api/studio/download/') && method === 'GET') return studioDownload(request, env, p.split('/').pop(), url);
         if (p === '/api/studio/buy' && method === 'POST') return studioBuy(request, env);
         if (p === '/api/studio/redeem' && method === 'POST') return studioRedeem(request, env);
+        if (p === '/api/studio/my-codes' && method === 'GET') return studioMyCodes(request, env);
         if (p === '/api/studio/prepare-variant' && method === 'POST') return studioPrepareVariant(request, env);
 
         if (p === '/api/worker/poll' && method === 'POST') return workerPoll(request, env);
@@ -140,11 +141,13 @@ async function handleStripeWebhook(request, env) {
         const now = new Date().toISOString();
         const codes = [];
         for (let i = 0; i < qty; i++) codes.push(makeRedeemCode());
-        // Insert all codes
+        // Insert all codes, linked to the buyer (anon_id) so we can show them
+        // on screen even if the email never arrives.
+        await ensureCodesAnonColumn(env);
         for (const c of codes) {
             await env.DB.prepare(
-                'INSERT INTO codes (code, used, email, created_at) VALUES (?, 0, ?, ?)'
-            ).bind(c, email, now).run();
+                'INSERT INTO codes (code, used, email, anon_id, created_at) VALUES (?, 0, ?, ?, ?)'
+            ).bind(c, email, meta.anon_id || '', now).run();
         }
         // If they bought from a specific track, unlock it now using the
         // first code so they get instant gratification.
@@ -929,6 +932,28 @@ async function studioRedeem(request, env) {
     }
     await env.DB.prepare('UPDATE jobs SET wav_unlocked = 1 WHERE id = ?').bind(jobId).run();
     return withCookie(jsonOk({ unlocked: true }), setCookie);
+}
+
+// Idempotent migration: add the anon_id column to the codes table the first
+// time we need it. ALTER TABLE throws if the column already exists, which we
+// swallow, so this is safe to call on every bundle purchase / lookup.
+async function ensureCodesAnonColumn(env) {
+    try { await env.DB.prepare('ALTER TABLE codes ADD COLUMN anon_id TEXT').run(); } catch (e) { /* already exists */ }
+}
+
+// Return the buyer's bundle codes so we can show them on screen, regardless
+// of whether the email ever arrived.
+async function studioMyCodes(request, env) {
+    const { id: anon, setCookie } = anonIdentity(request);
+    await ensureCodesAnonColumn(env);
+    let codes = [];
+    try {
+        const rows = await env.DB.prepare(
+            'SELECT code, used FROM codes WHERE anon_id = ? ORDER BY created_at DESC, code ASC'
+        ).bind(anon).all();
+        codes = (rows.results || []).map(r => ({ code: r.code, used: !!r.used }));
+    } catch (e) {}
+    return withCookie(jsonOk({ codes }), setCookie);
 }
 
 // =============================================================================
