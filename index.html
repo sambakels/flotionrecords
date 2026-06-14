@@ -143,15 +143,38 @@
         </div>
     </div>
 
-    <!-- Studio Mix & Master CTA -->
-    <section class="section" id="studio-cta" style="padding-top:3rem;padding-bottom:1rem">
+    <style>.hub-card{transition:transform .25s var(--ease),box-shadow .25s var(--ease)}.hub-card:hover{transform:translateY(-5px);box-shadow:0 18px 50px var(--glass-shadow)}</style>
+    <!-- What we do - wayfinding hub -->
+    <section class="section" id="what-we-do" style="padding-top:3rem;padding-bottom:1rem">
         <div class="container">
-            <div class="reveal card" style="max-width:880px;margin:0 auto;padding:2.6rem 2rem;text-align:center;background:linear-gradient(135deg,rgba(168,85,247,.10),rgba(59,130,246,.06)),var(--glass);border:1px solid rgba(168,85,247,.35)">
-                <span class="tag">New, Flotion Studio</span>
-                <h2 style="font-size:clamp(1.9rem,5vw,2.8rem);font-weight:900;letter-spacing:-.03em;line-height:1.05;margin:.7rem 0 .4rem">Mix &amp; master your track<br><span class="gradient-text">in under a minute</span></h2>
-                <p style="font-size:1.02rem;color:var(--text-60);max-width:520px;margin:0 auto 1.4rem;line-height:1.6">Upload your track, hear it next to your original side by side, and download a release-ready WAV. Free to try, great for AI tracks from Suno and Udio. No account.</p>
-                <a href="/studio" class="btn btn-color" style="font-size:1.02rem;padding:1rem 2.4rem">Try the studio, free &rarr;</a>
-                <p style="font-size:.78rem;color:var(--text-50);margin-top:.8rem">Listen and compare free. Lossless WAV from &euro;7.</p>
+            <div class="section-head">
+                <span class="tag reveal">What we do</span>
+                <h2 class="reveal">One label, three ways <span class="gradient-text">in</span></h2>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.1rem;max-width:980px;margin:0 auto">
+
+                <a href="/order" class="card reveal hub-card" style="display:block;text-decoration:none;color:inherit;padding:1.8rem 1.6rem;background:linear-gradient(135deg,rgba(168,85,247,.09),rgba(59,130,246,.05)),var(--glass);border:1px solid rgba(168,85,247,.3)">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:.9rem"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                    <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:.4rem">Get on a playlist</h3>
+                    <p style="font-size:.9rem;color:var(--text-60);line-height:1.55;margin-bottom:1rem">Submit your track for honest curator review. Real playlists, real listeners. From &euro;3.</p>
+                    <span style="font-weight:700;font-size:.88rem;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Submit your track &rarr;</span>
+                </a>
+
+                <a href="/studio" class="card reveal hub-card" style="display:block;text-decoration:none;color:inherit;padding:1.8rem 1.6rem;background:linear-gradient(135deg,rgba(59,130,246,.10),rgba(168,85,247,.05)),var(--glass);border:1px solid rgba(59,130,246,.35);position:relative">
+                    <span class="tag" style="position:absolute;top:1rem;right:1rem;font-size:.6rem">New</span>
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:.9rem"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
+                    <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:.4rem">Mix &amp; master</h3>
+                    <p style="font-size:.9rem;color:var(--text-60);line-height:1.55;margin-bottom:1rem">Upload and hear your track mastered next to your original, free. Built for Suno and Udio tracks.</p>
+                    <span style="font-weight:700;font-size:.88rem;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Try the studio &rarr;</span>
+                </a>
+
+                <a href="/curators" class="card reveal hub-card" style="display:block;text-decoration:none;color:inherit;padding:1.8rem 1.6rem;background:linear-gradient(135deg,rgba(34,197,94,.09),rgba(59,130,246,.05)),var(--glass);border:1px solid rgba(34,197,94,.3)">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:.9rem"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    <h3 style="font-size:1.15rem;font-weight:800;margin-bottom:.4rem">Curate &amp; earn</h3>
+                    <p style="font-size:.9rem;color:var(--text-60);line-height:1.55;margin-bottom:1rem">Run a playlist with real followers? Get paid for the streams you drive.</p>
+                    <span style="font-weight:700;font-size:.88rem;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Apply as curator &rarr;</span>
+                </a>
+
             </div>
         </div>
     </section>
@@ -230,20 +253,7 @@
             <div class="card card-lg reveal" style="background:linear-gradient(135deg,rgba(168,85,247,.08),rgba(59,130,246,.06)),var(--glass);border:1px solid rgba(168,85,247,.35);margin:2rem auto 0;max-width:920px;text-align:center">
                 <h3 style="font-size:1.55rem;font-weight:800;line-height:1.25;margin-bottom:0.7rem;letter-spacing:-0.01em">Want your track on a <span class="gradient-text">Flotion playlist?</span></h3>
                 <p class="lead" style="margin:0 auto 1.8rem;max-width:560px">Real playlists. Real listeners. Real follower counts. Submit your track and we'll tell you honestly if it fits.</p>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0.9rem;margin-bottom:2rem">
-                    <div style="padding:1.1rem 0.8rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:14px">
-                        <div style="font-size:1.35rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">24h-1 week</div>
-                        <div style="font-size:.68rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem;font-weight:600">Honest review window</div>
-                    </div>
-                    <div style="padding:1.1rem 0.8rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:14px">
-                        <div style="font-size:1.35rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Auto refund</div>
-                        <div style="font-size:.68rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem;font-weight:600">If we miss our window</div>
-                    </div>
-                    <div style="padding:1.1rem 0.8rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:14px">
-                        <div style="font-size:1.35rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Real</div>
-                        <div style="font-size:.68rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.1em;margin-top:.25rem;font-weight:600">Followers only</div>
-                    </div>
-                </div>
+                <p style="font-size:.85rem;color:var(--text-60);margin:0 auto 1.7rem;line-height:1.8;max-width:520px">Honest review within a week &middot; Auto refund if we miss it &middot; Real followers only, no bots</p>
                 <a href="/order" class="btn btn-color" style="padding:1.05rem 2.8rem;font-size:1rem">Submit your track</a>
                 <div style="margin-top:1rem;font-size:.78rem;color:var(--text-50);letter-spacing:.01em">No fees to submit &middot; No fake streams, no bot networks</div>
             </div>
@@ -300,20 +310,7 @@
             </div>
             <div class="card card-lg reveal" style="background:linear-gradient(135deg,rgba(34,197,94,.10),rgba(59,130,246,.06)),var(--glass);border:1px solid rgba(34,197,94,.35);margin:0 auto;max-width:920px;text-align:center">
                 <p class="lead" style="margin:0 auto 1.4rem;max-width:600px">If you curate a Spotify playlist with real followers, join our curator network. We send you genre-matched submissions. You decide what fits. Earnings are tied to the streams our submissions generate from your playlist, tracked via Spotify for Artists. Quality curators with engaged audiences earn more. No fees to apply.</p>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.6rem">
-                    <div style="padding:1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;text-align:center">
-                        <div style="font-size:1.4rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Performance</div>
-                        <div style="font-size:.7rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem;font-weight:600">Stream-based payouts</div>
-                    </div>
-                    <div style="padding:1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;text-align:center">
-                        <div style="font-size:1.4rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">SEPA</div>
-                        <div style="font-size:.7rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem;font-weight:600">Free EU payouts</div>
-                    </div>
-                    <div style="padding:1rem;background:var(--glass);border:1px solid var(--glass-border);border-radius:12px;text-align:center">
-                        <div style="font-size:1.4rem;font-weight:900;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">500+</div>
-                        <div style="font-size:.7rem;color:var(--text-50);text-transform:uppercase;letter-spacing:.08em;margin-top:.2rem;font-weight:600">Min. real followers</div>
-                    </div>
-                </div>
+                <p style="font-size:.85rem;color:var(--text-60);margin:0 auto 1.6rem;line-height:1.8;max-width:560px">Stream-based payouts &middot; Free SEPA payouts across the EU &middot; 500+ real followers to apply</p>
                 <a href="/curators" class="btn btn-color" style="padding:1.05rem 2.8rem;font-size:1rem">Apply as curator</a>
             </div>
         </div>
