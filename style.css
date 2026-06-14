@@ -2574,3 +2574,30 @@ html.dark .pill-badge {
 
     .section-head h2 { font-size: 1.4rem; }
 }
+
+/* Studio nav button — the one clear action in the nav */
+@media (min-width: 769px) {
+    .nav-links a.nav-studio-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.42rem 1.05rem;
+        border-radius: 100px;
+        background: var(--gradient);
+        color: #fff;
+        font-weight: 700;
+        box-shadow: 0 3px 14px rgba(109, 40, 217, 0.32);
+        transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    }
+    .nav-links a.nav-studio-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(109, 40, 217, 0.42);
+    }
+}
+.nav-studio-btn .nav-new-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0.9;
+}
