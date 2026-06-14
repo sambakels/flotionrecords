@@ -798,8 +798,22 @@ html.dark .theme-toggle .icon-moon { display: block; }
     margin: 0 auto 1.3rem;
     color: #fff;
     border: none;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
-.svc-icon svg { width: 28px; height: 28px; }
+.svc-icon::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(140deg, rgba(255,255,255,0.5), rgba(255,255,255,0) 58%);
+    pointer-events: none;
+}
+.svc-icon svg { width: 28px; height: 28px; position: relative; z-index: 1; }
+.svc:hover .svc-icon { transform: translateY(-3px) scale(1.07); }
+.svc:hover .icon-blue   { box-shadow: 0 16px 38px rgba(37,99,235,0.55),  inset 0 1px 0 rgba(255,255,255,0.45); }
+.svc:hover .icon-green  { box-shadow: 0 16px 38px rgba(5,150,105,0.55),  inset 0 1px 0 rgba(255,255,255,0.45); }
+.svc:hover .icon-pink   { box-shadow: 0 16px 38px rgba(219,39,119,0.55), inset 0 1px 0 rgba(255,255,255,0.45); }
+.svc:hover .icon-orange { box-shadow: 0 16px 38px rgba(245,158,11,0.55), inset 0 1px 0 rgba(255,255,255,0.45); }
 
 .icon-blue   { background: linear-gradient(135deg, #60a5fa, #2563eb); box-shadow: 0 10px 26px rgba(37,99,235,0.40), inset 0 1px 0 rgba(255,255,255,0.45); }
 .icon-green  { background: linear-gradient(135deg, #34d399, #059669); box-shadow: 0 10px 26px rgba(5,150,105,0.40), inset 0 1px 0 rgba(255,255,255,0.45); }
