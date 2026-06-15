@@ -467,3 +467,14 @@ if (form) form.addEventListener('submit', e => {
         setTimeout(() => { b.textContent = o; }, 3000);
     });
 });
+
+// Spotify facade: load the real player only when the card is tapped, so the
+// homepage does not pull six embeds on load.
+document.querySelectorAll('.sp-embed').forEach(b => b.addEventListener('click', () => {
+    const f = document.createElement('iframe');
+    f.src = b.dataset.embed;
+    f.width = '100%'; f.height = '152'; f.loading = 'lazy';
+    f.style.border = '0'; f.style.borderRadius = '12px';
+    f.allow = 'autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture';
+    b.replaceWith(f);
+}));
