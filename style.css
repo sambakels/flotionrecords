@@ -172,32 +172,6 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     pointer-events: none;
 }
 
-/* Spotify "tap to play" facade - the real player iframe only loads on tap,
-   instead of six heavy embeds slowing the page on load. */
-.sp-embed {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 0.6rem;
-    height: 152px;
-    border-radius: 12px;
-    border: 1px solid var(--glass-border);
-    background: var(--glass);
-    backdrop-filter: var(--glass-filter-sm);
-    -webkit-backdrop-filter: var(--glass-filter-sm);
-    cursor: pointer;
-    color: var(--text-60);
-    font-family: var(--font);
-    font-size: 0.8rem; font-weight: 600;
-    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
-}
-.sp-embed:hover { transform: translateY(-2px); box-shadow: 0 8px 22px var(--glass-shadow); }
-.sp-embed-play {
-    width: 46px; height: 46px; border-radius: 50%;
-    background: #1ed760; color: #000;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 6px 16px rgba(30,215,96,0.4);
-    margin-left: 3px;
-}
-
 @keyframes blobFloat {
     0% { transform: translate(0, 0) scale(1); }
     33% { transform: translate(40px, -30px) scale(1.1); }
