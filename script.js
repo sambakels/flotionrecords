@@ -58,7 +58,7 @@ const themeToggle = document.getElementById('themeToggle');
 themeToggle.addEventListener('click', e => {
     e.stopPropagation();
     document.documentElement.classList.toggle('dark');
-    localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+    localStorage.setItem('flotionTheme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 });
 
 // Nav
