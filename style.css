@@ -1469,6 +1469,8 @@ html.dark .theme-toggle .icon-moon { display: block; }
 .package-option input { display: none; }
 
 .package-card {
+    --accent: #8b5cf6;
+    --accent-rgb: 139, 92, 246;
     flex: 1;
     padding: 1.5rem 1.1rem 1.3rem;
     border-radius: 18px;
@@ -1483,38 +1485,57 @@ html.dark .theme-toggle .icon-moon { display: block; }
         inset 0 1px 0 rgba(255,255,255,0.35),
         0 1px 4px rgba(0,0,0,0.04);
 }
+/* Per-tier accent identity (matches the services pricing): rose / violet / teal */
+.package-card.tier-standard { --accent: #f43f5e; --accent-rgb: 244, 63, 94; }
+.package-card.tier-express  { --accent: #8b5cf6; --accent-rgb: 139, 92, 246; }
+.package-card.tier-detailed { --accent: #14b8a6; --accent-rgb: 20, 184, 166; }
+
+/* Glowing per-tier accent bar across the top of each card */
+.package-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64%;
+    height: 3px;
+    border-radius: 0 0 4px 4px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.5);
+    opacity: 0.85;
+}
 
 /* Hover (unselected) — subtle lift so it's clear the card is clickable */
 .package-option:hover .package-card {
-    border-color: rgba(139,92,246,0.45);
+    border-color: rgba(var(--accent-rgb),0.5);
     transform: translateY(-2px);
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.5),
-        0 4px 14px rgba(0,0,0,0.06);
+        0 4px 14px rgba(var(--accent-rgb),0.10);
 }
 
 /* Recommended tier (the one with the Best Value tag) reads as special by default */
 .package-option:has(.package-tag) .package-card {
-    border-color: rgba(139,92,246,0.40);
-    background: linear-gradient(135deg, rgba(139,92,246,0.07), rgba(59,130,246,0.03)), var(--glass);
+    border-color: rgba(var(--accent-rgb),0.40);
+    background: linear-gradient(135deg, rgba(var(--accent-rgb),0.08), rgba(var(--accent-rgb),0.03)), var(--glass);
 }
 
-/* Selected - clear purple border + tinted glass body + glow halo so
+/* Selected - clear accent border + tinted glass body + glow halo so
    there is zero doubt which tier is active */
 .package-option input:checked + .package-card {
-    border-color: #8b5cf6;
+    border-color: var(--accent);
     background:
-        linear-gradient(135deg, rgba(139,92,246,0.16), rgba(59,130,246,0.10)),
+        linear-gradient(135deg, rgba(var(--accent-rgb),0.16), rgba(var(--accent-rgb),0.08)),
         var(--glass);
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.6),
-        inset 0 0 0 1px rgba(139,92,246,0.30),
-        0 0 0 4px rgba(139,92,246,0.12),
-        0 8px 22px rgba(139,92,246,0.20);
+        inset 0 0 0 1px rgba(var(--accent-rgb),0.30),
+        0 0 0 4px rgba(var(--accent-rgb),0.14),
+        0 10px 26px rgba(var(--accent-rgb),0.24);
 }
 .package-option input:checked + .package-card .package-name {
-    color: #8b5cf6;
+    color: var(--accent);
 }
 .package-option input:checked + .package-card::after {
     content: "";
@@ -1524,8 +1545,8 @@ html.dark .theme-toggle .icon-moon { display: block; }
     border-radius: 50%;
     background:
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 12px no-repeat,
-        var(--gradient);
-    box-shadow: 0 3px 8px rgba(139,92,246,0.40);
+        var(--accent);
+    box-shadow: 0 3px 8px rgba(var(--accent-rgb),0.40);
 }
 
 .package-name { font-size: 0.72rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--text-30); }
@@ -2744,7 +2765,7 @@ html.dark .pill-badge {
 }
 .package-feat li::before {
     content: "\2713";
-    color: var(--blue);
+    color: var(--accent);
     font-weight: 800;
     flex-shrink: 0;
 }
