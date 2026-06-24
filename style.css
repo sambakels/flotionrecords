@@ -42,6 +42,8 @@
     --blob-1: #7c3aed;
     --blob-2: #ec4899;
     --blob-3: #2563eb;
+    /* Fresh vivid hue for the two empty corners (top-left + bottom-right) */
+    --corner-glow: rgba(34, 211, 238, 0.50);
     /* Very transparent nav background so blob colour bleeds through and
        the pill inside the nav has actual colour to play with. */
     --nav-bg: rgba(255,255,255,0.18);
@@ -79,6 +81,7 @@ html.dark {
     --blob-1: #6366f1;
     --blob-2: #d946ef;
     --blob-3: #3b82f6;
+    --corner-glow: rgba(34, 211, 238, 0.16);
     --nav-bg: rgba(14,17,23,0.30);
     --track-hover: rgba(255,255,255,0.03);
     --track-active: rgba(41,151,255,0.1);
@@ -127,7 +130,14 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 }
 
 /* Ambient blobs */
-.ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.ambient {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    /* Two soft corner glows (top-left + bottom-right) in a fresh cyan, to
+       balance the purple/pink/blue blobs that sit in the other corners. */
+    background:
+        radial-gradient(640px 640px at top left,     var(--corner-glow), transparent 70%),
+        radial-gradient(640px 640px at bottom right,  var(--corner-glow), transparent 70%);
+}
 
 .blob {
     position: absolute;
@@ -2600,8 +2610,8 @@ html.dark .pill-badge {
        small screen and make light mode look dark and identical to dark mode.
        Pull them way back here: low opacity so the light base shows clearly,
        smaller + less blur so the GPU does far less work (faster scroll). */
-    :root { --blob-opacity: 0.30; }
-    html.dark { --blob-opacity: 0.14; }
+    :root { --blob-opacity: 0.30; --corner-glow: rgba(34,211,238,0.22); }
+    html.dark { --blob-opacity: 0.14; --corner-glow: rgba(34,211,238,0.10); }
     .blob { animation: none; filter: blur(60px); }
     .blob-1, .blob-2, .blob-3 { width: 300px; height: 300px; }
     .ambient::before { width: 280px; height: 280px; filter: blur(65px); top: 28%; }
