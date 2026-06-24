@@ -1962,48 +1962,82 @@ html.dark .theme-toggle .icon-moon { display: block; }
 }
 
 .pricing-card {
+    --accent: #8b5cf6;
+    --accent-rgb: 139, 92, 246;
     text-align: center;
     padding: 2.5rem 2rem;
     position: relative;
+    background:
+        linear-gradient(135deg, rgba(var(--accent-rgb), 0.08), rgba(var(--accent-rgb), 0.02)),
+        var(--glass);
+    border: 1px solid rgba(var(--accent-rgb), 0.30);
     transition: transform 0.25s var(--ease), border-color 0.25s, box-shadow 0.25s, background 0.25s;
+}
+/* Per-tier accent identity: a cool blue -> violet -> fuchsia progression that
+   tracks the price, so each tier reads as its own colour without rainbow spam. */
+.pricing-card.tier-standard { --accent: #3b82f6; --accent-rgb: 59, 130, 246; }
+.pricing-card.tier-express  { --accent: #8b5cf6; --accent-rgb: 139, 92, 246; }
+.pricing-card.tier-detailed { --accent: #d946ef; --accent-rgb: 217, 70, 239; }
+
+/* Glowing accent bar across the top of each tier. Uses ::after because
+   .card::before is already the glass sheen highlight. */
+.pricing-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 72%;
+    height: 3px;
+    border-radius: 0 0 5px 5px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.55);
+}
+
+.pricing-sub {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--text-50);
+    margin-bottom: 1rem;
 }
 
 /* Hover state for ALL pricing cards: purple border + lift + halo glow.
    Makes it obvious the cards are clickable and which one the cursor is
    over. Each card type can override with its own tint below. */
 .pricing-card:hover {
-    transform: translateY(-4px);
-    border-color: #8b5cf6;
+    transform: translateY(-6px);
+    border-color: var(--accent);
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.55),
-        0 0 0 3px rgba(139,92,246,0.10),
-        0 12px 32px rgba(139,92,246,0.18);
+        0 0 0 3px rgba(var(--accent-rgb),0.12),
+        0 16px 40px rgba(var(--accent-rgb),0.25);
     background:
-        linear-gradient(135deg, rgba(139,92,246,0.10), rgba(59,130,246,0.06)),
+        linear-gradient(135deg, rgba(var(--accent-rgb),0.14), rgba(var(--accent-rgb),0.05)),
         var(--glass);
 }
-.pricing-card:active { transform: translateY(-2px) scale(0.99); }
+.pricing-card:active { transform: translateY(-3px) scale(0.99); }
 
 /* Featured (Express) — always visibly purple so it reads as "this is
    the recommended pick", not just "a card with a tag on it". */
 .pricing-featured {
-    border: 2px solid rgba(139, 92, 246, 0.55);
+    border: 2px solid rgba(var(--accent-rgb), 0.6);
     background:
-        linear-gradient(135deg, rgba(139,92,246,0.12), rgba(59,130,246,0.08)),
+        linear-gradient(135deg, rgba(var(--accent-rgb),0.16), rgba(var(--accent-rgb),0.06)),
         var(--glass);
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.55),
-        0 0 0 3px rgba(139,92,246,0.10),
-        0 12px 36px rgba(139,92,246,0.20),
+        0 0 0 3px rgba(var(--accent-rgb),0.12),
+        0 16px 44px rgba(var(--accent-rgb),0.24),
         var(--glass-inner);
 }
+.pricing-featured::after { height: 4px; width: 80%; }
 .pricing-featured:hover {
-    transform: translateY(-6px);
-    border-color: rgba(139, 92, 246, 0.85);
+    transform: translateY(-8px);
+    border-color: var(--accent);
     box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.65),
-        0 0 0 4px rgba(139,92,246,0.15),
-        0 18px 44px rgba(139,92,246,0.28);
+        0 0 0 4px rgba(var(--accent-rgb),0.18),
+        0 22px 50px rgba(var(--accent-rgb),0.32);
 }
 
 /* "Best Value" ribbon on the featured pricing card — keeps the bold
@@ -2032,12 +2066,12 @@ html.dark .theme-toggle .icon-moon { display: block; }
 }
 
 .pricing-badge {
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.82rem;
+    font-weight: 800;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: var(--text-30);
-    margin-bottom: 1rem;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
 }
 
 .pricing-price {
@@ -2294,7 +2328,18 @@ html.dark .pill-badge {
     line-height: 1.5;
 }
 
-.pricing-features svg { color: var(--green); flex-shrink: 0; margin-top: 0.2rem; }
+/* Filled accent-coloured check circles, one hue per tier */
+.pricing-features svg {
+    color: #fff;
+    background: var(--accent);
+    border-radius: 50%;
+    padding: 3px;
+    width: 19px;
+    height: 19px;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    box-shadow: 0 2px 7px rgba(var(--accent-rgb), 0.40);
+}
 
 /* Wrap all text after the SVG in a single span so the whole sentence is
    one flex item — otherwise <strong> and the trailing text become
@@ -2571,6 +2616,8 @@ html.dark .pill-badge {
     /* Pricing */
     .pricing-grid { grid-template-columns: 1fr; gap: 0.8rem; }
     .pricing-card { padding: 1.8rem 1.5rem; }
+    .pricing-featured { transform: none; }
+    .pricing-featured:hover { transform: translateY(-4px); }
 
     /* Order pages */
     .order-section { padding-top: 5.5rem; }
