@@ -1975,9 +1975,9 @@ html.dark .theme-toggle .icon-moon { display: block; }
 }
 /* Per-tier accent identity: a cool blue -> violet -> fuchsia progression that
    tracks the price, so each tier reads as its own colour without rainbow spam. */
-.pricing-card.tier-standard { --accent: #14b8a6; --accent-rgb: 20, 184, 166; }
-.pricing-card.tier-express  { --accent: #f59e0b; --accent-rgb: 245, 158, 11; }
-.pricing-card.tier-detailed { --accent: #f43f5e; --accent-rgb: 244, 63, 94; }
+.pricing-card.tier-standard { --accent: #f43f5e; --accent-rgb: 244, 63, 94; }
+.pricing-card.tier-express  { --accent: #8b5cf6; --accent-rgb: 139, 92, 246; }
+.pricing-card.tier-detailed { --accent: #14b8a6; --accent-rgb: 20, 184, 166; }
 
 /* Glowing accent bar across the top of each tier. Uses ::after because
    .card::before is already the glass sheen highlight. */
