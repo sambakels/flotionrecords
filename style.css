@@ -135,8 +135,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     /* Two soft corner glows (top-left + bottom-right) in a fresh cyan, to
        balance the purple/pink/blue blobs that sit in the other corners. */
     background:
-        radial-gradient(640px 640px at top left,     var(--corner-glow), transparent 70%),
-        radial-gradient(640px 640px at bottom right,  var(--corner-glow), transparent 70%);
+        radial-gradient(clamp(680px, 58vw, 1200px) clamp(680px, 58vw, 1200px) at top left,     var(--corner-glow), transparent 72%),
+        radial-gradient(clamp(680px, 58vw, 1200px) clamp(680px, 58vw, 1200px) at bottom right,  var(--corner-glow), transparent 72%);
 }
 
 .blob {
