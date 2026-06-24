@@ -156,18 +156,20 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     pointer-events: none;
 }
 
-/* Fifth glow: a big soft wash through the centre so the middle is never white */
+/* Fifth glow: a big soft wash through the centre so the middle is never white.
+   Sized generously (≈ the viewport mid-band) so on wide desktop screens the
+   centre stays filled instead of letting the light --bg base read as white. */
 .ambient::after {
     content: "";
     position: absolute;
-    width: 640px;
-    height: 640px;
+    width: min(1100px, 75vw);
+    height: 900px;
     border-radius: 50%;
     top: 46%;
     left: 50%;
     transform: translate(-50%, -50%);
     background: #6366f1;
-    filter: blur(150px);
+    filter: blur(170px);
     opacity: var(--blob-opacity);
     pointer-events: none;
 }
