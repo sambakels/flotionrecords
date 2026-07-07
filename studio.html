@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>(function(){try{if(localStorage.getItem("flotionTheme")==="dark")document.documentElement.classList.add("dark");}catch(e){}})();</script>
+    <script>(function(){try{document.documentElement.classList.add("js");if(localStorage.getItem("flotionTheme")==="dark")document.documentElement.classList.add("dark");}catch(e){}})();</script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KPTFEQ4TWK"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});if(localStorage.getItem('flotion_cookie_consent')==='granted')gtag('consent','update',{analytics_storage:'granted'});gtag('js',new Date());gtag('config','G-KPTFEQ4TWK',{anonymize_ip:true});</script>
     <meta charset="UTF-8">
@@ -12,8 +12,9 @@
     <link rel="canonical" href="https://flotionrecords.com/studio">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <style id="critical-css">:root{--bg:#ece9fb;--glass:rgba(255,255,255,.3);--glass-border:rgba(255,255,255,.5);--glass-shadow:rgba(0,0,0,.08);--glass-blur:40px;--text:#1a1a2e;--text-60:rgba(26,26,46,.72);--text-50:rgba(26,26,46,.62);--blue:#3b82f6;--gradient:linear-gradient(135deg,#1d4ed8,#6d28d9,#a21caf);--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;--ease:cubic-bezier(.25,.46,.45,.94);--blob-opacity:.95;--blob-1:#6366f1;--blob-2:#ec4899;--blob-3:#3b82f6;--nav-bg:rgba(255,255,255,.45)}html.dark{--bg:#0c0f16;--glass:rgba(255,255,255,.06);--glass-border:rgba(255,255,255,.1);--glass-shadow:rgba(0,0,0,.2);--text:#eef0f4;--text-60:rgba(238,240,244,.65);--text-50:rgba(238,240,244,.55);--gradient:linear-gradient(135deg,#60a5fa,#a78bfa,#e879f9);--blob-opacity:.18;--blob-1:#6366f1;--blob-2:#d946ef;--blob-3:#3b82f6;--nav-bg:rgba(14,17,23,.6)}*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}.blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:var(--blob-opacity);animation:blobFloat 20s ease-in-out infinite alternate}.blob-1{width:600px;height:600px;background:var(--blob-1);top:-10%;right:-5%}.blob-2{width:500px;height:500px;background:var(--blob-2);bottom:10%;left:-8%;animation-delay:-7s}.blob-3{width:400px;height:400px;background:var(--blob-3);top:40%;right:20%;animation-delay:-14s}@keyframes blobFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.95)}100%{transform:translate(10px,-10px) scale(1.05)}}.gradient-text{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}@keyframes gradShift{0%{background-position:0% center}50%{background-position:100% center}100%{background-position:0% center}}.btn{display:inline-flex;align-items:center;justify-content:center;padding:.8rem 2rem;font-family:var(--font);font-size:.88rem;font-weight:600;text-decoration:none;border-radius:100px;border:none;cursor:pointer;transition:all .3s var(--ease)}.btn-color{background:var(--gradient);color:#fff;box-shadow:0 4px 20px rgba(41,151,255,.25)}.btn-glass{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);color:var(--text);box-shadow:0 2px 12px var(--glass-shadow)}.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 2rem);max-width:900px;background:var(--nav-bg);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border:1px solid var(--glass-border);border-radius:100px;box-shadow:0 4px 24px var(--glass-shadow)}.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:.55rem 1.5rem}.nav-logo{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;text-decoration:none;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.nav-links{display:flex;align-items:center;gap:1.5rem}.nav-links a{font-size:.82rem;font-weight:500;color:var(--text-60);text-decoration:none}.nav-cta{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700!important}.theme-toggle{width:36px;height:36px;border-radius:50%;background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-60)}.theme-toggle .icon-moon{display:none}html.dark .theme-toggle .icon-sun{display:none}html.dark .theme-toggle .icon-moon{display:block}.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:101}.nav-toggle span{width:20px;height:1.5px;background:var(--text);display:block}.card{background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border-radius:24px;box-shadow:0 12px 40px var(--glass-shadow)}@media(max-width:768px){.nav{top:8px;width:calc(100% - .8rem);border-radius:20px}.nav-links{display:none}}</style>
-    <link rel="stylesheet" href="style.css">
+    <style id="critical-css">:root{--bg:#ece9fb;--glass:rgba(255,255,255,.3);--glass-border:rgba(255,255,255,.5);--glass-shadow:rgba(0,0,0,.08);--glass-blur:40px;--text:#1a1a2e;--text-60:rgba(26,26,46,.72);--text-50:rgba(26,26,46,.62);--blue:#3b82f6;--gradient:linear-gradient(135deg,#1d4ed8,#6d28d9,#a21caf);--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;--ease:cubic-bezier(.25,.46,.45,.94);--blob-opacity:.95;--blob-1:#6366f1;--blob-2:#ec4899;--blob-3:#3b82f6;--nav-bg:rgba(255,255,255,.45)}html.dark{--bg:#0c0f16;--glass:rgba(255,255,255,.06);--glass-border:rgba(255,255,255,.1);--glass-shadow:rgba(0,0,0,.2);--text:#eef0f4;--text-60:rgba(238,240,244,.65);--text-50:rgba(238,240,244,.55);--gradient:linear-gradient(135deg,#60a5fa,#a78bfa,#e879f9);--blob-opacity:.18;--blob-1:#6366f1;--blob-2:#d946ef;--blob-3:#3b82f6;--nav-bg:rgba(14,17,23,.6)}*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}.blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:var(--blob-opacity);animation:blobFloat 20s ease-in-out infinite alternate}.blob-1{width:600px;height:600px;background:var(--blob-1);top:-10%;right:-5%}.blob-2{width:500px;height:500px;background:var(--blob-2);bottom:10%;left:-8%;animation-delay:-7s}.blob-3{width:400px;height:400px;background:var(--blob-3);top:40%;right:20%;animation-delay:-14s}@keyframes blobFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.95)}100%{transform:translate(10px,-10px) scale(1.05)}}.gradient-text{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}@keyframes gradShift{0%{background-position:0% center}50%{background-position:100% center}100%{background-position:0% center}}.btn{display:inline-flex;align-items:center;justify-content:center;padding:.8rem 2rem;font-family:var(--font);font-size:.88rem;font-weight:600;text-decoration:none;border-radius:100px;border:none;cursor:pointer;transition:all .3s var(--ease)}.btn-color{background:var(--gradient);color:#fff;box-shadow:0 4px 20px rgba(41,151,255,.25)}.btn-glass{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);color:var(--text);box-shadow:0 2px 12px var(--glass-shadow)}.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 2rem);max-width:900px;background:var(--nav-bg);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border:1px solid var(--glass-border);border-radius:100px;box-shadow:0 4px 24px var(--glass-shadow)}.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:.55rem 1.5rem}.nav-logo{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;text-decoration:none;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.nav-links{display:flex;align-items:center;gap:1.5rem}.nav-links a{font-size:.82rem;font-weight:500;color:var(--text-60);text-decoration:none}.nav-cta{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700!important}.theme-toggle{width:36px;height:36px;border-radius:50%;background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-60)}.theme-toggle .icon-moon{display:none}html.dark .theme-toggle .icon-sun{display:none}html.dark .theme-toggle .icon-moon{display:block}.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:101}.nav-toggle span{width:20px;height:1.5px;background:var(--text);display:block}.card{position:relative;background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border-radius:24px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 32px var(--glass-shadow),inset 0 1px 0 rgba(255,255,255,.75),inset 0 0 0 1px rgba(255,255,255,.10),inset 0 -1px 0 rgba(0,0,0,.05)}.card::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(255,255,255,.20),rgba(255,255,255,.05) 30%,transparent 60%);pointer-events:none;z-index:0}.card>*{position:relative;z-index:1}html.dark .card{box-shadow:0 1px 2px rgba(0,0,0,.04),0 8px 32px var(--glass-shadow),inset 0 1px 0 rgba(255,255,255,.18),inset 0 0 0 1px rgba(255,255,255,.05),inset 0 -1px 0 rgba(0,0,0,.12)}html.dark .card::before{background:linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.02) 30%,transparent 60%)}@media(max-width:768px){.nav{top:8px;width:calc(100% - .8rem);border-radius:20px}.nav-links{display:none}}</style>
+    <link rel="stylesheet" href="style.css?v=premium1">
+    <noscript><link rel="stylesheet" href="style.css?v=premium1"></noscript>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -58,7 +59,7 @@
             <!-- UPLOAD -->
             <form id="uploadForm" class="card" style="padding:1.8rem">
                 <label style="display:block;font-size:.74rem;font-weight:700;color:var(--text-60);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem">Your track</label>
-                <div id="dropArea" style="border:2px dashed var(--glass-border);border-radius:16px;padding:2.4rem 1.4rem;text-align:center;cursor:pointer;transition:border-color .25s,background .25s">
+                <div id="dropArea" class="glass-rim" style="border:2px dashed var(--glass-border);border-radius:16px;padding:2.4rem 1.4rem;text-align:center;cursor:pointer;transition:border-color .25s,background .25s">
                     <input type="file" id="fileInput" accept=".wav,.mp3,.flac,.m4a,.aif,.aiff,.ogg,.opus,.aac,.wma,audio/*" style="display:none">
                     <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:.55;margin-bottom:.6rem"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                     <div id="dropLabel" style="font-size:.96rem;color:var(--text);font-weight:600">Drag &amp; drop your track, or click to browse</div>
@@ -107,7 +108,7 @@
                             <div style="font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-50);font-weight:700">Now comparing</div>
                             <div id="trackName" style="font-size:1.02rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:340px"></div>
                         </div>
-                        <div id="presetTag" style="font-size:.72rem;color:var(--text-60);background:var(--glass);border:1px solid var(--glass-border);padding:.3rem .7rem;border-radius:999px"></div>
+                        <div id="presetTag" class="glass-rim" style="font-size:.72rem;color:var(--text-60);background:var(--glass);border:1px solid var(--glass-border);padding:.3rem .7rem;border-radius:999px"></div>
                     </div>
 
                     <!-- Waveform -->
@@ -121,12 +122,12 @@
 
                     <!-- A/B channel switch -->
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1.2rem">
-                        <button id="chA" class="ab-ch" data-side="A" style="padding:1rem;border-radius:14px;border:2px solid var(--glass-border);background:var(--glass);cursor:pointer;font:inherit;text-align:left;transition:all .2s">
+                        <button id="chA" class="ab-ch glass-rim" data-side="A" style="padding:1rem;border-radius:14px;border:2px solid var(--glass-border);background:var(--glass);cursor:pointer;font:inherit;text-align:left;transition:all .2s">
                             <div style="font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-50);font-weight:700;margin-bottom:.2rem">Channel A</div>
                             <div style="font-size:.98rem;font-weight:700;color:var(--text)">Your upload</div>
                             <div style="font-size:.72rem;color:var(--text-50)">Original audio</div>
                         </button>
-                        <button id="chB" class="ab-ch" data-side="B" style="padding:1rem;border-radius:14px;border:2px solid #a78bfa;background:linear-gradient(135deg,rgba(167,139,250,.14),rgba(59,130,246,.06)),var(--glass);cursor:pointer;font:inherit;text-align:left;transition:all .2s">
+                        <button id="chB" class="ab-ch glass-rim" data-side="B" style="padding:1rem;border-radius:14px;border:2px solid #a78bfa;background:linear-gradient(135deg,rgba(167,139,250,.14),rgba(59,130,246,.06)),var(--glass);cursor:pointer;font:inherit;text-align:left;transition:all .2s">
                             <div style="font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(167,139,250,.95);font-weight:700;margin-bottom:.2rem">Channel B</div>
                             <div style="font-size:.98rem;font-weight:700;color:var(--text)">Mixed &amp; mastered</div>
                             <div style="font-size:.72rem;color:var(--text-50)">Flotion WAV</div>
@@ -185,10 +186,10 @@
 
     <!-- PAY MODAL -->
     <div id="payModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:1.2rem">
-        <div class="card" style="max-width:440px;width:100%;padding:1.8rem">
+        <div class="card" role="dialog" aria-modal="true" aria-labelledby="payTitle" style="max-width:440px;width:100%;padding:1.8rem">
             <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:1rem">
                 <div>
-                    <h2 style="font-size:1.35rem;font-weight:800;letter-spacing:-.02em">Download the WAV</h2>
+                    <h2 id="payTitle" style="font-size:1.35rem;font-weight:800;letter-spacing:-.02em">Download the WAV</h2>
                     <p style="color:var(--text-60);font-size:.88rem;margin-top:.2rem">Lossless 24-bit WAV, ready for Spotify, Apple Music and distributors.</p>
                 </div>
                 <button id="payClose" aria-label="Close" style="background:none;border:0;cursor:pointer;color:var(--text-60);font-size:1.6rem;line-height:1;padding:.2rem">&times;</button>
@@ -251,6 +252,13 @@
         .ab-ch.active { border-color:#a78bfa !important; box-shadow:0 6px 22px rgba(167,139,250,.22); }
         #genre option, #dlFormat option, #dlRate option, #bundleQty option { background: var(--bg); color: var(--text); }
         kbd { font-size:.7rem; }
+        /* Lift the remaining bespoke flat surfaces to the shared glass material (mirrors .glass-rim) */
+        #codesList > div { box-shadow: var(--glass-inner); backdrop-filter: var(--glass-filter-sm); -webkit-backdrop-filter: var(--glass-filter-sm); }
+        #dlPicker select { box-shadow: var(--glass-inner); backdrop-filter: var(--glass-filter-sm); -webkit-backdrop-filter: var(--glass-filter-sm); }
+        /* Pay modal card entrance: gentle scale + fade, reduced-motion safe */
+        @keyframes payModalIn { from { opacity:0; transform:translateY(12px) scale(.96); } to { opacity:1; transform:translateY(0) scale(1); } }
+        #payModal > .card { animation: payModalIn .32s var(--ease) both; }
+        @media (prefers-reduced-motion: reduce) { #payModal > .card { animation: none !important; } }
     </style>
 
     <footer class="footer">
@@ -274,7 +282,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=premium1"></script>
     <script>
     // ---------------- state machine ----------------
     const STATES = ['uploadForm','processing','result'];
@@ -569,6 +577,7 @@
     function openPay(jobId){ payJobId=jobId; payModal.style.display='flex'; }
     document.getElementById('payClose').addEventListener('click', ()=>payModal.style.display='none');
     payModal.addEventListener('click', e=>{ if(e.target===payModal) payModal.style.display='none'; });
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape' && payModal.style.display==='flex') payModal.style.display='none'; });
 
     // live bundle price: 40 for first 10, +2 per extra
     const bundleQty=document.getElementById('bundleQty'), bundlePrice=document.getElementById('bundlePrice');

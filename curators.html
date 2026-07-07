@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>(function(){try{if(localStorage.getItem("flotionTheme")==="dark")document.documentElement.classList.add("dark");}catch(e){}})();</script>
+    <script>(function(){try{document.documentElement.classList.add("js");if(localStorage.getItem("flotionTheme")==="dark")document.documentElement.classList.add("dark");}catch(e){}})();</script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KPTFEQ4TWK"></script>
     <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('consent','default',{analytics_storage:'denied',ad_storage:'denied',wait_for_update:500});if(localStorage.getItem('flotion_cookie_consent')==='granted')gtag('consent','update',{analytics_storage:'granted'});gtag('js',new Date());gtag('config','G-KPTFEQ4TWK',{anonymize_ip:true});</script>
     <meta charset="UTF-8">
@@ -95,8 +95,8 @@
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <style id="critical-css">:root{--bg:#ece9fb;--glass:rgba(255,255,255,.3);--glass-border:rgba(255,255,255,.5);--glass-shadow:rgba(0,0,0,.08);--glass-blur:40px;--text:#1a1a2e;--text-60:rgba(26,26,46,.72);--text-50:rgba(26,26,46,.62);--blue:#3b82f6;--gradient:linear-gradient(135deg,#1d4ed8,#6d28d9,#a21caf);--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;--ease:cubic-bezier(.25,.46,.45,.94);--blob-opacity:.95;--blob-1:#6366f1;--blob-2:#ec4899;--blob-3:#3b82f6;--nav-bg:rgba(255,255,255,.45)}html.dark{--bg:#0c0f16;--glass:rgba(255,255,255,.06);--glass-border:rgba(255,255,255,.1);--glass-shadow:rgba(0,0,0,.2);--text:#eef0f4;--text-60:rgba(238,240,244,.65);--text-50:rgba(238,240,244,.55);--gradient:linear-gradient(135deg,#60a5fa,#a78bfa,#e879f9);--blob-opacity:.18;--blob-1:#6366f1;--blob-2:#d946ef;--blob-3:#3b82f6;--nav-bg:rgba(14,17,23,.6)}*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:var(--font);background:var(--bg);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .4s,color .4s}.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}.blob{position:absolute;border-radius:50%;filter:blur(120px);opacity:var(--blob-opacity);animation:blobFloat 20s ease-in-out infinite alternate}.blob-1{width:600px;height:600px;background:var(--blob-1);top:-10%;right:-5%}.blob-2{width:500px;height:500px;background:var(--blob-2);bottom:10%;left:-8%;animation-delay:-7s}.blob-3{width:400px;height:400px;background:var(--blob-3);top:40%;right:20%;animation-delay:-14s}@keyframes blobFloat{0%{transform:translate(0,0) scale(1)}33%{transform:translate(40px,-30px) scale(1.1)}66%{transform:translate(-20px,20px) scale(.95)}100%{transform:translate(10px,-10px) scale(1.05)}}.gradient-text{background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}@keyframes gradShift{0%{background-position:0% center}50%{background-position:100% center}100%{background-position:0% center}}.btn{display:inline-flex;align-items:center;justify-content:center;padding:.8rem 2rem;font-family:var(--font);font-size:.88rem;font-weight:600;text-decoration:none;border-radius:100px;border:none;cursor:pointer;transition:all .3s var(--ease)}.btn-color{background:var(--gradient);color:#fff;box-shadow:0 4px 20px rgba(41,151,255,.25);animation:gradShift 6s ease infinite}.btn-glass{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid var(--glass-border);color:var(--text);box-shadow:0 2px 12px var(--glass-shadow)}.nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:100;width:calc(100% - 2rem);max-width:900px;background:var(--nav-bg);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));border:1px solid var(--glass-border);border-radius:100px;box-shadow:0 4px 24px var(--glass-shadow)}.nav-inner{display:flex;justify-content:space-between;align-items:center;padding:.55rem 1.5rem}.nav-logo{font-size:1.05rem;font-weight:800;letter-spacing:-.02em;text-decoration:none;background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradShift 6s ease infinite}.nav-links{display:flex;align-items:center;gap:1.5rem}.nav-links a{font-size:.82rem;font-weight:500;color:var(--text-60);text-decoration:none}.theme-toggle{width:36px;height:36px;border-radius:50%;background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-60)}.theme-toggle .icon-moon{display:none}html.dark .theme-toggle .icon-sun{display:none}html.dark .theme-toggle .icon-moon{display:block}.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:101}.nav-toggle span{width:20px;height:1.5px;background:var(--text);display:block}.hero{min-height:78vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;z-index:1;padding:7rem 2rem 3.5rem}.hero-inner{max-width:760px}.hero-tag{font-size:.72rem;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--text-50);margin-bottom:1.2rem}.hero-title{font-size:clamp(2.4rem,5.5vw,4rem);font-weight:800;letter-spacing:-.03em;line-height:1.05;margin-bottom:1.4rem}.hero-sub{font-size:1.05rem;color:var(--text-60);line-height:1.6;max-width:540px;margin:0 auto 2.2rem}.hero-actions{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}@media(max-width:768px){body{--glass-blur:20px}.blob{filter:blur(80px);animation:none}.nav{top:8px;width:calc(100% - .8rem);border-radius:20px}.nav-inner{padding:.45rem .8rem}.nav-logo{font-size:.9rem!important}.nav-links{position:static;flex-direction:column;gap:.4rem;max-height:0;overflow:hidden;padding:0 .8rem;transition:max-height .35s ease,padding .35s ease;background:none}.nav-links.active{max-height:300px;padding:.6rem .8rem .8rem}.nav-links a{font-size:.82rem;font-weight:600;padding:.7rem 1rem;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#8b5cf6,#d946ef);color:#fff;-webkit-text-fill-color:#fff;text-align:center;display:block}.nav-toggle{display:flex}.theme-toggle{width:32px;height:32px}.hero{min-height:auto;padding:5.5rem 1rem 2.5rem}.hero-title{font-size:2rem;line-height:1.15}.hero-tag{font-size:.65rem;letter-spacing:3px;margin-bottom:1rem}.hero-sub{font-size:.95rem;margin-bottom:1.5rem}}</style>
-    <link rel="stylesheet" href="style.css">
-    <noscript><link rel="stylesheet" href="style.css"></noscript>
+    <link rel="stylesheet" href="style.css?v=premium1">
+    <noscript><link rel="stylesheet" href="style.css?v=premium1"></noscript>
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,7 +126,8 @@
     .faq-a{font-size:.85rem;color:var(--text-60);line-height:1.6}
     </style>
 </head>
-<body>    <div class="ambient">
+<body>    <a href="#main" class="skip-link">Skip to main content</a>
+    <div class="ambient">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
         <div class="blob blob-3"></div>
@@ -150,7 +151,7 @@
     </nav>
 
     <!-- Hero -->
-    <header class="hero">
+    <header class="hero" id="main">
         <div class="hero-inner">
             <p class="hero-tag">For Curators</p>
             <h1 class="hero-title">Get paid for the <span class="gradient-text">streams</span></h1>
@@ -223,12 +224,12 @@
                 <h2 class="reveal">Pay for <span class="gradient-text">real value</span></h2>
             </div>
             <p class="section-intro reveal">Most curator networks pay a flat fee per submission. That rewards quantity over quality and attracts spam playlists. We do the opposite: you only earn when the music you pick actually performs. It keeps the network clean and the artists happy.</p>
-            <div class="card card-lg reveal">
-                <ul style="list-style:none;padding:0;margin:0;display:grid;gap:.8rem">
-                    <li style="padding-left:1.6rem;position:relative;font-size:.9rem;line-height:1.55"><span style="position:absolute;left:0;top:.1rem;color:#22c55e;font-weight:800">&#10004;</span><strong>Quality over volume.</strong> Pick tracks your audience actually wants, get rewarded for it.</li>
-                    <li style="padding-left:1.6rem;position:relative;font-size:.9rem;line-height:1.55"><span style="position:absolute;left:0;top:.1rem;color:#22c55e;font-weight:800">&#10004;</span><strong>Transparent tracking.</strong> All stream data comes from Spotify for Artists, the official source.</li>
-                    <li style="padding-left:1.6rem;position:relative;font-size:.9rem;line-height:1.55"><span style="position:absolute;left:0;top:.1rem;color:#22c55e;font-weight:800">&#10004;</span><strong>No bots, no spam playlists.</strong> Bot-driven playlists generate zero real streams, so they earn zero. The model filters them out automatically.</li>
-                    <li style="padding-left:1.6rem;position:relative;font-size:.9rem;line-height:1.55"><span style="position:absolute;left:0;top:.1rem;color:#22c55e;font-weight:800">&#10004;</span><strong>Long-tail income.</strong> A track that keeps streaming keeps paying you for months, not just one flat review fee.</li>
+            <div class="card card-lg card-tint-green reveal">
+                <ul class="check-list" style="padding:0;margin:0;display:grid;gap:.8rem">
+                    <li style="font-size:.9rem;line-height:1.55"><strong>Quality over volume.</strong> Pick tracks your audience actually wants, get rewarded for it.</li>
+                    <li style="font-size:.9rem;line-height:1.55"><strong>Transparent tracking.</strong> All stream data comes from Spotify for Artists, the official source.</li>
+                    <li style="font-size:.9rem;line-height:1.55"><strong>No bots, no spam playlists.</strong> Bot-driven playlists generate zero real streams, so they earn zero. The model filters them out automatically.</li>
+                    <li style="font-size:.9rem;line-height:1.55"><strong>Long-tail income.</strong> A track that keeps streaming keeps paying you for months, not just one flat review fee.</li>
                 </ul>
                 <p style="font-size:.78rem;color:var(--text-50);margin-top:1.4rem;line-height:1.6">Specific payout rates and tier structure are shared with you after we review and approve your application. We adjust rates as the network grows, but they always scale with how much real value you bring to artists.</p>
             </div>
@@ -242,14 +243,14 @@
                 <span class="tag reveal">Requirements</span>
                 <h2 class="reveal">Who we <span class="gradient-text">approve</span></h2>
             </div>
-            <div class="card card-lg reveal">
-                <ul style="list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:.6rem 1.4rem">
-                    <li style="padding-left:1.6rem;position:relative;font-size:.88rem;line-height:1.5"><span style="position:absolute;left:0;top:.1rem">&#10004;</span>500+ <strong>real</strong> Spotify followers</li>
-                    <li style="padding-left:1.6rem;position:relative;font-size:.88rem;line-height:1.5"><span style="position:absolute;left:0;top:.1rem">&#10004;</span>Playlist updated within last 30 days</li>
-                    <li style="padding-left:1.6rem;position:relative;font-size:.88rem;line-height:1.5"><span style="position:absolute;left:0;top:.1rem">&#10004;</span>Clear genre focus (House, UK Garage, Piano, Ambient, etc.)</li>
-                    <li style="padding-left:1.6rem;position:relative;font-size:.88rem;line-height:1.5"><span style="position:absolute;left:0;top:.1rem">&#10004;</span>Custom Spotify profile name (no <code style="font-size:.75rem">user_xxxxx</code>)</li>
-                    <li style="padding-left:1.6rem;position:relative;font-size:.88rem;line-height:1.5"><span style="position:absolute;left:0;top:.1rem">&#10004;</span>Genuine engagement (saves and recent playlist activity)</li>
-                    <li style="padding-left:1.6rem;position:relative;font-size:.88rem;line-height:1.5"><span style="position:absolute;left:0;top:.1rem">&#10004;</span>Commitment to honest, professional feedback</li>
+            <div class="card card-lg card-tint-green reveal">
+                <ul class="check-list" style="padding:0;display:grid;grid-template-columns:1fr 1fr;gap:.6rem 1.4rem">
+                    <li style="font-size:.88rem;line-height:1.5">500+ <strong>real</strong> Spotify followers</li>
+                    <li style="font-size:.88rem;line-height:1.5">Playlist updated within last 30 days</li>
+                    <li style="font-size:.88rem;line-height:1.5">Clear genre focus (House, UK Garage, Piano, Ambient, etc.)</li>
+                    <li style="font-size:.88rem;line-height:1.5">Custom Spotify profile name (no <code style="font-size:.75rem">user_xxxxx</code>)</li>
+                    <li style="font-size:.88rem;line-height:1.5">Genuine engagement (saves and recent playlist activity)</li>
+                    <li style="font-size:.88rem;line-height:1.5">Commitment to honest, professional feedback</li>
                 </ul>
                 <p style="font-size:.78rem;color:var(--text-50);margin-top:1.2rem;line-height:1.6">We do not accept bot-driven playlists, fake follower accounts, or playlists that auto-add every submission. Your stats stay public to artists once approved: acceptance rate, response time, average stream lift. Acceptance rates above 60% combined with low stream performance trigger an automatic review.</p>
             </div>
@@ -391,7 +392,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=premium1"></script>
     <script>
     // Formspree endpoint. Same as order.html. Whitelisted by major AV vendors.
     const formspreeEndpoint = 'https://formspree.io/f/xeenlknb';
