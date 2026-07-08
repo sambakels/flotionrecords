@@ -39,11 +39,11 @@
     --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --blob-opacity: 0.95;
-    --blob-1: #7c3aed;
-    --blob-2: #ec4899;
-    --blob-3: #2563eb;
+    --blob-1: #6d28d9;
+    --blob-2: #db2777;
+    --blob-3: #1d4ed8;
     /* Fresh vivid hue for the two empty corners (top-left + bottom-right) */
-    --corner-glow: rgba(34, 211, 238, 0.50);
+    --corner-glow: rgba(6, 182, 212, 0.55);
     /* Very transparent nav background so blob colour bleeds through and
        the pill inside the nav has actual colour to play with. */
     --nav-bg: rgba(255,255,255,0.18);
@@ -83,11 +83,11 @@ html.dark {
     --text-40: rgba(238,240,244,0.4);
     --text-30: rgba(238,240,244,0.3);
     --gradient: linear-gradient(135deg, #60a5fa, #a78bfa, #e879f9);
-    --blob-opacity: 0.18;
-    --blob-1: #6366f1;
-    --blob-2: #d946ef;
-    --blob-3: #3b82f6;
-    --corner-glow: rgba(34, 211, 238, 0.16);
+    --blob-opacity: 0.22;
+    --blob-1: #4f46e5;
+    --blob-2: #c026d3;
+    --blob-3: #2563eb;
+    --corner-glow: rgba(6, 182, 212, 0.20);
     --nav-bg: rgba(14,17,23,0.30);
     --track-hover: rgba(255,255,255,0.03);
     --track-active: rgba(41,151,255,0.1);
@@ -168,7 +168,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     border-radius: 50%;
     top: 32%;
     left: -7%;
-    background: #a855f7;
+    background: #9333ea;
     filter: blur(120px);
     opacity: var(--blob-opacity);
     pointer-events: none;
@@ -2754,8 +2754,8 @@ html.dark .pill-badge {
        small screen and make light mode look dark and identical to dark mode.
        Pull them way back here: low opacity so the light base shows clearly,
        smaller + less blur so the GPU does far less work (faster scroll). */
-    :root { --blob-opacity: 0.30; --corner-glow: rgba(34,211,238,0.22); }
-    html.dark { --blob-opacity: 0.14; --corner-glow: rgba(34,211,238,0.10); }
+    :root { --blob-opacity: 0.30; --corner-glow: rgba(6,182,212,0.26); }
+    html.dark { --blob-opacity: 0.14; --corner-glow: rgba(6,182,212,0.12); }
     .blob { animation: none; filter: blur(60px); }
     .blob-1, .blob-2, .blob-3 { width: 300px; height: 300px; }
     .ambient::before { width: 280px; height: 280px; filter: blur(65px); top: 28%; }
