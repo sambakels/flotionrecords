@@ -22,14 +22,17 @@
         inset 0 1px 0 rgba(255,255,255,0.75),
         inset 0 0 0 1px rgba(255,255,255,0.10),
         inset 0 -1px 0 rgba(0,0,0,0.05);
-    --text: #1a1a2e;
-    --text-90: rgba(26,26,46,0.92);
-    --text-80: rgba(26,26,46,0.85);
-    --text-70: rgba(26,26,46,0.78);
-    --text-60: rgba(26,26,46,0.72);
-    --text-50: rgba(26,26,46,0.62);
-    --text-40: rgba(26,26,46,0.55);
-    --text-30: rgba(26,26,46,0.50);
+    /* True OLED black: pure #000 for headings/base (the old #1a1a2e navy
+       tint read as soft), secondary tiers darkened so small text stays
+       properly black instead of fading to grey. */
+    --text: #000000;
+    --text-90: rgba(0,0,0,0.93);
+    --text-80: rgba(0,0,0,0.87);
+    --text-70: rgba(0,0,0,0.80);
+    --text-60: rgba(0,0,0,0.74);
+    --text-50: rgba(0,0,0,0.66);
+    --text-40: rgba(0,0,0,0.58);
+    --text-30: rgba(0,0,0,0.52);
     --blue: #3b82f6;
     --green: #30d158;
     --pink: #e846a8;
