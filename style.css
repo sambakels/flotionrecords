@@ -224,19 +224,18 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
    visually, so the per-card colour identity is preserved. */
 .card {
     background:
-        linear-gradient(135deg, rgba(168,85,247,0.05), rgba(59,130,246,0.035)),
+        linear-gradient(135deg, rgba(168,85,247,0.08), rgba(59,130,246,0.055)),
         var(--glass);
     backdrop-filter: var(--glass-filter);
     -webkit-backdrop-filter: var(--glass-filter);
     border: 1px solid var(--glass-border);
-    border-radius: 24px;
+    border-radius: 26px;
     padding: 2rem;
-    /* Two-layer drop shadow: tight close shadow for the lift, soft wide
-       shadow for the floating-on-glass feel. Plus the inner rim light
-       chain from --glass-inner. */
+    /* Floating-glass depth: a tight contact shadow plus a wide soft cast so
+       the card reads as lifted off the page, with the inner rim-light chain. */
     box-shadow:
-        0 1px 2px rgba(0,0,0,0.04),
-        0 8px 32px var(--glass-shadow),
+        0 2px 6px rgba(0,0,0,0.05),
+        0 24px 50px -16px var(--glass-shadow),
         var(--glass-inner);
     transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease), background 0.4s, border-color 0.4s;
     position: relative;
@@ -600,6 +599,25 @@ html.dark .theme-toggle .icon-moon { display: block; }
     z-index: 1;
     padding: 7rem 2rem 3.5rem;
 }
+/* Soft brand aura behind the headline — reads as premium depth, not a blob */
+.hero::before {
+    content: "";
+    position: absolute;
+    top: 14%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(920px, 94vw);
+    height: 460px;
+    border-radius: 50%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(124,58,237,0.20), rgba(59,130,246,0.12) 46%, transparent 72%);
+    filter: blur(24px);
+    pointer-events: none;
+    z-index: 0;
+}
+html.dark .hero::before {
+    background: radial-gradient(50% 50% at 50% 50%, rgba(139,92,246,0.26), rgba(59,130,246,0.16) 46%, transparent 72%);
+}
+.hero-inner { position: relative; z-index: 1; }
 
 .hero-inner { max-width: 760px; }
 
@@ -615,10 +633,10 @@ html.dark .theme-toggle .icon-moon { display: block; }
 }
 
 .hero-title {
-    font-size: clamp(2.4rem, 5.5vw, 4rem);
+    font-size: clamp(2.8rem, 6.4vw, 5rem);
     font-weight: 800;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
     margin-bottom: 1.4rem;
     animation: heroRise .7s var(--ease-out) both;
     animation-delay: .08s;
@@ -702,7 +720,7 @@ html.dark .theme-toggle .icon-moon { display: block; }
 
 .section-head { text-align: center; margin-bottom: 2.4rem; }
 .section-head h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
-.section-head h2 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+.section-head h2 { font-size: clamp(1.9rem, 4.5vw, 2.85rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.1; }
 
 .tag {
     display: inline-block;
