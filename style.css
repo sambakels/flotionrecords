@@ -189,8 +189,8 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     /* Indigo core with a white halo ring; the blur melts the ring into a
        soft glow around the blob instead of a hard band. */
     background: radial-gradient(50% 50% at 50% 50%,
-        #1d4ed8 0%,
-        #1d4ed8 55%,
+        #1d47c3 0%,
+        #1d47c3 55%,
         rgba(255,255,255,0.6) 80%,
         rgba(255,255,255,0) 100%);
     filter: blur(170px);
