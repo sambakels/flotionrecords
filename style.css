@@ -2,7 +2,7 @@
    FLOTION RECORDS - Liquid Glass Light
    ======================================== */
 :root {
-    --bg: #ece9fb;
+    --bg: #f6f4fe;
     --surface: rgba(255,255,255,0.50);
     --glass: rgba(255,255,255,0.34);
     --glass-border: rgba(255,255,255,0.60);
@@ -63,7 +63,7 @@
 
 /* Dark mode */
 html.dark {
-    --bg: #0c0f16;
+    --bg: #04060b;
     --glass: rgba(255,255,255,0.08);
     --glass-border: rgba(255,255,255,0.16);
     --glass-shadow: rgba(0,0,0,0.30);
@@ -83,7 +83,7 @@ html.dark {
     --text-40: rgba(238,240,244,0.4);
     --text-30: rgba(238,240,244,0.3);
     --gradient: linear-gradient(135deg, #60a5fa, #a78bfa, #e879f9);
-    --blob-opacity: 0.22;
+    --blob-opacity: 0.32;
     --blob-1: #4f46e5;
     --blob-2: #c026d3;
     --blob-3: #2563eb;
@@ -196,6 +196,14 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     filter: blur(170px);
     opacity: var(--blob-opacity);
     pointer-events: none;
+}
+/* On the near-black dark base a white halo reads as grey smog, not glow —
+   fade the core straight to transparent instead. */
+html.dark .ambient::after {
+    background: radial-gradient(50% 50% at 50% 50%,
+        #1d47c3 0%,
+        #1d47c3 55%,
+        rgba(29,71,195,0) 100%);
 }
 
 @keyframes blobFloat {
@@ -2985,10 +2993,10 @@ body::after {
     inset: 0;
     pointer-events: none;
     z-index: 0;
-    background: radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,0.10), transparent 60%);
+    background: radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,0.03), transparent 60%);
 }
 html.dark body::after {
-    background: radial-gradient(120% 80% at 50% -10%, rgba(255,255,255,0.04), transparent 60%);
+    background: none;
 }
 
 /* --- Perf containment (opt-in, additive). Never on ribbon-overflowing cards. --- */
