@@ -150,7 +150,9 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
 .blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
+    /* Tighter blur keeps the colour dense and saturated; 120px smeared the
+       vivid hues into grey pastel fog against the light base. */
+    filter: blur(80px);
     opacity: var(--blob-opacity);
     transition: opacity 0.5s;
 }
@@ -169,7 +171,7 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
     top: 32%;
     left: -7%;
     background: #9333ea;
-    filter: blur(120px);
+    filter: blur(90px);
     opacity: var(--blob-opacity);
     pointer-events: none;
 }
@@ -190,10 +192,10 @@ input:focus-visible, select:focus-visible, textarea:focus-visible {
        soft glow around the blob instead of a hard band. */
     background: radial-gradient(50% 50% at 50% 50%,
         #1d47c3 0%,
-        #1d47c3 55%,
-        rgba(255,255,255,0.6) 80%,
-        rgba(255,255,255,0) 100%);
-    filter: blur(170px);
+        #1d47c3 50%,
+        rgba(255,255,255,0.5) 68%,
+        rgba(255,255,255,0) 84%);
+    filter: blur(120px);
     opacity: var(--blob-opacity);
     pointer-events: none;
 }
